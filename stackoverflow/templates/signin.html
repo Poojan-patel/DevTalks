@@ -1,0 +1,158 @@
+{% extends 'navbar.html' %}
+
+{% block title %}
+    SignIn | StackOverflow
+{% endblock title %}
+
+{% block css %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static '/css/style.css' %}">
+    <link rel="stylesheet" href="{% static '/css/navbar.css' %}">
+{% endblock css %}
+
+{% block content %}
+    <div class="content">
+        <div class="container sign-in-content">
+            <div class="row">
+                <div class="col-md-6 order-md-2">
+                    <img src="{% static '/img/undraw_file_sync_ot38.svg' %}" alt="Image" class="img-fluid">
+                </div>
+                <div class="col-md-6 contents">
+                    <div class="row justify-content-center">
+                        <div class="col-md-8">
+                            <div class="mb-4">
+                                <h3>Sign In to Stack<strong>overflow</strong></h3>
+                                <p class="mb-4">World largest community to resolve your all queries. We welcome you to join with us and contribute your new idea.</p>
+                            </div>
+                            <form action="#" method="post">
+                                <div class="form-group first">
+                                    <label for="username">Username</label>
+                                    <input type="text" class="form-control" id="username">
+
+                                </div>
+                                <div class="form-group last mb-4">
+                                    <label for="password">Password</label>
+                                    <input type="password" class="form-control" id="password">
+
+                                </div>
+
+                                <div class="d-flex mb-5 align-items-center">
+                                    <label class="control control--checkbox mb-0"><span class="caption">Remember
+                                            me</span>
+                                        <input type="checkbox" />
+                                        <div class="control__indicator"></div>
+                                    </label>
+                                    <span class="ml-auto"><a href="#" class="forgot-pass">Forgot Password ?</a></span>
+                                </div>
+
+                                <input type="submit" value="Sign In" class="btn text-white btn-block btn-primary">
+
+                                <div class="d-flex mt-4 align-items-center">
+                                    <span class="text-left text-muted">Don't have an Account ?</span>
+                                    <span class="ml-auto register font-weight-bold text-decoration-none" onclick="registerDisplay()">Register Account</span>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+        <div class="container register-content sr-only">
+            <div class="row">
+                <div class="col-md-6">
+                    <img src="{% static '/img/undraw_file_sync_ot38.svg' %}" alt="Image" class="img-fluid">
+                </div>
+                <div class="col-md-6 contents">
+                    <div class="row justify-content-center">
+                        <div class="col-md-8">
+                            <div class="mb-4">
+                                <h3>Welcome to Stack<strong>overflow</strong></h3>
+                                <p class="mb-4">World largest community to resolve your all queries. We welcome you to join with us and contribute your new idea.</p>
+                            </div>
+                            <form action="#" method="post">
+                                <div class="form-row">
+                                    <div class="col">
+                                        <div class="form-group">
+                                            <label for="firstname">First Name</label>
+                                            <input type="text" class="form-control" id="firstname">
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="form-group">
+                                            <label for="lastname">Last Name</label>
+                                            <input type="text" class="form-control" id="lastname">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="col">
+                                        <div class="form-group">
+                                            <label for="username">Username</label>
+                                            <input type="text" class="form-control" id="username">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="col">
+                                        <div class="form-group">
+                                            <label for="email">Email</label>
+                                            <input type="email" class="form-control" id="email">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="col">
+                                        <div class="form-group last mb-4">
+                                            <label for="password">Password</label>
+                                            <input type="password" class="form-control" id="password">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="col">
+                                        <div class="form-group last mb-4">
+                                            <label for="retypepassword">Retype-Password</label>
+                                            <input type="password" class="form-control" id="retypepassword">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <input type="submit" value="Register" class="btn text-white btn-block btn-primary">
+
+                                <div class="d-flex mt-4 align-items-center">
+                                    <span class="text-left text-muted">Already have an Account?</span>
+                                    <span class="ml-auto register font-weight-bold text-decoration-none" onclick="signInDisplay()">Click for SignIn</span>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+
+{% block js %}
+    <script>
+        function registerDisplay() {
+            var signin = document.getElementsByClassName("sign-in-content")[0];
+            var register = document.getElementsByClassName("register-content")[0];
+            signin.classList.add("sr-only");
+            register.classList.remove("sr-only");
+            // console.log("Shubh");
+        }
+
+        function signInDisplay() {
+            var signin = document.getElementsByClassName("sign-in-content")[0];
+            var register = document.getElementsByClassName("register-content")[0];
+            register.classList.add("sr-only");
+            signin.classList.remove("sr-only");
+            // console.log("Patel");
+        }
+    </script>
+    <script src={% static '/js/signin.js' %}></script>
+{% endblock js %}
