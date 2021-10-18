@@ -10,18 +10,26 @@
     <link rel="stylesheet" href="{% static '/css/navbar.css' %}">
 {% endblock css %}
 
+{% block DiscoverActive %}
+active
+{% endblock DiscoverActive %}
+
+{% block ProfileCurrent %}
+<span class="sr-only">(current)</span>
+{% endblock ProfileCurrent %}
+
 {% block content %}
     <div class="content">
         <div class="container sign-in-content">
             <div class="row">
-                <div class="col-md-6 order-md-2">
+                <div class="col-md-6 order-md-2 my-md-auto">
                     <img src="{% static '/img/undraw_file_sync_ot38.svg' %}" alt="Image" class="img-fluid">
                 </div>
                 <div class="col-md-6 contents">
                     <div class="row justify-content-center">
-                        <div class="col-md-8">
+                        <div class="col-lg-8">
                             <div class="mb-4">
-                                <h3>Sign In to Stack<strong>overflow</strong></h3>
+                                <h3>Sign In to Stack<strong>Overflow</strong></h3>
                                 <p class="mb-4">World largest community to resolve your all queries. We welcome you to join with us and contribute your new idea.</p>
                             </div>
                             <form action="#" method="post">
@@ -37,19 +45,21 @@
                                 </div>
 
                                 <div class="d-flex mb-5 align-items-center">
-                                    <label class="control control--checkbox mb-0"><span class="caption">Remember
-                                            me</span>
+                                    <label class="control control--checkbox mb-0">
+                                        <span class="caption">
+                                            Remember me
+                                        </span>
                                         <input type="checkbox" />
-                                        <div class="control__indicator"></div>
+                                        <div class="control__indicator my-lg-0 my-md-2 my-0"></div>
                                     </label>
-                                    <span class="ml-auto"><a href="#" class="forgot-pass">Forgot Password ?</a></span>
+                                    <span class="ml-auto text-right"><a href="#" class="forgot-pass">Forgot Password ?</a></span>
                                 </div>
 
                                 <input type="submit" value="Sign In" class="btn text-white btn-block btn-primary">
 
                                 <div class="d-flex mt-4 align-items-center">
                                     <span class="text-left text-muted">Don't have an Account ?</span>
-                                    <span class="ml-auto register font-weight-bold text-decoration-none" onclick="registerDisplay()">Register Account</span>
+                                    <span class="ml-auto text-right register font-weight-bold text-decoration-none" onclick="registerDisplay()">Register Account</span>
                                 </div>
                             </form>
                         </div>
@@ -61,14 +71,14 @@
         </div>
         <div class="container register-content sr-only">
             <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-6 my-md-auto">
                     <img src="{% static '/img/undraw_file_sync_ot38.svg' %}" alt="Image" class="img-fluid">
                 </div>
                 <div class="col-md-6 contents">
                     <div class="row justify-content-center">
-                        <div class="col-md-8">
+                        <div class="col-lg-8">
                             <div class="mb-4">
-                                <h3>Welcome to Stack<strong>overflow</strong></h3>
+                                <h3>Welcome to Stack<strong>Overflow</strong></h3>
                                 <p class="mb-4">World largest community to resolve your all queries. We welcome you to join with us and contribute your new idea.</p>
                             </div>
                             <form action="#" method="post">

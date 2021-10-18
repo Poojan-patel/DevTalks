@@ -42,6 +42,10 @@ h2 {
 }
 
 @media (max-width: 991.98px) {
+    .content {
+        padding: 3rem 0;
+    }
+
     .content .bg {
         height: 500px;
     }
@@ -244,6 +248,6 @@ h2 {
 }
 
 .control--checkbox input:disabled:checked~.control__indicator {
-    background-color: #7e0cf5;
+    background-color: #38d39f;
     opacity: .2;
 }

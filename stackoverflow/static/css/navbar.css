@@ -127,7 +127,7 @@ a {
 
 
 .bg-primary {
-  background-color: #6b48ff !important;
+  background-color: #38d39f;
 }
 
 .navbar-wrap {
@@ -207,8 +207,12 @@ a {
   color: rgba(255, 255, 255, 0.6);
 }
 
-.navbar-wrap.bg-primary .navbar-nav .nav-item:hover,
 .navbar-wrap.bg-primary .navbar-nav .nav-item.active {
+  background: rgba(255, 255, 255, 0.25);
+  border-radius: 4px;
+}
+
+.navbar-wrap.bg-primary .navbar-nav .nav-item:hover {
   background: rgba(255, 255, 255, 0.1);
   border-radius: 4px;
 }
