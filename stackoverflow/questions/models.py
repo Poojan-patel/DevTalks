@@ -16,7 +16,7 @@ class Tag(models.Model):
 
 class Answer(models.Model):
      id        = models.CharField(verbose_name='AnswerID',    name='id',   primary_key=True,    default=uuid.uuid4,   unique=True,     editable=False, max_length=40)
-     question  = models.ForeignKey(verbose_name='QuestionID', to=Question, null=False, blank=False,  related_name='answers', on_delete=models.CASCADE, to_field='id')
+     question  = models.ForeignKey(verbose_name='QuestionID', name='question' ,to=Question, null=False, blank=False,  related_name='answers', on_delete=models.CASCADE, to_field='id')
      body      = models.TextField(verbose_name='Body',        name='body', null=False, blank=False,)
 
 

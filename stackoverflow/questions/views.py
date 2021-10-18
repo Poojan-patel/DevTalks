@@ -1,7 +1,8 @@
 from django.http.response import HttpResponse, JsonResponse
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from questions.models import Question, Answer
-
+from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 # Create your views here.
 
 def read(request,uuid):
@@ -20,3 +21,47 @@ def readall(request):
           st = st + t + '</ul></li>'
      
      return HttpResponse(st+'</ol>')
+
+@login_required(login_url='signin')
+def add_question(request):
+     if request.method == "GET":
+          return redirect('signin')
+     
+     myuser = request.user
+     user_id = myuser.id
+     title = request.POST['title'].strip()
+     body = request.POST['body'].strip()
+
+     if(title == "" or title is None):
+          messages.error(request,'Title is Empty or It is not Valid')
+          return redirect('add_question')
+     
+     if(body == "" or body is None):
+          messages.error(request,'Body is Empty or It is not Valid')
+          return redirect('add_question')
+     
+     question = Question(user_id=user_id, title=title, body=body)
+     question.save()
+     messages.success(request,'Question asked Successfully')
+     return redirect('home')
+     
+@login_required(login_url='signin')
+def add_answer(request, question_id):
+     if request.method == "POST":
+          myuser = request.user
+          user_id = myuser.user_id
+          body = request.POST['body'].strip()
+
+          if(body == "" or body is None):
+               messages.error(request,"Answer can not be null")
+               return redirect(request.get_full_path())
+          
+          answer = Answer(user_id=user_id, body=body, question_id=question_id)
+          answer.save()
+          messages.success(request, 'Answer Conveyed Successfully')
+          return redirect('home')
+     return redirect('home')
+
+def get_feed(request):
+     questions = Question.objects.all()
+     return render(request, 'feed.html', {'questions':questions})

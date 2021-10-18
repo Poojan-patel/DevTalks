@@ -1,0 +1,22 @@
+<ol>
+{% for q in questions %}
+     <li> Title: {{q.title}}
+          <ul>
+               <li>QuestionID: {{q.id}}</li>
+               <li>UserID: {{q.user_id}}</li>
+               <li>Body: {{q.body}}</li>
+               <ol>
+                    {% for a in q.answers.all %}
+                    <li>
+                         <ul>
+                              <li>AnswerID: {{a.id}}</li>
+                              <li>QuestionID: {{a.question_id}}</li>
+                              <li>Body: {{a.body}}</li>
+                         </ul>
+                    </li>
+                    {% endfor %}
+               </ol>
+          </ul>
+     </li>
+{% endfor %}
+</ol>
