@@ -1,0 +1,46 @@
+{% extends 'navbar.html' %}
+
+{% block title %}
+Discover | StackOverflow
+{% endblock title %}
+
+{% block css %}
+{% load static %}
+<link rel="stylesheet" href="{% static '/css/style.css' %}">
+<link rel="stylesheet" href="{% static '/css/navbar.css' %}">
+{% endblock css %}
+
+{% block DiscoverActive %}
+active
+{% endblock DiscoverActive %}
+
+{% block DiscoverCurrent %}
+    <span class="sr-only">(current)</span>
+{% endblock DiscoverCurrent %}
+
+{% block content %}
+    <div class="container-fluid p-5">
+        <div class="row">
+            <div class="col-md-4 mb-4 mb-md-0">
+                <div class="card card-style">
+                    <h6 class="d-flex align-items-center card-header py-3">
+                        <span class="text-left">Difference Between MVC and MVT Architecture</span>
+                        <span class="ml-auto text-right">
+                            <span class="text-muted created-by">Created by,</span>
+                            Shubh Patel
+                        </span>
+                    </h6>
+                    <div class="card-body">
+                        <h5 class="card-title">Special title treatment</h5>
+                        <p class="card-text">With supporting text below as a natural lead-in to additional content. It is a
+                            paradisematic country, in which roasted parts of sentences fly into your mouth.</p>
+                        <a href="#" class="btn btn-primary">Go somewhere</a>
+                    </div>
+                    <div class="card-footer text-muted">
+                        2 days ago
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

@@ -8,21 +8,6 @@ p {
     font-weight: 300;
 }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-.h1,
-.h2,
-.h3,
-.h4,
-.h5,
-.h6 {
-    font-family: "Roboto", sans-serif;
-}
-
 a {
     -webkit-transition: .3s all ease;
     -o-transition: .3s all ease;
@@ -250,4 +235,30 @@ h2 {
 .control--checkbox input:disabled:checked~.control__indicator {
     background-color: #38d39f;
     opacity: .2;
+}
+
+.card.card-style {
+    border: none;
+    box-shadow: 0px 11px 30px -9px rgba(0, 0, 0, 0.25);
+}
+
+.card.card-style .card-header {
+    background: #38d39f;
+    border: none;
+    color: #fff;
+}
+
+.card.card-style .btn-primary {
+    background: #38d39f;
+    color: #fff;
+}
+
+.card.card-style .btn-primary:hover {
+    background: #29bb8a;
+    border-color: #27b183;
+}
+
+.card.card-style .card-footer {
+    border-top: 1px solid rgba(0, 0, 0, 0.04);
+    background: #fff;
 }
