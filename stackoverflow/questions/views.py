@@ -1,9 +1,23 @@
-from django.http.response import HttpResponse, JsonResponse
+from django.http.response import HttpResponse, JsonResponse, FileResponse
 from django.shortcuts import redirect, render
-from questions.models import Question, Answer, Like, Upvote
+from questions.models import Question, Answer, Like, Upvote, Image
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.views.decorators.csrf import csrf_exempt
+from django.templatetags.static import static
+import io, time
+from django.core.files.storage import default_storage
+
+
 # Create your views here.
+def fileresp(request,id):
+     img = Image.objects.get(id=id)
+     obj = default_storage.open(str(img.image.name),'rb')
+     # ip = io.StringIO()
+     # ip.write("Hello")
+     # op = io.BufferedReader(ip)
+     # print(obj.read())
+     return FileResponse(obj)
 
 def read(request,uuid):
      data = Question.objects.filter(id=uuid).first()
@@ -12,6 +26,27 @@ def read(request,uuid):
      print(data.user_id)
      data.delete()
      return HttpResponse(data)
+
+@csrf_exempt
+def upload_img(request):
+     responseJson = {
+          'success': 0
+     }
+     if request.method == 'POST':
+          #print("POST Method Called")
+          name = request.FILES['image'].name
+          request.FILES['image'].name = str(time.time())+ '.' +name.split('.')[-1]
+          data = Image(image=request.FILES['image'])
+          data.save()
+          print(data.id)
+          responseJson['success'] = 1
+          responseJson['file'] = {
+               'name': str(data.id),
+               'url': '/question/fileresp/'+str(data.id)
+          }
+     else:
+          print("Get Method Called")
+     return JsonResponse(responseJson)
 
 def readall(request):
      data = Question.objects.all()
