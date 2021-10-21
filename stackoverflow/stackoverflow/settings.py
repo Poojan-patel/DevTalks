@@ -38,8 +38,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'questions'
+    'questions',
+    'users',
 ]
+
+AUTH_USER_MODEL = 'users.User'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -115,6 +118,16 @@ USE_L10N = True
 
 USE_TZ = True
 
+
+LOGIN_URL = 'login'
+LOGIN_REDIRECT_URL = 'discover'
+LOGOUT_REDIRECT_URL = 'discover'
+
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'ojsystem0963@gmail.com'
+EMAIL_HOST_PASSWORD = 'OJ$096311'
+EMAIL_PORT = 587
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/

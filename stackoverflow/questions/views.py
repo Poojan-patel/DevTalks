@@ -9,16 +9,15 @@ import io, time
 from django.core.files.storage import default_storage
 
 
-# Create your views here.
 # Question Save Data Temp View
 def output(request):
      if request.method == 'POST':
           # print(request.POST)
-          questionTitle = request.POST['questionTitle']
-          questionTag = request.POST['questionTag']
-          jsonData = request.POST['jsonData']
+          question_title = request.POST['questionTitle']
+          question_tag = request.POST['questionTag']
+          json_data = request.POST['jsonData']
           # print(jsonData);
-          return HttpResponse(questionTitle + "<br>" + questionTag + "<br>" + jsonData);
+          return HttpResponse(question_title + "<br>" + question_tag + "<br>" + json_data)
 
 def fileresp(request,id):
      img = Image.objects.get(id=id)
@@ -39,7 +38,7 @@ def read(request,uuid):
 
 @csrf_exempt
 def upload_img(request):
-     responseJson = {
+     response_json = {
           'success': 0
      }
      if request.method == 'POST':
@@ -49,14 +48,14 @@ def upload_img(request):
           data = Image(image=request.FILES['image'])
           data.save()
           print(data.id)
-          responseJson['success'] = 1
-          responseJson['file'] = {
+          response_json['success'] = 1
+          response_json['file'] = {
                'name': str(data.id),
                'url': '/question/fileresp/'+str(data.id)
           }
      else:
           print("Get Method Called")
-     return JsonResponse(responseJson)
+     return JsonResponse(response_json)
 
 def readall(request):
      data = Question.objects.all()

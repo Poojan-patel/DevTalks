@@ -55,9 +55,9 @@ Question | Editor | StackOverflow
                     </div>
                 {% comment %} <div class="ce-example__statusbar">
                     Readonly:
-                    <b id="readonly-state">
+                    <strong id="readonly-state">
                         Off
-                    </b>
+                    </strong>
                     <div class="ce-example__statusbar-button" id="toggleReadOnlyButton">
                         toggle
                     </div>
@@ -74,9 +74,10 @@ Question | Editor | StackOverflow
 
 {% block js %}
 <script src="{% static '/bootstrap-tagsinput/dist/bootstrap-tagsinput.js' %}"></script>
-<script src="{% static '/js/signin.js' %}""></script>
+<script src="{% static '/js/signin.js' %}"></script>
 <script src="https://cdn.jsdelivr.net/npm/@editorjs/header@latest"></script><!-- Header -->
 <script src="https://cdn.jsdelivr.net/npm/@editorjs/image@2.3.0"></script>
+
 <!-- Base Image Tool<script src="https://cdn.jsdelivr.net/npm/@editorjs/simple-image@latest"></script>Image -->
 <script src="https://cdn.jsdelivr.net/npm/@editorjs/delimiter@latest"></script><!-- Delimiter -->
 <script src="https://cdn.jsdelivr.net/npm/@editorjs/list@latest"></script><!-- List -->
