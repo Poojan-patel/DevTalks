@@ -125,8 +125,8 @@ LOGOUT_REDIRECT_URL = 'discover'
 
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'ojsystem0963@gmail.com'
-EMAIL_HOST_PASSWORD = 'OJ$096311'
+EMAIL_HOST_USER = ''
+EMAIL_HOST_PASSWORD = ''
 EMAIL_PORT = 587
 
 # Static files (CSS, JavaScript, Images)
