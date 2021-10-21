@@ -190,6 +190,14 @@ body {
     }
 }
 
+@media all and (max-width: 576px) {
+
+    .ce-example__header,
+    .ce-example__content {
+        padding: 0px;
+    }
+}
+
 /**
    * JSON highlighter
    */

@@ -10,12 +10,15 @@ from django.core.files.storage import default_storage
 
 
 # Create your views here.
-
+# Question Save Data Temp View
 def output(request):
      if request.method == 'POST':
-          jsonData = request.POST['jsonData'];
+          # print(request.POST)
+          questionTitle = request.POST['questionTitle']
+          questionTag = request.POST['questionTag']
+          jsonData = request.POST['jsonData']
           # print(jsonData);
-          return HttpResponse(jsonData);
+          return HttpResponse(questionTitle + "<br>" + questionTag + "<br>" + jsonData);
 
 def fileresp(request,id):
      img = Image.objects.get(id=id)
