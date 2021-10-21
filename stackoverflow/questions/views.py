@@ -10,6 +10,13 @@ from django.core.files.storage import default_storage
 
 
 # Create your views here.
+
+def output(request):
+     if request.method == 'POST':
+          jsonData = request.POST['jsonData'];
+          # print(jsonData);
+          return HttpResponse(jsonData);
+
 def fileresp(request,id):
      img = Image.objects.get(id=id)
      obj = default_storage.open(str(img.image.name),'rb')

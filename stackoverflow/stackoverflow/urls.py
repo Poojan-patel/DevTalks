@@ -23,5 +23,5 @@ urlpatterns = [
     path('discover/', TemplateView.as_view(template_name='discover.html'), name='discover'),
     path('', TemplateView.as_view(template_name='signin.html'), name='signin'),
     path('question/', include("questions.urls")),
-    path('editor1/', TemplateView.as_view(template_name='editor1.html'), name='editor1'),
+    path('editor/', TemplateView.as_view(template_name='editor.html'), name='editor'),
 ]

@@ -7,9 +7,10 @@ urlpatterns = [
      path('read/',views.readall,name='readall'),
      path('question/',views.add_question,name='add_question'),
      path('feed/',views.get_feed,name='feed'),
-     path('editor/',TemplateView.as_view(template_name='editor.html')),
+     path('editorStatic/',TemplateView.as_view(template_name='editorStatic.html')),
 
      # Paths for EditorJS
      path('uploadImg',views.upload_img, name='imageupload'),
-     path('fileresp/<id>',views.fileresp)
+     path('fileresp/<id>',views.fileresp),
+     path('output/',views.output, name="output"),
 ]
