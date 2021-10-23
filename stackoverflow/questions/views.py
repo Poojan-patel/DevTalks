@@ -76,20 +76,14 @@ def add_question(request):
      
      myuser = request.user
      user_id = myuser.id
-     title = request.POST['title'].strip()
-     body = request.POST['body'].strip()
-
-     if(title == "" or title is None):
-          messages.error(request,'Title is Empty or It is not Valid')
-          return redirect('add_question')
+     title = request.POST['questionTitle']
+     body = request.POST['jsonData']
+     tags = request.POST['questionTag']
      
-     if(body == "" or body is None):
-          messages.error(request,'Body is Empty or It is not Valid')
-          return redirect('add_question')
-     
-     question = Question(user_id=user_id, title=title, body=body)
+     question = Question(user_id=user_id, title=title, body=body, tags=tags)
      question.save()
      messages.success(request,'Question asked Successfully')
+
      return redirect('home')
      
 @login_required(login_url='signin')
@@ -98,10 +92,6 @@ def add_answer(request, question_id):
           myuser = request.user
           user_id = myuser.user_id
           body = request.POST['body'].strip()
-
-          if(body == "" or body is None):
-               messages.error(request,"Answer can not be null")
-               return redirect(request.request.get_full_path())
           
           answer = Answer(user_id=user_id, body=body, question_id=question_id)
           answer.save()

@@ -43,40 +43,9 @@ def signup(request):
         username = request.POST['username'].strip()
         email = request.POST['email'].strip()
         password = request.POST['password'].strip()
-        retype_password = request.POST['retypepassword'].strip()
-        
-        if firstname == "" or firstname is None:
-            messages.error(request,'First Name is Empty or It is not Valid')
-            return redirect('signup')
-        
-        if lastname == "" or lastname is None:
-            messages.error(request,'Last Name is Empty or It is not Valid')
-            return redirect('signup')
-
-        if username == "" or username is None:
-            messages.error(request,'Username is Empty or It is not Valid')
-            return redirect('signup')
-
+                
         if User.objects.filter(username=username).exists():
             messages.error(request,'A user already exists with the given username')
-            return redirect('signup')
-
-        EMAIL_REGEX = r"(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)"
-        if email and not re.match(EMAIL_REGEX, email):
-            messages.error(request,'Email is Empty or It is not Valid')
-            return redirect('signup')
-
-        if User.objects.filter(email=email).exists():
-            messages.error(request,'A user already exists with the given email')
-            return redirect('signup')
-
-        PASSWORD_REGEX = r"^(?=.*[\d])(?=.*[A-Z])(?=.*[a-z])(?=.*[@#$])[\w\d@#$]{6,12}$"
-        if password == "" or not re.match(PASSWORD_REGEX, password):
-            messages.error(request,'Password is Empty or It is not Valid. It must have a length of [6,12] with atleast one uppercase letter, lowercase letter, a digit and a special character.')
-            return redirect('signup')
-
-        if retype_password and retype_password != password:
-            messages.error(request,'Retype Password does not match with the password')
             return redirect('signup')
 
         user = User.objects.create_user(first_name=firstname, last_name=lastname, username=username, 
