@@ -19,7 +19,7 @@ a:hover {
 }
 
 .content {
-    padding: 7rem 0;
+    padding: 5rem 0;
 }
 
 h2 {
@@ -295,4 +295,36 @@ h2 {
 
 .views {
     color: #388dd3;
+}
+
+.alert .alert-message {
+    color: #fff;
+}
+
+.alert.alert-error {
+    background: #f2395f;
+    border-color: #f2395f;
+}
+
+.alert.alert-info {
+    background: #29cded;
+    border-color: #29cded;
+}
+
+.alert.alert-success {
+    background: #38cd8b;
+    border-color: #38cd8b;
+}
+
+.alert.alert-warning {
+    background: #f89647;
+    border-color: #f89647;
+}
+
+.alert .alert-error-icon {
+    color: #fff;
+}
+
+.alert .alert-close-icon {
+    color: #fff;
 }

@@ -121,7 +121,7 @@ USE_TZ = True
 
 LOGIN_URL = 'signin'
 LOGIN_REDIRECT_URL = 'home'
-LOGOUT_REDIRECT_URL = 'home'
+LOGOUT_REDIRECT_URL = 'signin'
 
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'

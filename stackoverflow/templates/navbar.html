@@ -34,9 +34,9 @@
                                 </li>
                                 {% if user.is_authenticated %}
                                     <li class="nav-item d-flex {% block ProfileActive %}{% endblock ProfileActive %}">
-                                        <a class="nav-link d-flex align-items-center" href="#">
+                                        <a class="nav-link d-flex align-items-center" href="#" style="text-transform: none;">
                                             <i class="bi bi-person-circle navbar-icon-size mr-2"></i>
-                                            {{ firstName }}
+                                            {{ username }}
                                             {% block ProfileCurrent %}{% endblock ProfileCurrent %}
                                         </a>
                                     </li>

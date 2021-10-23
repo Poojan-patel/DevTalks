@@ -36,7 +36,7 @@ def signin(request):
             messages.error(request,'Invalid username or password')
             return redirect('signin')
 
-        return redirect('home')
+        return render(request, 'discover.html', {"username": user.first()})
 
     return render(request, 'signin.html')
 
@@ -64,6 +64,27 @@ def signup(request):
         username = request.POST['username'].strip()
         email = request.POST['email'].strip()
         password = request.POST['password'].strip()
+        retypepassword = request.POST['retypepassword'].strip();
+
+        if User.objects.filter(username=username):
+            messages.error(request, "Username already exist! Please try some other username.")
+            return redirect('signin')
+        
+        if User.objects.filter(email=email).exists():
+            messages.error(request, "Email Already Registered!!")
+            return redirect('signin')
+        
+        if len(username)>20:
+            messages.error(request, "Username must be under 20 charcters!!")
+            return redirect('signin')
+        
+        if password != retypepassword:
+            messages.error(request, "Passwords didn't matched!!")
+            return redirect('signin')
+        
+        if not username.isalnum():
+            messages.error(request, "Username must be Alpha-Numeric!!")
+            return redirect('signin')
 
         user = User.objects.create_user(first_name=firstname, last_name=lastname, username=username, 
                                         email=email, password=password)
@@ -73,7 +94,7 @@ def signup(request):
         current_site = get_current_site(request)
         email_subject = "Welcome to DevTalks!! Please Confirm your Email Address ..."
         ctx = dict({
-            'name': user.username,
+            'username': user.username,
             'domain': current_site.domain,
             'uid': urlsafe_base64_encode(force_bytes(user.pk)),
             'token': account_activation_token.make_token(user)
@@ -106,9 +127,11 @@ def activate(request, uidb64, token):
         user.is_active = True
         user.save()
         login(request, user)
-        return redirect('home')
+        messages.success(request,'Account has been activated!!')
+        return render(request, "profile.html",{"firstName": user.first_name, "lastName": user.last_name, "username": user.username, "email": user.email})
     else:
-        return render(request, 'message.html', {'message': 'Activation link is invalid!'})
+        messages.error(request,'Activation link is invalid!')
+        return render(request, 'signin.html')
 
 def signout(request):
     logout(request)
