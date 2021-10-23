@@ -5,8 +5,8 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.contrib import messages
 from django.utils.encoding import force_bytes, force_text
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
-from django.template.loader import render_to_string
-from django.core.mail import EmailMessage
+from django.template.loader import render_to_string, get_template
+from django.core.mail import EmailMessage, EmailMultiAlternatives
 from django.core.files.storage import FileSystemStorage
 from django.views.decorators.csrf import csrf_exempt
 from django.conf import settings
@@ -69,20 +69,28 @@ def signup(request):
                                         email=email, password=password)
         user.is_active = False
         user.save()
-        
-        current_site = get_current_site(request)
-        message = render_to_string('acc_active_email.html', {
-            'user':user, 'domain':current_site.domain,
-            'uid': urlsafe_base64_encode(force_bytes(user.pk)),
-            'token': account_activation_token.make_token(user),
-        })
 
-        mail_subject = 'Activate your account.'
-        to_email = email
-        email = EmailMessage(mail_subject, message, to=[to_email])
+        current_site = get_current_site(request)
+        email_subject = "Welcome to DevTalks!! Please Confirm your Email Address ..."
+        ctx = dict({
+            'name': user.username,
+            'domain': current_site.domain,
+            'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+            'token': account_activation_token.make_token(user)
+        })
+        message = get_template('welcome.html').render(ctx)
+        email = EmailMultiAlternatives(
+            email_subject,
+            message,
+            settings.EMAIL_HOST_USER,
+            [user.email],
+        )
+        email.content_subtype = 'html'
+        email.fail_silently = True
         email.send()
         
-        return render(request, 'message.html', {'message': 'Please confirm your email address to complete the registration.'}) 
+        messages.success(request,'We send the confirmation email on your registered email address.')
+        return redirect('signin')
     
     return render(request, 'signin.html')
 
