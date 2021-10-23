@@ -58,7 +58,7 @@ active
                                 <h3>Sign In to Stack<strong>Overflow</strong></h3>
                                 <p class="mb-4">World largest community to resolve your all queries. We welcome you to join with us and contribute your new idea.</p>
                             </div>
-                            <form action="{% url 'signin' %}" method="post">
+                            <form method="POST">
                                 {% csrf_token %}
                                 <div class="form-group first">
                                     <label for="username">Username</label>

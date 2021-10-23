@@ -119,9 +119,9 @@ USE_L10N = True
 USE_TZ = True
 
 
-LOGIN_URL = 'login'
-LOGIN_REDIRECT_URL = 'discover'
-LOGOUT_REDIRECT_URL = 'discover'
+LOGIN_URL = 'signin'
+LOGIN_REDIRECT_URL = 'home'
+LOGOUT_REDIRECT_URL = 'home'
 
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'

@@ -19,7 +19,7 @@ def signin(request):
     if request.method == 'POST':
         username = request.POST['username'].strip()
         password = request.POST['password'].strip()
-
+        
         if username == "" or username is None:
             messages.error(request,'Username must not be empty')
             return redirect('signin')
@@ -28,9 +28,10 @@ def signin(request):
             messages.error(request,'Password must not be empty')
             return redirect('signin')
 
-        user = User.objects.get(username=username)
+        user = User.objects.filter(username=username)
+
         if user and authenticate(request, username=username, password=password):
-            login(request, user)
+            login(request, user.first())
         else:
             messages.error(request,'Invalid username or password')
             return redirect('signin')
