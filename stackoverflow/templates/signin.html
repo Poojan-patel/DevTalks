@@ -19,6 +19,32 @@ active
 {% endblock SignInCurrent %}
 
 {% block content %}
+    {% for message in messages %}
+        <div class="container">
+            <div class="row">
+                <div class="col-12 my-3">
+                    <div class="alert alert-{{ message.tags }}">
+                        <div class="container">
+                            <div class="d-flex align-items-center">
+                                <span class="alert-icon d-flex w-75">
+                                    <i class="bi bi-info-square-fill alert-error-icon"></i>
+                                    <p class="mb-0 ml-2 alert-message"><b>Message: </b>{{ message }}</p>
+                                </span>
+                                <span class="ml-auto text-right w-25">
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">
+                                            <i class="bi bi-x alert-close-icon"></i>
+                                        </span>
+                                    </button>
+                                </span>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
     <div class="content">
         <div class="container sign-in-content">
             <div class="row">
@@ -33,13 +59,14 @@ active
                                 <p class="mb-4">World largest community to resolve your all queries. We welcome you to join with us and contribute your new idea.</p>
                             </div>
                             <form action="#" method="post">
+                                {% csrf_token %}
                                 <div class="form-group first">
                                     <label for="username">Username</label>
-                                    <input type="text" class="form-control" id="username">
+                                    <input type="text" class="form-control" id="username-signin" required>
                                 </div>
                                 <div class="form-group last mb-4">
                                     <label for="password">Password</label>
-                                    <input type="password" class="form-control" id="password">
+                                    <input type="password" class="form-control" id="password-signin" required>
                                 </div>
 
                                 <div class="d-flex mb-5 align-items-center">
@@ -80,17 +107,18 @@ active
                                 <p class="mb-4">World largest community to resolve your all queries. We welcome you to join with us and contribute your new idea.</p>
                             </div>
                             <form action="#" method="post">
+                                {% csrf_token %}
                                 <div class="form-row">
                                     <div class="col">
                                         <div class="form-group">
                                             <label for="firstname">First Name</label>
-                                            <input type="text" class="form-control" id="firstname">
+                                            <input type="text" class="form-control" id="firstname" required>
                                         </div>
                                     </div>
                                     <div class="col">
                                         <div class="form-group">
                                             <label for="lastname">Last Name</label>
-                                            <input type="text" class="form-control" id="lastname">
+                                            <input type="text" class="form-control" id="lastname" required>
                                         </div>
                                     </div>
                                 </div>
@@ -98,7 +126,7 @@ active
                                     <div class="col">
                                         <div class="form-group">
                                             <label for="username">Username</label>
-                                            <input type="text" class="form-control" id="username">
+                                            <input type="text" class="form-control" id="username" required>
                                         </div>
                                     </div>
                                 </div>
@@ -106,7 +134,7 @@ active
                                     <div class="col">
                                         <div class="form-group">
                                             <label for="email">Email</label>
-                                            <input type="email" class="form-control" id="email">
+                                            <input type="email" class="form-control" id="email" required>
                                         </div>
                                     </div>
                                 </div>
@@ -114,7 +142,7 @@ active
                                     <div class="col">
                                         <div class="form-group last mb-4">
                                             <label for="password">Password</label>
-                                            <input type="password" class="form-control" id="password">
+                                            <input type="password" class="form-control" id="password" required>
                                         </div>
                                     </div>
                                 </div>
@@ -122,7 +150,7 @@ active
                                     <div class="col">
                                         <div class="form-group last mb-4">
                                             <label for="retypepassword">Retype-Password</label>
-                                            <input type="password" class="form-control" id="retypepassword">
+                                            <input type="password" class="form-control" id="retypepassword" required>
                                         </div>
                                     </div>
                                 </div>
@@ -146,6 +174,20 @@ active
 
 {% block js %}
     <script>
+
+        // document.getElementById("username").addEventListener("change", checkUsername);
+        // document.getElementById("email").addEventListener("change", checkEmail);
+
+        {% comment %} function checkUsername() {
+            var username = document.getElementById("username").value;
+            console.log(username);
+        }
+
+        function checkEmail() {
+            var email = document.getElementById("email").value;
+            console.log(email);
+        } {% endcomment %}
+        
         function registerDisplay() {
             var signin = document.getElementsByClassName("sign-in-content")[0];
             var register = document.getElementsByClassName("register-content")[0];

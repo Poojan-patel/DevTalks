@@ -32,24 +32,34 @@
                                         {% block DiscoverCurrent %}{% endblock DiscoverCurrent %}
                                     </a>
                                 </li>
-                                <li class="nav-item d-flex {% block ProfileActive %}{% endblock ProfileActive %}">
-                                    <a class="nav-link d-flex align-items-center" href="#">
-                                        Profile
-                                        {% block ProfileCurrent %}{% endblock ProfileCurrent %}
-                                    </a>
-                                </li>
-                                <li class="nav-item d-flex {% block SettigsActive %}{% endblock SettigsActive %}">
-                                    <a class="nav-link d-flex align-items-center" href="#">
-                                        Settings
-                                        {% block SettingsCurrent %}{% endblock SettingsCurrent %}
-                                    </a>
-                                </li>
-                                <li class="nav-item d-flex {% block SignInActive %}{% endblock SignInActive %}">
-                                    <a class="nav-link d-flex align-items-center" href="{% url 'signin' %}">
-                                        Sign In
-                                        {% block SignInCurrent %}{% endblock SignInCurrent %}
-                                    </a>
-                                </li>
+                                {% if user.is_authenticated %}
+                                    <li class="nav-item d-flex {% block ProfileActive %}{% endblock ProfileActive %}">
+                                        <a class="nav-link d-flex align-items-center" href="#">
+                                            <i class="bi bi-person-circle navbar-icon-size mr-2"></i>
+                                            {{ firstName }}
+                                            {% block ProfileCurrent %}{% endblock ProfileCurrent %}
+                                        </a>
+                                    </li>
+                                    <li class="nav-item d-flex {% block SettigsActive %}{% endblock SettigsActive %}">
+                                        <a class="nav-link d-flex align-items-center" href="#">
+                                            Settings
+                                            {% block SettingsCurrent %}{% endblock SettingsCurrent %}
+                                        </a>
+                                    </li>
+                                    <li class="nav-item d-flex">
+                                        <a class="nav-link d-flex align-items-center" href="{% url 'signout' %}">
+                                            Logout
+                                        </a>
+                                    </li>
+                                {% else %}
+                                    <li class="nav-item d-flex {% block SignInActive %}{% endblock SignInActive %}">
+                                        <a class="nav-link d-flex align-items-center" href="{% url 'signin' %}">
+                                            Sign In
+                                            {% block SignInCurrent %}{% endblock SignInCurrent %}
+                                        </a>
+                                    </li>
+                                {% endif %}
+                                
                             </ul>
                             <form class="form-inline ml-lg-3 my-2 my-lg-0">
                                 <input class="form-control mr-sm-2 w-75" type="search" placeholder="Search"

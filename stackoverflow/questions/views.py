@@ -1,5 +1,6 @@
 from django.http.response import HttpResponse, JsonResponse, FileResponse
 from django.shortcuts import redirect, render
+from django.views.decorators import csrf
 from questions.models import Question, Answer, Like, Upvote, Image
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
@@ -19,6 +20,22 @@ def output(request):
           jsonData = request.POST['jsonData']
           # print(jsonData);
           return HttpResponse(questionTitle + "<br>" + questionTag + "<br>" + jsonData);
+
+@csrf_exempt
+def checkUsername(request, username):
+     print(username)
+     print(request)
+     if request.method == 'POST':
+          # print(jsonData);
+          return JsonResponse(True)
+
+@csrf_exempt
+def checkEmail(request, email):
+     print(email)
+     print(request)
+     if request.method == 'POST':
+          # print(jsonData);
+          return JsonResponse(True)
 
 def fileresp(request,id):
      img = Image.objects.get(id=id)
