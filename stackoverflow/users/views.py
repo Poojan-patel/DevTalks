@@ -5,8 +5,8 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.contrib import messages
 from django.utils.encoding import force_bytes, force_text
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
-from django.template.loader import render_to_string, get_template
-from django.core.mail import EmailMessage, EmailMultiAlternatives
+from django.template.loader import get_template
+from django.core.mail import EmailMultiAlternatives
 from django.core.files.storage import FileSystemStorage
 from django.views.decorators.csrf import csrf_exempt
 from django.conf import settings
@@ -28,7 +28,10 @@ def signin(request):
             messages.error(request,'Password must not be empty')
             return redirect('signin')
 
-        user = User.objects.filter(username=username)
+        try:
+            user = User.objects.get(username=username)
+        except(TypeError, ValueError, OverflowError, User.DoesNotExist):
+            user = None
 
         if user and authenticate(request, username=username, password=password):
             login(request, user.first())
@@ -89,7 +92,7 @@ def signup(request):
         email.fail_silently = True
         email.send()
         
-        messages.success(request,'We send the confirmation email on your registered email address.')
+        messages.success(request,'A confirmation link has been sent to your Email Id.')
         return redirect('signin')
     
     return render(request, 'signin.html')
@@ -105,7 +108,7 @@ def activate(request, uidb64, token):
     if user is not None and account_activation_token.check_token(user, token):
         user.is_active = True
         user.save()
-        login(request, user)
+        login(request, user.first())
         return redirect('home')
     else:
         return render(request, 'message.html', {'message': 'Activation link is invalid!'})
@@ -134,7 +137,10 @@ def profile(request):
         current_user = request.user
 
         if current_user.id is not None:
-            user = User.objects.get(pk=current_user.id)
+            try:
+                user = User.objects.get(pk=current_user.id)
+            except(TypeError, ValueError, OverflowError, User.DoesNotExist):
+                user = None
             
             if user is not None:
                 user.first_name = firstname
