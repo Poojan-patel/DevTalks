@@ -21,7 +21,7 @@ class Answer(models.Model):
      question    = models.ForeignKey(verbose_name='QuestionID',   name='question_id' ,   to=Question, null=False, blank=False,  related_name='answers', on_delete=models.CASCADE, to_field='id')
      body        = models.TextField(verbose_name='Body',          name='body',        blank=False, null=False)
      user_id     = models.CharField(verbose_name='UserID',        name='user_id',     blank=False, null=False,  max_length=40)
-     is_accepted = models.BooleanField(verbose_name='IsAccepted', name='is_accepted', blank=False, null=False)
+     is_accepted = models.BooleanField(verbose_name='IsAccepted', name='is_accepted', default=False, blank=False, null=False)
 
 class Like(models.Model):
      user_id   = models.CharField(verbose_name='UserID',    name='user_id',blank=False,      null=False,  max_length=40)

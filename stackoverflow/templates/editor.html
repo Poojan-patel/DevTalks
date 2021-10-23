@@ -17,7 +17,7 @@ Question | Editor | StackOverflow
 {% block content %}
 <div class="content p-5">
     <div class="container-fluid contents w-100">
-        <form method="POST" action="{% url 'output' %}" onsubmit="post()">
+        <form method="POST" action="{% url 'add_question' %}" onsubmit="post()">
         {% csrf_token %}
             <div class="row">
                 <div class="col-12">
@@ -155,7 +155,7 @@ Question | Editor | StackOverflow
                 class: ImageTool,
                 config: {
                     endpoints: {
-                        byFile: '/question/uploadImg'
+                        byFile: '/question/uploadImg/'
                     }
                 },
                 inlineToolbar: true

@@ -35,7 +35,7 @@ def signin(request):
             messages.error(request,'Invalid username or password')
             return redirect('signin')
 
-        return redirect('discover')
+        return redirect('home')
 
     return render(request, 'signin.html')
 
@@ -97,7 +97,7 @@ def activate(request, uidb64, token):
         user.is_active = True
         user.save()
         login(request, user)
-        return redirect('discover')
+        return redirect('home')
     else:
         return render(request, 'message.html', {'message': 'Activation link is invalid!'})
 

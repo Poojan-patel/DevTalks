@@ -76,13 +76,13 @@ def add_question(request):
      
      myuser = request.user
      user_id = myuser.id
-     title = request.POST['questionTitle']
-     body = request.POST['jsonData']
-     tags = request.POST['questionTag']
      
-     question = Question(user_id=user_id, title=title, body=body, tags=tags)
-     question.save()
-     messages.success(request,'Question asked Successfully')
+     if user_id is not None:
+          title = request.POST['questionTitle']
+          body = request.POST['jsonData']
+          question = Question(user_id=user_id, title=title, body=body)
+          question.save()
+          messages.success(request,'Question asked Successfully')
 
      return redirect('home')
      
@@ -92,11 +92,13 @@ def add_answer(request, question_id):
           myuser = request.user
           user_id = myuser.user_id
           body = request.POST['body'].strip()
-          
+
           answer = Answer(user_id=user_id, body=body, question_id=question_id)
           answer.save()
           messages.success(request, 'Answer Conveyed Successfully')
+          
           return redirect('home')
+
      return redirect('home')
 
 def get_feed(request):
