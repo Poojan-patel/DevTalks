@@ -1,10 +1,10 @@
 from django.http.response import HttpResponse, JsonResponse, FileResponse
 from django.shortcuts import redirect, render
+from django.views.decorators.csrf import csrf_exempt
 from questions.models import Question, Answer, Like, Upvote, Image
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from django.views.decorators.csrf import csrf_exempt
-from django.templatetags.static import static
+
 import io, time
 from django.core.files.storage import default_storage
 

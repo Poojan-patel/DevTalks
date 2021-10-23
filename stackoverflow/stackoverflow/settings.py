@@ -125,9 +125,8 @@ LOGOUT_REDIRECT_URL = 'discover'
 
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = ''
-EMAIL_HOST_PASSWORD = ''
-EMAIL_PORT = 587
+EMAIL_HOST_USER = 'ojsystem0963@gmail.com'
+EMAIL_HOST_PASSWORD = 'OJ$096311'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
@@ -145,3 +144,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media/'
+
+PROFILE_PICTURE_STORAGE = BASE_DIR / 'media/profile_pics'
+

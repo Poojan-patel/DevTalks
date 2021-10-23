@@ -19,6 +19,32 @@ active
 {% endblock SignInCurrent %}
 
 {% block content %}
+    {% for message in messages %}
+        <div class="container">
+            <div class="row">
+                <div class="col-12 my-3">
+                    <div class="alert alert-{{ message.tags }}">
+                        <div class="container">
+                            <div class="d-flex align-items-center">
+                                <span class="alert-icon d-flex w-75">
+                                    <em class="bi bi-info-square-fill alert-error-icon"></em>
+                                    <p class="mb-0 ml-2 alert-message"><strong>Message: </strong>{{ message }}</p>
+                                </span>
+                                <span class="ml-auto text-right w-25">
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">
+                                            <em class="bi bi-x alert-close-icon"></em>
+                                        </span>
+                                    </button>
+                                </span>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
     <div class="content">
         <div class="container sign-in-content">
             <div class="row">
@@ -36,11 +62,11 @@ active
                                 {% csrf_token %}
                                 <div class="form-group first">
                                     <label for="username">Username</label>
-                                    <input type="text" class="form-control" id="username" name="username">
+                                    <input type="text" class="form-control" id="username-signin" name="username">
                                 </div>
                                 <div class="form-group last mb-4">
                                     <label for="password">Password</label>
-                                    <input type="password" class="form-control" id="password" name="password">
+                                    <input type="password" class="form-control" id="password-signin" name="password">
                                 </div>
                                 
                                 <div class="d-flex mb-5 align-items-center">
@@ -86,13 +112,13 @@ active
                                     <div class="col">
                                         <div class="form-group">
                                             <label for="firstname">First Name</label>
-                                            <input type="text" class="form-control" id="firstname" name="firstname">
+                                            <input type="text" class="form-control" id="firstname" name="firstname" required>
                                         </div>
                                     </div>
                                     <div class="col">
                                         <div class="form-group">
                                             <label for="lastname">Last Name</label>
-                                            <input type="text" class="form-control" id="lastname" name="lastname">
+                                            <input type="text" class="form-control" id="lastname" name="lastname" required>
                                         </div>
                                     </div>
                                 </div>
@@ -100,7 +126,7 @@ active
                                     <div class="col">
                                         <div class="form-group">
                                             <label for="username">Username</label>
-                                            <input type="text" class="form-control" id="username" name="username">
+                                            <input type="text" class="form-control" id="username" name="username" required>
                                         </div>
                                     </div>
                                 </div>
@@ -108,7 +134,7 @@ active
                                     <div class="col">
                                         <div class="form-group">
                                             <label for="email">Email</label>
-                                            <input type="email" class="form-control" id="email" name="email">
+                                            <input type="email" class="form-control" id="email" name="email" required>
                                         </div>
                                     </div>
                                 </div>
@@ -116,7 +142,7 @@ active
                                     <div class="col">
                                         <div class="form-group last mb-4">
                                             <label for="password">Password</label>
-                                            <input type="password" class="form-control" id="password" name="password">
+                                            <input type="password" class="form-control" id="password" name="password" required>
                                         </div>
                                     </div>
                                 </div>
@@ -124,7 +150,7 @@ active
                                     <div class="col">
                                         <div class="form-group last mb-4">
                                             <label for="retypepassword">Retype-Password</label>
-                                            <input type="password" class="form-control" id="retypepassword" name="retypepassword">
+                                            <input type="password" class="form-control" id="retypepassword" name="retypepassword" required>
                                         </div>
                                     </div>
                                 </div>
@@ -148,12 +174,15 @@ active
 
 {% block js %}
     <script>
+
+        // document.getElementById("username").addEventListener("change", checkUsername);
+        // document.getElementById("email").addEventListener("change", checkEmail);
+
         function registerDisplay() {
             var signin = document.getElementsByClassName("sign-in-content")[0];
             var register = document.getElementsByClassName("register-content")[0];
             signin.classList.add("sr-only");
             register.classList.remove("sr-only");
-            // console.log("Shubh");
         }
 
         function signInDisplay() {
@@ -161,8 +190,8 @@ active
             var register = document.getElementsByClassName("register-content")[0];
             register.classList.add("sr-only");
             signin.classList.remove("sr-only");
-            // console.log("Patel");
         }
+        
     </script>
     <script src={% static '/js/signin.js' %}></script>
 {% endblock js %}

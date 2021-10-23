@@ -398,48 +398,8 @@ body {
       /**
        * Initial Editor data
        */
-      data: {
-    "time" : 1634736792738,
-    "blocks" : [
-        {
-            "id" : "jsRrqu9rdl",
-            "type" : "header",
-            "data" : {
-                "text" : "Editor.js",
-                "level" : 2
-            }
-        },
-        {
-            "id" : "-BSKlGc3HY",
-            "type" : "image",
-            "data" : {
-                "file" : {
-                    "name" : "29bc1907-fa76-4093-a0da-55e79bfe098c",
-                    "url" : "/question/fileresp/29bc1907-fa76-4093-a0da-55e79bfe098c"
-                },
-                "caption" : "<b>Home Page</b>",
-                "withBorder" : false,
-                "stretched" : false,
-                "withBackground" : false
-            }
-        },
-        {
-            "id" : "y8qsSkqHBC",
-            "type" : "image",
-            "data" : {
-                "file" : {
-                    "name" : "11e36c5a-cdcd-4fcb-92ba-d09d2c42739f",
-                    "url" : "/question/fileresp/11e36c5a-cdcd-4fcb-92ba-d09d2c42739f"
-                },
-                "caption" : "",
-                "withBorder" : false,
-                "stretched" : false,
-                "withBackground" : false
-            }
-        }
-    ],
-    "version" : "2.22.2"
-}
+      //data:JSON.parse(document.querySelector('#editorjs').innerText)
+      data: JSON.parse("{{jdata|escapejs}}")
 ,
       onReady: function(){
         saveButton.click();
@@ -448,7 +408,7 @@ body {
         console.log('something changed', event);
       }
     });
-
+    // Send Stringified Data from Backend to template
     // editor.render([
     //       {
     //         type: "header",
