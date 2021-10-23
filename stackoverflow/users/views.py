@@ -34,12 +34,12 @@ def signin(request):
             user = None
 
         if user and authenticate(request, username=username, password=password):
-            login(request, user.first())
+            login(request, user)
         else:
             messages.error(request,'Invalid username or password')
             return redirect('signin')
 
-        return render(request, 'discover.html', {"username": user.first()})
+        return render(request, 'discover.html', {"username": user.username})
 
     return render(request, 'signin.html')
 
