@@ -48,25 +48,25 @@ active
             </div>
         </div>
     {% endfor %}
-    <div class="container content p-5">
+    <div class="container content p-lg-5">
         <div class="contents profile-content w-100">
             <form action="{% url 'profile' %}" method="POST" enctype="multipart/form-data">
                 {% csrf_token %}
                 <div class="row">
                     <div class="col-md-3 col-12 ">
                         <div class="form-row justify-content-center">
-                            <div class="col-8">
-                                <img id="profile" src="{{ user.profile_picture.url }}" class="w-100">
+                            <div class="col-8 shadow-sm p-3 rounded">
+                                <img id="profile" src="{{ user.profile_picture.url }}" class="w-100" alt="Profile Photo">
                             </div>
                             <div class="col-8 form-group field--not-empty pt-4">
                                 {% comment %} <label for="profilepicture">Profile Picture</label> {% endcomment %}
                                 <input type="file" onchange="renderImage(this);" class="form-control w-100" id="profilepicture" name="profilepicture">
-                                <span class="btn btn-primary btn-change-profile py-2 w-100">Change Profile</span>
-                                <span class="py-2 w-100" id="filename"></span>
+                                <span class="btn btn-primary btn-change-profile text-center py-2 w-100">Change Profile</span>
+                                {% comment %} <span class="py-2 w-100" id="filename"></span> {% endcomment %}
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-9 col-12">
+                    <div class="col-md-9 col-12 mt-md-0 mt-4">
                         <div class="form-row">
                             <div class="col-md-4 col-12 form-group field--not-empty">
                                 <label for="firstname">First Name</label>
@@ -137,7 +137,7 @@ active
                                 <label for="username">Age in Years</label>
                                 {% if user.age %}
                                     {% comment %} <span class="form-control text-muted w-100 pt-2">{{ user.age }} Years</span> {% endcomment %}
-                                    <input value="{{ user.age }}" class="form-control text-muted w-100 pt-2" name="age" readonly>
+                                    <input value="{{ user.age }} Years" class="form-control text-muted w-100 pt-2" name="age" readonly>
                                 {% else %}
                                     {% comment %} <span class="form-control text-muted w-100 pt-2"></span> {% endcomment %}
                                     <input class="form-control text-muted w-100 pt-2" name="age" readonly>

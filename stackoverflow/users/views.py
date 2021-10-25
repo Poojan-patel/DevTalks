@@ -8,6 +8,7 @@ from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.template.loader import get_template
 from django.core.mail import EmailMultiAlternatives
 from django.core.files.storage import FileSystemStorage
+from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 from django.conf import settings
 from .tokens import account_activation_token
@@ -40,7 +41,7 @@ def signin(request):
             messages.error(request,'Invalid username or password')
             return redirect('signin')
 
-        return render(request, 'discover.html', {"username": user.username})
+        return render(request, 'feed.html', { 'user': request.user })
 
     return render(request, 'signin.html')
 
@@ -137,10 +138,12 @@ def activate(request, uidb64, token):
         messages.error(request,'Activation link is invalid!')
         return render(request, 'signin.html')
 
+@login_required(login_url='signin')
 def signout(request):
     logout(request)
     return redirect('signin')
 
+@login_required(login_url='signin')
 def profile(request):
     if request.method == 'POST':
         firstname = request.POST['firstname'].strip()
