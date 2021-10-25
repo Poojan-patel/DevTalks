@@ -204,6 +204,11 @@ def profile(request):
                     # print(profile_picture)
                     if user.profile_picture != 'profile_pics/default.svg':
                         user.profile_picture.storage.delete(user.profile_picture.name)
+                    # fss = FileSystemStorage(location=settings.PROFILE_PICTURE_STORAGE)
+                    # print(profile_picture.name)
+                    # filename = fss.save(profile_picture.name, profile_picture)
+                    # user.profile_picture = profile_picture
+                    # user.profile_picture.name = filename
                     user.profile_picture = profile_picture
 
                 user.save()
