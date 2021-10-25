@@ -104,7 +104,7 @@ def add_answer(request, question_id):
 
 def get_feed(request):
      questions = Question.objects.all()
-     return render(request, 'feed.html', { 'questions' : questions })
+     return render(request, 'feed1.html', { 'questions' : questions })
 
 @login_required(login_url='signin')
 def toggle_like(request,question_id):

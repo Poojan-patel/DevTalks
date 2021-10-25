@@ -6,7 +6,7 @@
                <li>UserID: {{q.user_id}}</li>
                <li>Body: {{q.body}}</li>
                <li>Likes: {{q.likes.all | length}}</li>
-               <ol>
+               <ol id="hey">
                     {% for a in q.answers.all %}
                     <li>
                          <ul>
@@ -22,3 +22,11 @@
      </li>
 {% endfor %}
 </ol>
+<script type="text/javascript">
+     ol = document.querySelector('#hey')
+     
+     ol.children.forEach(element => {
+          console.log(element)
+     });
+     
+</script>
