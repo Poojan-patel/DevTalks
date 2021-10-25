@@ -7,11 +7,12 @@ from django.utils.encoding import force_bytes, force_text
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.template.loader import get_template
 from django.core.mail import EmailMultiAlternatives
-from django.core.files.storage import FileSystemStorage
 from django.views.decorators.csrf import csrf_exempt
 from django.conf import settings
 from .tokens import account_activation_token
 from .models import User
+from questions.models import Answer
+from django.db.models import Count
 import json
 import datetime
 
@@ -176,8 +177,8 @@ def profile(request):
                 user.username = username
                 user.email = email
                 if birthdate:
-                    format = '%d/%m/%Y'
-                    user.birth_date = datetime.datetime.strptime(birthdate, format).date()
+                    date_format = '%d/%m/%Y'
+                    user.birth_date = datetime.datetime.strptime(birthdate, date_format).date()
                 else:
                     user.birth_date = None
                 if age:
@@ -197,17 +198,10 @@ def profile(request):
 
                 if request.FILES.get('profilepicture', False):
                     profile_picture = request.FILES['profilepicture']
-                    print(profile_picture)
-                    # print(user.profile_picture)
+                    # print(profile_picture)
                     if user.profile_picture != 'profile_pics/default.svg':
                         user.profile_picture.storage.delete(user.profile_picture.name)
-                    fss = FileSystemStorage(location=settings.PROFILE_PICTURE_STORAGE)
-                    # print(profile_picture.name)
-                    filename = fss.save(profile_picture.name, profile_picture)
                     user.profile_picture = profile_picture
-                    user.profile_picture.name = filename
-                    # user.profile_picture = profile_picture
-                    # user.profile_picture.name = str(user.profile_picture).lstrip("profile_pics/")
 
                 user.save()
 
@@ -215,6 +209,18 @@ def profile(request):
                 return redirect('profile')
     
         messages.error(request,'Failed to update Profile... Try Again')
-        
-    return render(request, 'profile.html', { 'user': request.user })
+
+    current_user = request.user
+    users = Answer.objects.filter(is_accepted=True).values('user').annotate(ac_count=Count('user')).order_by('-ac_count')
+    num_of_users = len(users)
+    current_user_index = next((index for index in range(num_of_users) if users[index]['user'] == current_user.id), None)
+
+    rank = round(current_user_index / num_of_users * 100)
+    badge = 'Gold' if rank <= 10 else 'Silver' if rank <= 25 else 'Bronze' if rank <= 50 else None
+
+    # print(users)
+    # print(num_of_users, current_user_index)
+    # print(rank, badge)
+
+    return render(request, 'profile.html', { 'user': current_user, 'badge': badge })
 
