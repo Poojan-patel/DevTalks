@@ -96,7 +96,6 @@ def signup(request):
         user = User.objects.create_user(first_name=firstname, last_name=lastname, username=username, 
                                         email=email, password=password)
         user.is_active = False
-        user.save()
 
         current_site = get_current_site(request)
         email_subject = "Welcome to DevTalks!! Please Confirm your Email Address ..."
@@ -116,6 +115,8 @@ def signup(request):
         email.content_subtype = 'html'
         email.fail_silently = True
         email.send()
+        # Save User if Verification Mail Successfully Sent
+        user.save()
         
         messages.success(request,'A confirmation link has been sent to your Email Id.')
         return redirect('signin')

@@ -7,6 +7,7 @@ urlpatterns = [
      path('read/',views.readall,name='readall'),
      path('editor/', TemplateView.as_view(template_name='editor.html'), name='question'),
      path('question/',views.add_question,name='add_question'),
+     path('answer/',views.add_answer,name='add_answer'),
      path('feed1/',views.get_feed,name='feed1'),
      path('editor_static/',TemplateView.as_view(template_name='editorStatic.html')),
 
