@@ -152,7 +152,7 @@ def profile(request):
         username = request.POST['username'].strip()
         email = request.POST['email'].strip()
         birthdate = request.POST['birthdate'].strip()
-        age = request.POST['age']
+        age = int(request.POST['age'].strip().split()[0])
         bio = request.POST['bio'].strip()
         profession = request.POST['profession'].strip()
         organization = request.POST['organization'].strip()

@@ -55,7 +55,7 @@ active
                 <div class="row">
                     <div class="col-md-3 col-12 ">
                         <div class="form-row justify-content-center">
-                            <div class="col-8 shadow-sm p-3 rounded">
+                            <div class="col-8 shadow p-3 rounded">
                                 <img id="profile" src="{{ user.profile_picture.url }}" class="w-100" alt="Profile Photo">
                             </div>
                             <div class="col-8 form-group field--not-empty pt-4">
@@ -107,26 +107,26 @@ active
                                 <label for="gender">Gender</label>
                                 <div class="rs-select2 js-select-simple select--no-search w-100 pt-2">    
                                     <select id="gender" name="gender">
-                                        {% if user.gender == "Male" %}
-                                            <option value="Not Preffered">Not Preffered</option>
-                                            <option value="Male" selected>Male</option>
-                                            <option value="Female">Female</option>
-                                            <option value="Other">Other</option>
-                                        {% elif user.gender == "Female" %}
-                                            <option value="Not Preffered">Not Preffered</option>
-                                            <option value="Male">Male</option>
-                                            <option value="Female" selected>Female</option>
-                                            <option value="Other">Other</option>
-                                        {% elif user.gender == "Other" %}
-                                            <option value="Not Preffered">Not Preffered</option>
-                                            <option value="Male">Male</option>
-                                            <option value="Female">Female</option>
-                                            <option value="Other" selected>Other</option>
+                                        {% if user.gender == "M" %}
+                                            <option value="N">Not Preffered</option>
+                                            <option value="M" selected>Male</option>
+                                            <option value="F">Female</option>
+                                            <option value="O">Other</option>
+                                        {% elif user.gender == "F" %}
+                                            <option value="N">Not Preffered</option>
+                                            <option value="M">Male</option>
+                                            <option value="F" selected>Female</option>
+                                            <option value="O">Other</option>
+                                        {% elif user.gender == "O" %}
+                                            <option value="N">Not Preffered</option>
+                                            <option value="M">Male</option>
+                                            <option value="F">Female</option>
+                                            <option value="O" selected>Other</option>
                                         {% else %}
-                                            <option value="Not Preffered" selected>Not Preffered</option>
-                                            <option value="Male">Male</option>
-                                            <option value="Female">Female</option>
-                                            <option value="Other">Other</option>
+                                            <option value="N" selected>Not Preffered</option>
+                                            <option value="M">Male</option>
+                                            <option value="F">Female</option>
+                                            <option value="O">Other</option>
                                         {% endif %}
                                         
                                     </select>
@@ -137,10 +137,10 @@ active
                                 <label for="username">Age in Years</label>
                                 {% if user.age %}
                                     {% comment %} <span class="form-control text-muted w-100 pt-2">{{ user.age }} Years</span> {% endcomment %}
-                                    <input value="{{ user.age }} Years" class="form-control text-muted w-100 pt-2" name="age" readonly>
+                                    <input value="{{ user.age }} Years" class="form-control text-muted w-100 pt-2" name="age" id="age" readonly>
                                 {% else %}
                                     {% comment %} <span class="form-control text-muted w-100 pt-2"></span> {% endcomment %}
-                                    <input class="form-control text-muted w-100 pt-2" name="age" readonly>
+                                    <input class="form-control text-muted w-100 pt-2" name="age" id="age" readonly>
                                 {% endif %}  
                             </div>
                         </div>
@@ -198,10 +198,10 @@ active
                         </div>
                         <div class="row mt-md-3 mt-2">
                             <div class="form-group col-12">
-                                <label for="skills" class="pb-5">Skills</label>
                                 {% if user.skills|slice:"1:-1" %}
-                                    <input type="text" value={{ user.skills|slice:"1:-1" }} name="skills" class="form-control" placeholder="Add Skills" data-role="tagsinput" style="font-size:15px;">
+                                    <input type="text" value="{{ user.skills|slice:"1:-1" }}" name="skills" class="form-control" placeholder="Add Skills" data-role="tagsinput" style="font-size:15px;">
                                 {% else %}
+                                    <label for="skills" class="pb-5">Skills</label>
                                     <input type="text" name="skills" class="form-control" placeholder="Add Skills" data-role="tagsinput" style="font-size:15px;">
                                 {% endif %}
                                 
