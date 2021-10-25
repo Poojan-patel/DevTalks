@@ -32,9 +32,10 @@ def read(request,uuid):
      data = Question.objects.filter(id=uuid).first()
      if data is None:
           return HttpResponse('None')
-     print(data.user_id)
-     data.delete()
-     return HttpResponse(data)
+     # print(data.user_id)
+     # data.delete()
+     # print(data.title)
+     return render(request, 'questionRead.html', { 'question' : data })
 
 @csrf_exempt
 def upload_img(request):
@@ -84,7 +85,7 @@ def add_question(request):
           question.save()
           messages.success(request,'Question added successfully')
 
-     return redirect('home')
+     return redirect('feed')
      
 @login_required(login_url='signin')
 def add_answer(request, question_id):
@@ -103,7 +104,7 @@ def add_answer(request, question_id):
 
 def get_feed(request):
      questions = Question.objects.all()
-     return render(request, 'feed.html', {'questions':questions})
+     return render(request, 'feed.html', { 'questions' : questions })
 
 @login_required(login_url='signin')
 def toggle_like(request,question_id):

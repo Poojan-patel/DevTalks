@@ -70,6 +70,12 @@
         $('#profilepicture').click();
     });
 
-    $("#birthdate").datepicker('setDate','01/01/1900')
+    $("#birthdate").change(function() {
+        let dob = $("#birthdate").val();
+        var today = new Date();
+        let dayDiff = Math.ceil(today - dob) / (1000 * 60 * 60 * 24 * 365);
+        var age = parseInt(dayDiff);
+        console.log(age);
+    });
 
 })(jQuery);

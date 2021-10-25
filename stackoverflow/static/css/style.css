@@ -276,6 +276,10 @@ h2 {
     background: #fff;
 }
 
+.likes {
+    color: #b4b103;
+}
+
 .upvote {
     color: #38d39f;
 }
@@ -334,6 +338,24 @@ h2 {
     height: auto;
     color: #fff;
     font-size: 10px;
+}
+
+@media (max-width: 991.98px) {
+    .content .contents .btn-change-profile {
+        padding-left: 10px;
+        padding-right: 10px;
+        height: auto;
+        color: #fff;
+        font-size: 10px;
+    }
+}
+
+@media (max-width: 768px) {
+    .content .contents .btn-change-profile {
+        height: auto;
+        color: #fff;
+        font-size: 10px;
+    }
 }
 
 .select--no-search .select2-search {

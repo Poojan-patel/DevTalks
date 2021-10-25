@@ -1,0 +1,115 @@
+{% extends 'navbar.html' %}
+
+{% block title %}
+    Feed | StackOverflow
+{% endblock title %}
+
+{% block css %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static '/css/navbar.css' %}">
+    <link rel="stylesheet" href="{% static '/css/style.css' %}">
+{% endblock css %}
+
+{% block FeedActive %}
+    active
+{% endblock FeedActive %}
+
+{% block FeedCurrent %}
+    <span class="sr-only">(current)</span>
+{% endblock FeedCurrent %}
+
+{% block content %}
+    {% for message in messages %}
+        <div class="container">
+            <div class="row">
+                <div class="col-12 mt-3">
+                    <div class="alert alert-{{ message.tags }}">
+                        <div class="container">
+                            <div class="d-flex align-items-center">
+                                <span class="alert-icon d-flex w-75">
+                                    <em class="bi bi-info-square-fill alert-error-icon"></em>
+                                    <p class="mb-0 ml-2 alert-message"><strong>Message: </strong>{{ message }}</p>
+                                </span>
+                                <span class="ml-auto text-right w-25">
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">
+                                            <em class="bi bi-x alert-close-icon"></em>
+                                        </span>
+                                    </button>
+                                </span>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+    <div class="container-fluid py-xl-5 py-4 px-xl-5 px-lg-4 px-3">
+        <div class="row justify-content-center">
+            {% for que in questions %}
+                <div class="col-lg-6 col-sm-10 col-12 mb-4">
+                    <div class="card card-style">
+                        <h6 class="d-flex align-items-center card-header py-3">
+                            <span class="text-left w-75">
+                                {{ que.title }}
+                            </span>
+                            <span class="ml-auto text-right">
+                                <span class="created-by">Asked by,</span><br>
+                                <span class="author">Shubh Patel</span>
+                            </span>
+                        </h6>
+                        <div class="card-body">
+                            {% comment %} <h6 class="card-title">Answer Title</h6> {% endcomment %}
+                            {% comment %} <p class="card-text">
+                                Lorem ipsum dolor sit amet consectetur, adipisicing elit. Laudantium adipisci, molestias officia
+                                recusandae iusto numquam modi debitis nulla nesciunt alias, doloremque tempora dolorem veniam
+                                iste nostrum nisi! Pariatur, suscipit at. Ad, beatae deleniti animi laboriosam vitae unde
+                            </p> {% endcomment %}
+                            <div class="row">
+                                <div class="col-md-4 text-md-left text-center">
+                                    <a href="{% url 'read' uuid=que.id %}" class="btn btn-primary">Read More</a>
+                                </div>
+                                <div class="col-md-8 text-md-right mt-md-0 mt-3">
+                                    <span class="badge-secondary py-1 px-2 rounded">MVC</span>
+                                    <span class="badge-secondary py-1 px-2 rounded">MVT</span>
+                                    <span class="badge-secondary py-1 px-2 rounded">Django</span>
+                                    <span class="badge-secondary py-1 px-2 rounded">Node.js</span>
+                                    <span class="badge-secondary py-1 px-2 rounded">React</span>
+                                    <span class="badge-secondary py-1 px-2 rounded">MVC</span>
+                                    <span class="badge-secondary py-1 px-2 rounded">MVT</span>
+                                    <span class="badge-secondary py-1 px-2 rounded">Django</span>
+                                    <span class="badge-secondary py-1 px-2 rounded">Node.js</span>
+                                    <span class="badge-secondary py-1 px-2 rounded">React</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer d-flex align-items-center">
+                            <span class="w-50">
+                                <button type="button" class="btn px-1 py-0">
+                                    <i class="bi bi-star-fill likes"></i>
+                                    <span class="mx-1">{{ que.likes.all|length }}</span>
+                                </button>
+                                {% comment %} <button type="button" class="btn px-1 py-0">
+                                    <em class="bi bi-caret-up-square-fill upvote"></em>
+                                    <span class="mx-1">10</span>
+                                </button> {% endcomment %}
+                                {% comment %} <button type="button" class="btn px-1 py-0">
+                                    <em class="bi bi-caret-down-square-fill downvote"></em>
+                                    <span class="mx-1">5</span>
+                                </button> {% endcomment %}
+                                {% comment %} <button type="button" class="btn px-1 py-0">
+                                    <em class="bi bi-eye-fill views"></em>
+                                    <span class="mx-1">71</span>
+                                </button> {% endcomment %}
+                            </span>
+                            <span class="text-right text-muted w-50">
+                                Oct 10, 2021
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock content %}

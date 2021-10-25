@@ -26,10 +26,10 @@
 
                         <div class="collapse navbar-collapse" id="navbarsExample03">
                             <ul class="navbar-nav ml-auto">
-                                <li class="nav-item d-flex {% block DiscoverActive %}{% endblock DiscoverActive %}">
-                                    <a class="nav-link d-flex align-items-center" href="{% url 'home' %}">
-                                        Discover
-                                        {% block DiscoverCurrent %}{% endblock DiscoverCurrent %}
+                                <li class="nav-item d-flex {% block FeedActive %}{% endblock FeedActive %}">
+                                    <a class="nav-link d-flex align-items-center" href="{% url 'feed' %}">
+                                        Feed
+                                        {% block FeedCurrent %}{% endblock FeedCurrent %}
                                     </a>
                                 </li>
                                 {% if user.is_authenticated %}
