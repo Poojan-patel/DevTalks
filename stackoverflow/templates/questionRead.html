@@ -71,22 +71,23 @@ Question | Editor | StackOverflow
         </div> {% endcomment %}
     </div>
 </div>
-<div class="all-renderd-answer"></div>
-{% for ans in answers %}
-    <div class="content bg-answer p-5">
+<div class="all-rendered-answer">
+{% for ans in question.answers.all %}
+    <div class="content bg-answer p-5" id="x{{ans.id}}">
+        <div style="display:none">{{ans.body}}</div>
         <div class="container-fluid contents w-100">
             <div class="row">
                 <div class="col-12">
                     <div class="form-group question-title field--not-empty">
                         <label style="font-size: 15px;">Answer Given By</label>
-                        <span class="form-control pt-2" style="font-size: 25px;">{{ answer.user.username }}</span>
+                        <span class="form-control pt-2" style="font-size: 25px;">{{ ans.user.username }}</span>
                     </div>
                 </div>
             </div>
             <div class="container-fluid p-0 m-0 ce-example">
                 <div class="ce-example__content _ce-example__content--small">
                     <div class="row">
-                        <div class="col-12" id="editorjs"></div>
+                        <div class="col-12" id="editorjs-x{{ans.id}}"></div>
                     </div>
                 {% comment %} <div class="row">
                         <div class="col-sm-6 col-12 justify-content-right">
@@ -118,6 +119,7 @@ Question | Editor | StackOverflow
         </div>
     </div>
 {% endfor %}
+</div>
 <div class="content bg-answer p-5">
     <div class="container-fluid contents w-100">
         <form method="POST" action="{% url 'add_answer' %}" onsubmit="post()">
@@ -133,7 +135,7 @@ Question | Editor | StackOverflow
             <div class="container-fluid p-0 m-0 ce-example">
                 <div class="ce-example__content _ce-example__content--small">
                     <div class="row">
-                        <div class="col-12" id="editorjs"></div>
+                        <div class="col-12" id="editorjs-ans"></div>
                     </div>
                     <div class="row">
                         <div class="col-sm-6 col-12 justify-content-right">
@@ -192,6 +194,11 @@ Question | Editor | StackOverflow
 
 <!-- Initialization -->
 <script>
+    const getEditorJS = (idd, data)=>{
+        
+    }
+</script>
+<script>
     function post() {
         textarea = document.getElementById("jsonData");
         editor.save().then(
@@ -202,9 +209,176 @@ Question | Editor | StackOverflow
             }
         );
     }
+    answerr = document.querySelector('.all-rendered-answer').children
+    for(var i = 0; i < answerr.length; i++){
+        console.log(document.querySelector('#'+answerr[i].id).children[0].textContent)
+        var editor = new EditorJS({
+        readOnly: false,
+        holder: 'editorjs-'+answerr[i].id,
+        tools: {
+            header: {
+                class: Header,
+                inlineToolbar: ['marker', 'link'],
+                config: {
+                    placeholder: 'Header'
+                },
+                shortcut: 'CMD+SHIFT+H'
+            },
+            image: {
+                class: ImageTool,
+                config: {
+                    endpoints: {
+                        byFile: '/question/uploadImg/'
+                    }
+                },
+                inlineToolbar: true
+            },
+
+            list: {
+                class: List,
+                inlineToolbar: true,
+                shortcut: 'CMD+SHIFT+L'
+            },
+
+            checklist: {
+                class: Checklist,
+                inlineToolbar: true,
+            },
+
+            quote: {
+                class: Quote,
+                inlineToolbar: true,
+                config: {
+                    quotePlaceholder: 'Enter a quote',
+                    captionPlaceholder: 'Quote\'s author',
+                },
+                shortcut: 'CMD+SHIFT+O'
+            },
+
+            warning: Warning,
+
+            marker: {
+                class: Marker,
+                shortcut: 'CMD+SHIFT+M'
+            },
+
+            code: {
+                class: CodeTool,
+                shortcut: 'CMD+SHIFT+C'
+            },
+
+            delimiter: Delimiter,
+
+            inlineCode: {
+                class: InlineCode,
+                shortcut: 'CMD+SHIFT+C'
+            },
+
+            linkTool: LinkTool,
+
+            embed: Embed,
+
+            table: {
+                class: Table,
+                inlineToolbar: true,
+                shortcut: 'CMD+ALT+T'
+            },
+
+        },
+        data: JSON.parse(document.querySelector('#'+answerr[i].id).children[0].textContent),
+        onReady: function () {
+            saveButton.click();
+        },
+        onChange: function (api, event) {
+            console.log('something changed', event);
+        }
+    });
+    }
+
+    var editor = new EditorJS({
+        readOnly: false,
+        holder: 'editorjs-ans',
+        tools: {
+            header: {
+                class: Header,
+                inlineToolbar: ['marker', 'link'],
+                config: {
+                    placeholder: 'Header'
+                },
+                shortcut: 'CMD+SHIFT+H'
+            },
+            image: {
+                class: ImageTool,
+                config: {
+                    endpoints: {
+                        byFile: '/question/uploadImg/'
+                    }
+                },
+                inlineToolbar: true
+            },
+
+            list: {
+                class: List,
+                inlineToolbar: true,
+                shortcut: 'CMD+SHIFT+L'
+            },
+
+            checklist: {
+                class: Checklist,
+                inlineToolbar: true,
+            },
+
+            quote: {
+                class: Quote,
+                inlineToolbar: true,
+                config: {
+                    quotePlaceholder: 'Enter a quote',
+                    captionPlaceholder: 'Quote\'s author',
+                },
+                shortcut: 'CMD+SHIFT+O'
+            },
+
+            warning: Warning,
+
+            marker: {
+                class: Marker,
+                shortcut: 'CMD+SHIFT+M'
+            },
+
+            code: {
+                class: CodeTool,
+                shortcut: 'CMD+SHIFT+C'
+            },
+
+            delimiter: Delimiter,
+
+            inlineCode: {
+                class: InlineCode,
+                shortcut: 'CMD+SHIFT+C'
+            },
+
+            linkTool: LinkTool,
+
+            embed: Embed,
+
+            table: {
+                class: Table,
+                inlineToolbar: true,
+                shortcut: 'CMD+ALT+T'
+            },
+
+        },
+        data : {"time":1635174034630,"blocks":[{"id":"jsRrqu9rdl","type":"header","data":{"text":"Type Here your Answer","level":4}}]},
+        onReady: function () {
+            saveButton.click();
+        },
+        onChange: function (api, event) {
+            console.log('something changed', event);
+        }
+    });
 </script>
 <script>
-    console.log("{{question.body|escapejs}}")
+    
     /**
      * To initialize the Editor, create a new instance with configuration object
      * @see docs/installation.md for mode details
