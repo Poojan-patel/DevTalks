@@ -211,7 +211,8 @@ Question | Editor | StackOverflow
     }
     answerr = document.querySelector('.all-rendered-answer').children
     for(var i = 0; i < answerr.length; i++){
-        console.log(document.querySelector('#'+answerr[i].id).children[0].textContent)
+        data = document.querySelector('#'+answerr[i].id).children[0].textContent
+        document.querySelector('#'+answerr[i].id).children[0].innerHTML = ""
         var editor = new EditorJS({
         readOnly: false,
         holder: 'editorjs-'+answerr[i].id,
@@ -285,7 +286,7 @@ Question | Editor | StackOverflow
             },
 
         },
-        data: JSON.parse(document.querySelector('#'+answerr[i].id).children[0].textContent),
+        data: JSON.parse(data),
         onReady: function () {
             saveButton.click();
         },
@@ -295,7 +296,7 @@ Question | Editor | StackOverflow
     });
     }
 
-    var editor = new EditorJS({
+    var editorans = new EditorJS({
         readOnly: false,
         holder: 'editorjs-ans',
         tools: {
@@ -384,31 +385,10 @@ Question | Editor | StackOverflow
      * @see docs/installation.md for mode details
      */
     var editor = new EditorJS({
-        /**
-         * Enable/Disable the read only mode
-         */
         readOnly: false,
-
-        /**
-         * Wrapper of Editor
-         */
         holder: 'editorjs',
-
-        /**
-         * Common Inline Toolbar settings
-         * - if true (or not specified), the order from 'tool' property will be used
-         * - if an array of tool names, this order will be used
-         */
-        // inlineToolbar: ['link', 'marker', 'bold', 'italic'],
-        // inlineToolbar: true,
-
-        /**
-         * Tools list
-         */
         tools: {
-            /**
-             * Each Tool is a Plugin. Pass them via 'class' option with necessary settings {@link docs/tools.md}
-             */
+           
             header: {
                 class: Header,
                 inlineToolbar: ['marker', 'link'],
@@ -418,9 +398,7 @@ Question | Editor | StackOverflow
                 shortcut: 'CMD+SHIFT+H'
             },
 
-            /**
-             * Or pass class directly without any configuration
-             */
+            
             image: {
                 class: ImageTool,
                 config: {
@@ -503,7 +481,7 @@ Question | Editor | StackOverflow
     /**
      * Saving button
      */
-    //const saveButton = document.getElementById('saveButton');
+    const saveButton = document.getElementById('saveButton');
 
     /**
      * Toggle read-only button
