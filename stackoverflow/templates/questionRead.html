@@ -219,7 +219,7 @@ Question | Editor | StackOverflow
         /**
          * Initial Editor data
          */
-        data: {"time":1635153210316,"blocks":[{"id":"OWyZX59Hjx","type":"header","data":{"text":"Hiii","level":1}}],"version":"2.22.2"},
+        data: JSON.parse("{{question.body|escapejs}}"),
         onReady: function () {
             saveButton.click();
         },
@@ -231,7 +231,7 @@ Question | Editor | StackOverflow
     /**
      * Saving button
      */
-    const saveButton = document.getElementById('saveButton');
+    //const saveButton = document.getElementById('saveButton');
 
     /**
      * Toggle read-only button
@@ -242,24 +242,24 @@ Question | Editor | StackOverflow
     /**
      * Saving example
      */
-    saveButton.addEventListener('click', function () {
-        editor.save()
-            .then((savedData) => {
-                cPreview.show(savedData, document.getElementById("output"));
-            })
-            .catch((error) => {
-                console.error('Saving error', error);
-            });
-    });
+    // saveButton.addEventListener('click', function () {
+    //     editor.save()
+    //         .then((savedData) => {
+    //             cPreview.show(savedData, document.getElementById("output"));
+    //         })
+    //         .catch((error) => {
+    //             console.error('Saving error', error);
+    //         });
+    // });
 
     /**
      * Toggle read-only example
      */
-    toggleReadOnlyButton.addEventListener('click', async () => {
-        const readOnlyState = await editor.readOnly.toggle();
+    // toggleReadOnlyButton.addEventListener('click', async () => {
+    //     const readOnlyState = await editor.readOnly.toggle();
 
-        readOnlyIndicator.textContent = readOnlyState ? 'On' : 'Off';
-    });
+    //     readOnlyIndicator.textContent = readOnlyState ? 'On' : 'Off';
+    // });
 </script>
 <script>
     /**

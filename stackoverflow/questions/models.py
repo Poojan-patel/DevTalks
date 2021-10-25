@@ -6,7 +6,7 @@ import uuid
 
 class Question(models.Model):
      id        = models.CharField(verbose_name='QuestionID',name='id',      primary_key=True, unique=True, editable=False, default=uuid.uuid4, max_length=40)
-     user      = models.ForeignKey(User, on_delete=models.CASCADE,          blank=True, null=True)
+     user      = models.ForeignKey(User, on_delete=models.CASCADE,          blank=True, null=True, related_name="user")
      title     = models.CharField(verbose_name='Title',     name='title',   blank=False, null=False, max_length=100)
      body      = models.TextField(verbose_name='Body',      name='body',    blank=False, null=False)
 
