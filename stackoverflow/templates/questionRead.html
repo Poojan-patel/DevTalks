@@ -17,18 +17,116 @@ Question | Editor | StackOverflow
 {% block content %}
 <div class="content p-5">
     <div class="container-fluid contents w-100">
-        <form method="POST" action="{% url 'add_question' %}" onsubmit="post()">
+        <div class="row">
+            <div class="col-12">
+                <div class="form-group question-title field--not-empty">
+                    <label style="font-size: 15px;">Question Title</label>
+                    <input type="text" value="{{ question.title }}" name="questionTitle" class="form-control" style="font-size: 30px;" readonly>
+                </div>
+            </div>
+            <div class="col-12 field--not-empty text-right">
+                <span class="badge-secondary py-1 px-2 rounded">MVC</span>
+                <span class="badge-secondary py-1 px-2 rounded">MVT</span>
+                <span class="badge-secondary py-1 px-2 rounded">Django</span>
+                <span class="badge-secondary py-1 px-2 rounded">Node.js</span>
+                <span class="badge-secondary py-1 px-2 rounded">React</span>
+                <span class="badge-secondary py-1 px-2 rounded">MVC</span>
+                <span class="badge-secondary py-1 px-2 rounded">MVT</span>
+                <span class="badge-secondary py-1 px-2 rounded">Django</span>
+                <span class="badge-secondary py-1 px-2 rounded">Node.js</span>
+                <span class="badge-secondary py-1 px-2 rounded">React</span>
+            </div>
+        </div>
+        <div class="container-fluid p-0 m-0 ce-example">
+            <div class="ce-example__content _ce-example__content--small">
+                <div class="row">
+                    <div class="col-12" id="editorjs"></div>
+                </div>
+                {% comment %} <div class="row">
+                    <div class="col-sm-6 col-12 justify-content-right">
+                        <div class="ce-example__button" id="saveButton">
+                            Save
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-12 text-left">
+                        <div class="ce-example2__button">
+                            <input type="submit" value="Post"
+                                style="background: transparent; border: 0; color: #fff; font-family: 'PT Mono', Menlo, Monaco, Consolas, Courier New, monospace;">
+                        </div>
+                    </div>
+                </div> {% endcomment %}
+                {% comment %} <div class="ce-example__statusbar">
+                    Readonly:
+                    <strong id="readonly-state">
+                        Off
+                    </strong>
+                    <div class="ce-example__statusbar-button" id="toggleReadOnlyButton">
+                        toggle
+                    </div>
+                </div> {% endcomment %}
+            </div>
+        </div>
+        {% comment %} <div class="ce-example__output">
+            <pre class="ce-example__output-content" id="output"></pre>
+        </div> {% endcomment %}
+    </div>
+</div>
+<div class="all-renderd-answer"></div>
+{% for ans in answers %}
+    <div class="content bg-answer p-5">
+        <div class="container-fluid contents w-100">
+            <div class="row">
+                <div class="col-12">
+                    <div class="form-group question-title field--not-empty">
+                        <label style="font-size: 15px;">Answer Given By</label>
+                        <span class="form-control pt-2" style="font-size: 25px;">{{ answer.user.username }}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="container-fluid p-0 m-0 ce-example">
+                <div class="ce-example__content _ce-example__content--small">
+                    <div class="row">
+                        <div class="col-12" id="editorjs"></div>
+                    </div>
+                {% comment %} <div class="row">
+                        <div class="col-sm-6 col-12 justify-content-right">
+                            <div class="ce-example__button" id="saveButton">
+                                Save
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-12 text-left">
+                            <div class="ce-example2__button">
+                                <input type="submit" value="Post"
+                                    style="background: transparent; border: 0; color: #fff; font-family: 'PT Mono', Menlo, Monaco, Consolas, Courier New, monospace;">
+                            </div>
+                        </div>
+                    </div> {% endcomment %}
+                    {% comment %} <div class="ce-example__statusbar">
+                        Readonly:
+                        <strong id="readonly-state">
+                            Off
+                        </strong>
+                        <div class="ce-example__statusbar-button" id="toggleReadOnlyButton">
+                            toggle
+                        </div>
+                    </div> {% endcomment %}
+                </div>
+            </div>
+            {% comment %} <div class="ce-example__output">
+                <pre class="ce-example__output-content" id="output"></pre>
+            </div> {% endcomment %}
+        </div>
+    </div>
+{% endfor %}
+<div class="content bg-answer p-5">
+    <div class="container-fluid contents w-100">
+        <form method="POST" action="{% url 'add_answer' %}" onsubmit="post()">
         {% csrf_token %}
             <div class="row">
                 <div class="col-12">
                     <div class="form-group question-title field--not-empty">
-                        <label style="font-size: 15px;">Question Title</label>
-                        <input type="text" value="{{ question.title }}" name="questionTitle" class="form-control" style="font-size: 30px;" required>
-                    </div>
-                </div>
-                <div class="col-12 field--not-empty">
-                    <div class="form-group">
-                        <input type="text" value="{{ question.tags }}" name="questionTag" class="form-control" placeholder="Tags" data-role="tagsinput" size="10" style="font-size:15px;">
+                        <label style="font-size: 15px;">Give your Answer</label>
+                        <span class="form-control pt-2" style="font-size: 25px;">{{ user.username }}</span>
                     </div>
                 </div>
             </div>
@@ -50,15 +148,15 @@ Question | Editor | StackOverflow
                             </div>
                         </div>
                     </div>
-                {% comment %} <div class="ce-example__statusbar">
-                    Readonly:
-                    <strong id="readonly-state">
-                        Off
-                    </strong>
-                    <div class="ce-example__statusbar-button" id="toggleReadOnlyButton">
-                        toggle
-                    </div>
-                </div> {% endcomment %}
+                    {% comment %} <div class="ce-example__statusbar">
+                        Readonly:
+                        <strong id="readonly-state">
+                            Off
+                        </strong>
+                        <div class="ce-example__statusbar-button" id="toggleReadOnlyButton">
+                            toggle
+                        </div>
+                    </div> {% endcomment %}
                 </div>
             </div>
             {% comment %} <div class="ce-example__output">
