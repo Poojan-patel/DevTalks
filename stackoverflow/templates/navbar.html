@@ -34,16 +34,10 @@
                                 </li>
                                 {% if user.is_authenticated %}
                                     <li class="nav-item d-flex {% block ProfileActive %}{% endblock ProfileActive %}">
-                                        <a class="nav-link d-flex align-items-center" href="#" style="text-transform: none;">
+                                        <a class="nav-link d-flex align-items-center" href="{% url 'profile' %}" style="text-transform: none;">
                                             <i class="bi bi-person-circle navbar-icon-size mr-2"></i>
-                                            {{ username }}
+                                            {{ user.username }}
                                             {% block ProfileCurrent %}{% endblock ProfileCurrent %}
-                                        </a>
-                                    </li>
-                                    <li class="nav-item d-flex {% block SettigsActive %}{% endblock SettigsActive %}">
-                                        <a class="nav-link d-flex align-items-center" href="#">
-                                            Settings
-                                            {% block SettingsCurrent %}{% endblock SettingsCurrent %}
                                         </a>
                                     </li>
                                     <li class="nav-item d-flex">

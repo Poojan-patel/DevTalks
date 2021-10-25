@@ -13,6 +13,7 @@ from django.conf import settings
 from .tokens import account_activation_token
 from .models import User
 import json
+import datetime
 
 
 def signin(request):
@@ -131,7 +132,7 @@ def activate(request, uidb64, token):
         user.save()
         login(request, user)
         messages.success(request,'Account has been activated!!')
-        return render(request, "profile.html",{"firstName": user.first_name, "lastName": user.last_name, "username": user.username, "email": user.email})
+        return render(request, "profile.html", { 'user': request.user })
     else:
         messages.error(request,'Activation link is invalid!')
         return render(request, 'signin.html')
@@ -143,19 +144,22 @@ def signout(request):
 def profile(request):
     if request.method == 'POST':
         firstname = request.POST['firstname'].strip()
-        middlename = request.POST['firstname'].strip()
+        middlename = request.POST['middlename'].strip()
         lastname = request.POST['lastname'].strip()
         username = request.POST['username'].strip()
         email = request.POST['email'].strip()
-        birthdate = request.POST['birthdate']
+        birthdate = request.POST['birthdate'].strip()
         age = request.POST['age']
         bio = request.POST['bio'].strip()
         profession = request.POST['profession'].strip()
         organization = request.POST['organization'].strip()
         gender = request.POST['gender'].strip()
-        phone = request.POST['phone'].strip()
+        mobilenumber = request.POST['mobilenumber'].strip()
+        pincode = request.POST['pincode'].strip()
+        city = request.POST['city'].strip()
         country = request.POST['country'].strip()
         skills = json.dumps(request.POST['skills'])
+        # print(firstname, middlename, lastname, username, email, birthdate, age, bio, profession, organization, gender, mobilenumber, pincode, city, country, skills)
         
         current_user = request.user
 
@@ -164,35 +168,53 @@ def profile(request):
                 user = User.objects.get(pk=current_user.id)
             except(TypeError, ValueError, OverflowError, User.DoesNotExist):
                 user = None
-            
+
             if user is not None:
                 user.first_name = firstname
                 user.middle_name = middlename
                 user.last_name = lastname
                 user.username = username
                 user.email = email
-                user.birth_date = birthdate
-                user.age = age
+                if birthdate:
+                    format = '%d/%m/%Y'
+                    user.birth_date = datetime.datetime.strptime(birthdate, format).date()
+                else:
+                    user.birth_date = None
+                if age:
+                    user.age = age
+                else:
+                    user.age = None
                 user.bio = bio
                 user.profession = profession
                 user.organization = organization
                 user.gender = gender
-                user.phone = phone
+                user.mobile_number = mobilenumber
+                user.pincode = pincode
+                user.city = city
                 user.country = country
                 user.skills = skills
+                # print(user)
 
-                if user.profile_picture != 'default.png':
-                    user.profile_picture.storage.delete(user.profile_picture.name)
-
-                profile_picture = request.FILES['profile-picture']
-                fss = FileSystemStorage(location=settings.PROFILE_PICTURE_STORAGE)
-                filename = fss.save(profile_picture.name, profile_picture)
-                user.profile_picture = profile_picture
-                user.profile_picture.name = filename
+                if request.FILES.get('profilepicture', False):
+                    profile_picture = request.FILES['profilepicture']
+                    print(profile_picture)
+                    # print(user.profile_picture)
+                    if user.profile_picture != 'profile_pics/default.svg':
+                        user.profile_picture.storage.delete(user.profile_picture.name)
+                    fss = FileSystemStorage(location=settings.PROFILE_PICTURE_STORAGE)
+                    # print(profile_picture.name)
+                    filename = fss.save(profile_picture.name, profile_picture)
+                    user.profile_picture = profile_picture
+                    user.profile_picture.name = filename
+                    # user.profile_picture = profile_picture
+                    # user.profile_picture.name = str(user.profile_picture).lstrip("profile_pics/")
 
                 user.save()
-        
-        return redirect('profile')
+
+                messages.success(request,'Profile Updated Successfully')
+                return redirect('profile')
     
+        messages.error(request,'Failed to update Profile... Try Again')
+        
     return render(request, 'profile.html', { 'user': request.user })
 

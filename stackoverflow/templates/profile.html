@@ -6,9 +6,11 @@
 
 {% block css %}
     {% load static %}
+    <link rel="stylesheet" href="{% static '/select2/select2.min.css' %}">
     <link rel="stylesheet" href="{% static '/datepicker/daterangepicker.css' %}">
     <link rel="stylesheet" href="{% static '/css/navbar.css' %}">
     <link rel="stylesheet" href="{% static '/css/style.css' %}">
+    <link rel="stylesheet" href="{% static '/bootstrap-tagsinput/dist/bootstrap-tagsinput.css' %}">
 {% endblock css %}
 
 {% block ProfileActive %}
@@ -48,14 +50,19 @@ active
     {% endfor %}
     <div class="container content p-5">
         <div class="contents profile-content w-100">
-            <form action="{% url 'profile' %}" method="post" enctype="multipart/form-data">
+            <form action="{% url 'profile' %}" method="POST" enctype="multipart/form-data">
                 {% csrf_token %}
                 <div class="row">
-                    <div class="col-md-3 col-12">
-                        <div class="form-row">
-                            <div class="col-md-4 col-12 form-group field--not-empty">
-                                <label for="profile-picture">Profile Picture</label>
-                                <input type="file" accept="image/*" class="form-control w-100" id="profile-picture" name="profile-picture" required>
+                    <div class="col-md-3 col-12 ">
+                        <div class="form-row justify-content-center">
+                            <div class="col-8">
+                                <img id="profile" src="{{ user.profile_picture.url }}" class="w-100">
+                            </div>
+                            <div class="col-8 form-group field--not-empty pt-4">
+                                {% comment %} <label for="profilepicture">Profile Picture</label> {% endcomment %}
+                                <input type="file" onchange="renderImage(this);" class="form-control w-100" id="profilepicture" name="profilepicture">
+                                <span class="btn btn-primary btn-change-profile py-2 w-100">Change Profile</span>
+                                <span class="py-2 w-100" id="filename"></span>
                             </div>
                         </div>
                     </div>
@@ -63,35 +70,158 @@ active
                         <div class="form-row">
                             <div class="col-md-4 col-12 form-group field--not-empty">
                                 <label for="firstname">First Name</label>
-                                <input type="text" value="{{firstName}}" class="form-control w-100" id="firstname" name="firstname" required>
+                                <input type="text" value="{{ user.first_name }}" class="form-control w-100" id="firstname" name="firstname" required>
                             </div>
                             <div class="col-md-4 col-12 form-group field--not-empty mt-md-0 mt-3">
                                 <label for="middlename">Middle Name</label>
-                                <input type="text" value="A" class="form-control w-100" id="middlename" name="middlename" required>
+                                {% if user.middle_name %}
+                                    <input type="text" value="{{ user.middle_name }}" class="form-control w-100" id="middlename" name="middlename">
+                                {% else %}
+                                    <input type="text" value="" class="form-control w-100" id="middlename" name="middlename">
+                                {% endif %}
                             </div>
                             <div class="col-md-4 col-12 form-group field--not-empty mt-md-0 mt-3">
                                 <label for="lastname">Last Name</label>
-                                <input type="text" value="{{lastName}}" class="form-control w-100" id="lastname" name="lastname" required>
+                                <input type="text" value="{{ user.last_name }}" class="form-control w-100" id="lastname" name="lastname" required>
                             </div>
                         </div>
                         <div class="form-row mt-md-4 mt-0">
                             <div class="col-md-4 col-12 form-group field--not-empty mt-md-0 mt-3">
                                 <label for="username">Username</label>
-                                <input type="text" value="{{username}}" class="form-control text-muted w-100" id="username" name="username" readonly>
+                                {% comment %} <span class="form-control text-muted w-100 pt-2 input-disabled">{{ user.username }}</span> {% endcomment %}
+                                <input type="text" value="{{ user.username }}" class="form-control text-muted w-100 input-disabled" id="username" name="username" readonly required>
                             </div>
                             <div class="col-md-8 col-12 form-group field--not-empty mt-md-0 mt-3">
                                 <label for="email">Email</label>
-                                <input type="email" value="{{email}}" class="form-control text-muted w-100" id="email" name="email" readonly>
+                                {% comment %} <span class="form-control text-muted w-100 pt-2 input-disabled">{{ user.email }}</span> {% endcomment %}
+                                <input type="text" value="{{ user.email }}" class="form-control text-muted w-100 input-disabled" id="email" name="email" readonly required>
+                            </div>
+                        </div>
+                        <div class="form-row justify-content-between mt-md-4 mt-0">
+                            <div class="col-md-3 col-12 form-group d-flex align-items-center mt-md-0 mt-3 field--not-empty">
+                                <label for="birthdate">Birthdate</label>
+                                <input value="{{ user.birth_date|date:"d/m/Y" }}" class="form-control js-datepicker pt-1" type="text" id="birthdate" name="birthdate" pattern="^(0?[1-9]|[12][0-9]|3[01])[\/\-](0?[1-9]|1[012])[\/\-]\d{4}$">
+                                <span class="bi bi-calendar3"></span>
+                            </div>
+                            <div class="col-md-3 col-12 form-group d-flex align-items-center mt-md-0 mt-3 field--not-empty">
+                                <label for="gender">Gender</label>
+                                <div class="rs-select2 js-select-simple select--no-search w-100 pt-2">    
+                                    <select id="gender" name="gender">
+                                        {% if user.gender == "Male" %}
+                                            <option value="Not Preffered">Not Preffered</option>
+                                            <option value="Male" selected>Male</option>
+                                            <option value="Female">Female</option>
+                                            <option value="Other">Other</option>
+                                        {% elif user.gender == "Female" %}
+                                            <option value="Not Preffered">Not Preffered</option>
+                                            <option value="Male">Male</option>
+                                            <option value="Female" selected>Female</option>
+                                            <option value="Other">Other</option>
+                                        {% elif user.gender == "Other" %}
+                                            <option value="Not Preffered">Not Preffered</option>
+                                            <option value="Male">Male</option>
+                                            <option value="Female">Female</option>
+                                            <option value="Other" selected>Other</option>
+                                        {% else %}
+                                            <option value="Not Preffered" selected>Not Preffered</option>
+                                            <option value="Male">Male</option>
+                                            <option value="Female">Female</option>
+                                            <option value="Other">Other</option>
+                                        {% endif %}
+                                        
+                                    </select>
+                                    <div class="select-dropdown"></div>
+                                </div>
+                            </div>
+                            <div class="col-md-3 col-12 form-group field--not-empty mt-md-0 mt-3">
+                                <label for="username">Age in Years</label>
+                                {% if user.age %}
+                                    {% comment %} <span class="form-control text-muted w-100 pt-2">{{ user.age }} Years</span> {% endcomment %}
+                                    <input value="{{ user.age }}" class="form-control text-muted w-100 pt-2" name="age" readonly>
+                                {% else %}
+                                    {% comment %} <span class="form-control text-muted w-100 pt-2"></span> {% endcomment %}
+                                    <input class="form-control text-muted w-100 pt-2" name="age" readonly>
+                                {% endif %}  
                             </div>
                         </div>
                         <div class="form-row mt-md-4 mt-0">
-                            <div class="col-md-4 col-12 form-group d-flex align-items-center field--not-empty">
-                                <label for="birthdate">Birthdate</label>
-                                <input class="form-control js-datepicker" type="text" name="birthdate">
-                                <em class="bi bi-calendar3"></em>
+                            <div class="col-md-4 col-12 form-group field--not-empty">
+                                <label for="mobilenumber">Mobile Number</label>
+                                {% if user.mobile_number %}
+                                    <input type="text" value="{{ user.mobile_number }}" class="form-control w-100" id="mobilenumber" name="mobilenumber" pattern="^[6-9][0-9]{9}$">
+                                {% else %}
+                                    <input type="text" value="" class="form-control w-100" id="mobilenumber" name="mobilenumber" pattern="^[6-9][0-9]{9}$">
+                                {% endif %}
+                            </div>
+                            <div class="col-md-4 col-12 form-group field--not-empty mt-md-0 mt-3">
+                                <label for="profession">Profession</label>
+                                {% if user.profession %}
+                                    <input type="text" value="{{ user.profession }}" class="form-control w-100" id="profession" name="profession">
+                                {% else %}
+                                    <input type="text" value="" class="form-control w-100" id="profession" name="profession">
+                                {% endif %}
+                            </div>
+                            <div class="col-md-4 col-12 form-group field--not-empty mt-md-0 mt-3">
+                                <label for="organization">Organization</label>
+                                {% if user.organization %}
+                                    <input type="text" value="{{ user.organization }}" class="form-control w-100" id="organization" name="organization">
+                                {% else %}
+                                    <input type="text" value="" class="form-control w-100" id="organization" name="organization">
+                                {% endif %}
                             </div>
                         </div>
-                        <input type="submit" value="Submit" class="btn text-white btn-block btn-primary">
+                        <div class="form-row mt-md-4 mt-0">
+                            <div class="col-md-4 col-12 form-group field--not-empty">
+                                <label for="pincode">Pincode</label>
+                                {% if user.pincode %}
+                                    <input type="text" value="{{ user.pincode }}" class="form-control w-100" id="pincode" name="pincode" pattern="^[1-9][0-9]{5}$">
+                                {% else %}
+                                    <input type="text" value="" class="form-control w-100" id="pincode" name="pincode" pattern="^[1-9][0-9]{5}$">
+                                {% endif %}
+                            </div>
+                            <div class="col-md-4 col-12 form-group field--not-empty mt-md-0 mt-3">
+                                <label for="city">City</label>
+                                {% if user.city %}
+                                    <input type="text" value="{{ user.city }}" class="form-control w-100" id="city" name="city">
+                                {% else %}
+                                    <input type="text" value="" class="form-control w-100" id="city" name="city">
+                                {% endif %}
+                            </div>
+                            <div class="col-md-4 col-12 form-group field--not-empty mt-md-0 mt-3">
+                                <label for="country">Country</label>
+                                {% if user.country %}
+                                    <input type="text" value="{{ user.country }}" class="form-control w-100" id="country" name="country">
+                                {% else %}
+                                    <input type="text" value="" class="form-control w-100" id="country" name="country">
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="row mt-md-3 mt-2">
+                            <div class="form-group col-12">
+                                <label for="skills" class="pb-5">Skills</label>
+                                {% if user.skills|slice:"1:-1" %}
+                                    <input type="text" value={{ user.skills|slice:"1:-1" }} name="skills" class="form-control" placeholder="Add Skills" data-role="tagsinput" style="font-size:15px;">
+                                {% else %}
+                                    <input type="text" name="skills" class="form-control" placeholder="Add Skills" data-role="tagsinput" style="font-size:15px;">
+                                {% endif %}
+                                
+                            </div>
+                        </div>
+                        <div class="form-row mt-md-3 mt-2">
+                            <div class="col-12 form-group field--not-empty">
+                                <label for="bio" class="pb-5">Bio</label>
+                                {% if user.bio %}    
+                                    <textarea class="form-control w-100 mt-3" id="bio" name="bio" rows="3">{{ user.bio }}</textarea>
+                                {% else %}
+                                    <textarea class="form-control w-100 mt-3" id="bio" name="bio" rows="3"></textarea>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="form-row mt-md-3 mt-2 justify-content-center">
+                            <div class="col-md-3 col-12">
+                                <input type="submit" value="Update" class="btn text-white btn-block btn-primary">
+                            </div>
+                        </div>
                     </div>
                 </div>
             </form>
@@ -100,8 +230,15 @@ active
 {% endblock content %}
 
 {% block js %}
+    <script src={% static '/select2/select2.min.js' %}></script>
     <script src={% static '/datepicker/moment.min.js' %}></script>
     <script src={% static '/datepicker/daterangepicker.js' %}></script>
     <script src={% static '/js/signin.js' %}></script>
-    <script src={% static '/js/dateinput.js' %}></script>
+    <script src={% static '/js/profile.js' %}></script>
+    <script src="{% static '/bootstrap-tagsinput/dist/bootstrap-tagsinput.js' %}"></script>
+    <script>
+        function renderImage(input) {
+            $('#profile')[0].src = (window.URL ? URL : webkitURL).createObjectURL(input.files[0]);
+        }
+    </script>
 {% endblock js %}

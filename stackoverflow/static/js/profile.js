@@ -66,5 +66,10 @@
         console.log(err);
     }
     
+    $('.btn-change-profile').click(function() {
+        $('#profilepicture').click();
+    });
+
+    $("#birthdate").datepicker('setDate','01/01/1900')
 
 })(jQuery);

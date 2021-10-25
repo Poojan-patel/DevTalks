@@ -9,8 +9,6 @@ p {
 }
 
 a {
-    -webkit-transition: .3s all ease;
-    -o-transition: .3s all ease;
     transition: .3s all ease;
 }
 
@@ -58,11 +56,7 @@ h2 {
 .content .bg .form-group label {
     position: absolute;
     top: 50%;
-    -webkit-transform: translateY(-50%);
-    -ms-transform: translateY(-50%);
     transform: translateY(-50%);
-    -webkit-transition: .3s all ease;
-    -o-transition: .3s all ease;
     transition: .3s all ease;
 }
 
@@ -209,8 +203,6 @@ h2 {
     position: absolute;
     display: none;
     font-size: 16px;
-    -webkit-transition: .3s all ease;
-    -o-transition: .3s all ease;
     transition: .3s all ease;
 }
 
@@ -223,8 +215,6 @@ h2 {
     top: 50%;
     left: 50%;
     margin-top: -1px;
-    -webkit-transform: translate(-50%, -50%);
-    -ms-transform: translate(-50%, -50%);
     transform: translate(-50%, -50%);
 }
 
@@ -250,7 +240,7 @@ h2 {
 
 .card.card-style .card-text {
     -webkit-line-clamp: 3;
-    overflow : hidden;
+    overflow: hidden;
     text-overflow: ellipsis;
     display: -webkit-box;
     -webkit-box-orient: vertical;
@@ -270,7 +260,8 @@ h2 {
     color: #fff;
 }
 
-.card.card-style .btn-primary:hover {
+.card.card-style .btn-primary:hover,
+.content .contents .btn-change-profile:hover {
     background: #29bb8a;
     border-color: #27b183;
 }
@@ -327,4 +318,76 @@ h2 {
 
 .alert .alert-close-icon {
     color: #fff;
+}
+
+.content .contents .form-control, .content .bg .form-control span.input-disabled,
+.select-dropdown {
+    background: transparent;
+    border-bottom: 1px solid #ccc;
+}
+
+.content .contents input[type="file"] {
+    display: none;
+}
+
+.content .contents .btn-change-profile {
+    height: auto;
+    color: #fff;
+    font-size: 10px;
+}
+
+.select--no-search .select2-search {
+    display: none !important;
+}
+
+.rs-select2 .select2-container {
+    width: 100% !important;
+    outline: none;
+}
+
+.rs-select2 .select2-container .select2-selection--single {
+    outline: none;
+    border: none;
+    height: 36px;
+}
+
+.rs-select2 .select2-container .select2-selection--single .select2-selection__rendered {
+    padding-left: 0;
+    color: #808080;
+    font-size: 20px;
+    font-family: inherit;
+    font-weight: 500;
+}
+
+.rs-select2 .select2-container .select2-selection--single .select2-selection__arrow {
+    height: 34px;
+    right: 4px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.rs-select2 .select2-container .select2-selection--single .select2-selection__arrow b {
+    display: none;
+}
+
+.rs-select2 .select2-container .select2-selection--single .select2-selection__arrow:after {
+    font-family: 'icomoon';
+    content: '\f078';
+    font-size: 12px;
+    color: #ccc;
+    transition: all 0.4s ease;
+}
+
+.rs-select2 .select2-container.select2-container--open .select2-selection--single .select2-selection__arrow::after {
+    transform: rotate(-180deg);
+}
+
+.select2-container--open .select2-dropdown--below {
+    border: none;
+    border-radius: 3px;
+    box-shadow: 0px 8px 20px 0px rgba(0, 0, 0, 0.15);
+    border: 1px solid #e0e0e0;
+    margin-top: 5px;
+    overflow: hidden;
 }

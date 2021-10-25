@@ -15,12 +15,16 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path,include
+from stackoverflow import settings
+from django.conf.urls.static import static
 from django.views.generic.base import TemplateView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('home/', TemplateView.as_view(template_name='discover.html'), name='home'),
     path('question/', include("questions.urls")),
-    path('editor/', TemplateView.as_view(template_name='editor.html'), name='editor'),
-    path('', include("users.urls")),
+    path('user/', include("users.urls")),
 ]
+
+if settings.DEBUG:
+	urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -13,7 +13,7 @@ urlpatterns = [
         views.activate, name='activate'),
     url(r'^users/check_username/(?P<username>.*)/$',views.check_username, name='check_username'),
     url(r'^users/check_email/(?P<email>.*)/$',views.check_email, name='check_email'),
-    path('', views.signin, name='signin'),
+    path('', views.signin),
 ]
 
 if settings.DEBUG:
