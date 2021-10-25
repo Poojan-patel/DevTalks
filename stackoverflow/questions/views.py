@@ -83,7 +83,7 @@ def add_question(request):
           body = request.POST['jsonData']
           question = Question(user_id=user_id, title=title, body=body)
           question.save()
-          messages.success(request,'Question asked Successfully')
+          messages.success(request,'Question added successfully')
 
      return redirect('feed')
      
@@ -96,7 +96,7 @@ def add_answer(request, question_id):
 
           answer = Answer(user_id=user_id, body=body, question_id=question_id)
           answer.save()
-          messages.success(request, 'Answer Conveyed Successfully')
+          messages.success(request, 'Answer added successfully')
           
           return redirect('home')
 
