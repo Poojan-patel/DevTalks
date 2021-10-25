@@ -219,12 +219,14 @@ def profile(request):
         messages.error(request,'Failed to update Profile... Try Again')
 
     current_user = request.user
-    users = Answer.objects.filter(is_accepted=True).values('user').annotate(ac_count=Count('user')).order_by('-ac_count')
-    num_of_users = len(users)
-    current_user_index = next((index for index in range(num_of_users) if users[index]['user'] == current_user.id), None)
+    # users = Answer.objects.filter(is_accepted=True).values('user').annotate(ac_count=Count('user')).order_by('-ac_count')
+    # num_of_users = len(users)
+    # current_user_index = next((index for index in range(num_of_users) if users[index]['user'] == current_user.id), None)
 
-    rank = round(current_user_index / num_of_users * 100)
-    badge = 'Gold' if rank <= 10 else 'Silver' if rank <= 25 else 'Bronze' if rank <= 50 else None
+    # rank = round(current_user_index / num_of_users * 100)
+    # badge = 'Gold' if rank <= 10 else 'Silver' if rank <= 25 else 'Bronze' if rank <= 50 else None
+
+    badge = "Silver"
 
     # print(users)
     # print(num_of_users, current_user_index)

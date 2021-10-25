@@ -55,14 +55,24 @@ active
                 <div class="row">
                     <div class="col-md-3 col-12 ">
                         <div class="form-row justify-content-center">
-                            <div class="col-8 shadow p-3 rounded">
+                            <div class="col-md-10 col-8 shadow p-3 rounded">
                                 <img id="profile" src="{{ user.profile_picture.url }}" class="w-100" alt="Profile Photo">
                             </div>
-                            <div class="col-8 form-group field--not-empty pt-4">
+                            <div class="col-md-10 col-8 form-group field--not-empty pt-4">
                                 {% comment %} <label for="profilepicture">Profile Picture</label> {% endcomment %}
                                 <input type="file" onchange="renderImage(this);" class="form-control w-100" id="profilepicture" name="profilepicture">
                                 <span class="btn btn-primary btn-change-profile text-center py-2 w-100">Change Profile</span>
                                 {% comment %} <span class="py-2 w-100" id="filename"></span> {% endcomment %}
+                            </div>
+                            <div class="col-md-10 col-8 form-group field--not-empty text-center pt-4">
+                                {% if badge == "Gold" %}
+                                    <img src="{% static 'img/gold.png' %}" class="w-50" alt="Gold Badges" draggable="false">
+                                {% elif badge == "Silver" %}
+                                    <img src="{% static 'img/silver.png' %}" class="w-50" alt="Silver Badges" draggable="false">
+                                {% elif badge == "Bronze" %}
+                                    <img src="{% static 'img/bronze.png' %}" class="w-50" alt="Bronze Badges" draggable="false">
+                                {% else %}
+                                {% endif %}
                             </div>
                         </div>
                     </div>

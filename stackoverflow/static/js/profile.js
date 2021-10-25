@@ -71,6 +71,10 @@
         console.log(err);
     }
     
+    // $('.badge').bind("contextmenu",function(e){
+    //     return false;
+    // });
+
     $('.btn-change-profile').click(function() {
         $('#profilepicture').click();
     });
