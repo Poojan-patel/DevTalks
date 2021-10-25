@@ -57,6 +57,14 @@ active
                         <div class="form-row justify-content-center">
                             <div class="col-md-10 col-8 shadow p-3 rounded">
                                 <img id="profile" src="{{ user.profile_picture.url }}" class="w-100" alt="Profile Photo">
+                                {% if badge == "Gold" %}
+                                    <img src="{% static 'img/gold.png' %}" class="badge-profile" alt="Gold Badges" draggable="false">
+                                {% elif badge == "Silver" %}
+                                    <img src="{% static 'img/silver.png' %}" class="badge-profile" alt="Silver Badges" draggable="false">
+                                {% elif badge == "Bronze" %}
+                                    <img src="{% static 'img/bronze.png' %}" class="badge-profile" alt="Bronze Badges" draggable="false">
+                                {% else %}
+                                {% endif %}
                             </div>
                             <div class="col-md-10 col-8 form-group field--not-empty pt-4">
                                 {% comment %} <label for="profilepicture">Profile Picture</label> {% endcomment %}
@@ -64,16 +72,16 @@ active
                                 <span class="btn btn-primary btn-change-profile text-center py-2 w-100">Change Profile</span>
                                 {% comment %} <span class="py-2 w-100" id="filename"></span> {% endcomment %}
                             </div>
-                            <div class="col-md-10 col-8 form-group field--not-empty text-center pt-4">
+                            {% comment %} <div class="col-md-10 col-8 form-group field--not-empty text-center pt-4">
                                 {% if badge == "Gold" %}
-                                    <img src="{% static 'img/gold.png' %}" class="w-50" alt="Gold Badges" draggable="false">
+                                    <img src="{% static 'img/gold.png' %}" class="badge-custom" alt="Gold Badges" draggable="false">
                                 {% elif badge == "Silver" %}
-                                    <img src="{% static 'img/silver.png' %}" class="w-50" alt="Silver Badges" draggable="false">
+                                    <img src="{% static 'img/silver.png' %}" class="badge-custom" alt="Silver Badges" draggable="false">
                                 {% elif badge == "Bronze" %}
-                                    <img src="{% static 'img/bronze.png' %}" class="w-50" alt="Bronze Badges" draggable="false">
+                                    <img src="{% static 'img/bronze.png' %}" class="badge-custom" alt="Bronze Badges" draggable="false">
                                 {% else %}
                                 {% endif %}
-                            </div>
+                            </div> {% endcomment %}
                         </div>
                     </div>
                     <div class="col-md-9 col-12 mt-md-0 mt-4">
@@ -95,7 +103,7 @@ active
                                 <input type="text" value="{{ user.last_name }}" class="form-control w-100" id="lastname" name="lastname" required>
                             </div>
                         </div>
-                        <div class="form-row mt-md-4 mt-0">
+                        <div class="form-row mt-md-4 mt-3">
                             <div class="col-md-4 col-12 form-group field--not-empty mt-md-0 mt-3">
                                 <label for="username">Username</label>
                                 {% comment %} <span class="form-control text-muted w-100 pt-2 input-disabled">{{ user.username }}</span> {% endcomment %}
@@ -107,7 +115,7 @@ active
                                 <input type="text" value="{{ user.email }}" class="form-control text-muted w-100 input-disabled" id="email" name="email" readonly required>
                             </div>
                         </div>
-                        <div class="form-row justify-content-between mt-md-4 mt-0">
+                        <div class="form-row justify-content-between mt-md-4 mt-3">
                             <div class="col-md-3 col-12 form-group d-flex align-items-center mt-md-0 mt-3 field--not-empty">
                                 <label for="birthdate">Birthdate</label>
                                 <input value="{{ user.birth_date|date:"d/m/Y" }}" class="form-control js-datepicker pt-1" type="text" id="birthdate" name="birthdate" pattern="^(0?[1-9]|[12][0-9]|3[01])[\/\-](0?[1-9]|1[012])[\/\-]\d{4}$">
@@ -154,7 +162,7 @@ active
                                 {% endif %}  
                             </div>
                         </div>
-                        <div class="form-row mt-md-4 mt-0">
+                        <div class="form-row mt-md-4 mt-3">
                             <div class="col-md-4 col-12 form-group field--not-empty">
                                 <label for="mobilenumber">Mobile Number</label>
                                 {% if user.mobile_number %}
@@ -180,7 +188,7 @@ active
                                 {% endif %}
                             </div>
                         </div>
-                        <div class="form-row mt-md-4 mt-0">
+                        <div class="form-row mt-md-4 mt-3">
                             <div class="col-md-4 col-12 form-group field--not-empty">
                                 <label for="pincode">Pincode</label>
                                 {% if user.pincode %}
@@ -206,7 +214,7 @@ active
                                 {% endif %}
                             </div>
                         </div>
-                        <div class="row mt-md-3 mt-2">
+                        <div class="row mt-md-3 mt-3">
                             <div class="form-group col-12">
                                 {% if user.skills|slice:"1:-1" %}
                                     <input type="text" value="{{ user.skills|slice:"1:-1" }}" name="skills" class="form-control" placeholder="Add Skills" data-role="tagsinput" style="font-size:15px;">
@@ -217,7 +225,7 @@ active
                                 
                             </div>
                         </div>
-                        <div class="form-row mt-md-3 mt-2">
+                        <div class="form-row mt-md-3 mt-3">
                             <div class="col-12 form-group field--not-empty">
                                 <label for="bio" class="pb-5">Bio</label>
                                 {% if user.bio %}    
@@ -227,7 +235,7 @@ active
                                 {% endif %}
                             </div>
                         </div>
-                        <div class="form-row mt-md-3 mt-2 justify-content-center">
+                        <div class="form-row mt-md-3 mt-3 justify-content-center">
                             <div class="col-md-3 col-12">
                                 <input type="submit" value="Update" class="btn text-white btn-block btn-primary">
                             </div>

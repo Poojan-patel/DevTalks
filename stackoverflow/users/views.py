@@ -12,7 +12,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.conf import settings
 from .tokens import account_activation_token
 from .models import User
-from questions.models import Answer
+from questions.models import Question, Answer
 from django.db.models import Count
 import json
 import datetime
@@ -42,7 +42,8 @@ def signin(request):
             messages.error(request,'Invalid username or password')
             return redirect('signin')
 
-        return render(request, 'feed.html', { 'user': request.user })
+        questions = Question.objects.filter().all()
+        return render(request, 'feed.html', { 'user': request.user, 'questions':questions })
 
     return render(request, 'signin.html')
 
@@ -226,7 +227,7 @@ def profile(request):
     # rank = round(current_user_index / num_of_users * 100)
     # badge = 'Gold' if rank <= 10 else 'Silver' if rank <= 25 else 'Bronze' if rank <= 50 else None
 
-    badge = "Silver"
+    badge = "Bronze"
 
     # print(users)
     # print(num_of_users, current_user_index)
