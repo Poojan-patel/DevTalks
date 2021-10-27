@@ -93,7 +93,7 @@ Question | Read | StackOverflow
     </div>
 </div>
 <div class="all-rendered-answer">
-{% for ans in question.answers.all %}
+{% for ans in answers %}
     <div class="content bg-answer p-5" id="x{{ans.id}}">
         <div style="display:none">{{ans.body}}</div>
         <div class="container-fluid contents w-100">

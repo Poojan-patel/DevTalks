@@ -9,6 +9,11 @@ class Question(models.Model):
      user      = models.ForeignKey(User, on_delete=models.CASCADE,          blank=True, null=True, related_name="user")
      title     = models.CharField(verbose_name='Title',     name='title',   blank=False, null=False, max_length=100)
      body      = models.TextField(verbose_name='Body',      name='body',    blank=False, null=False)
+     createdAt = models.DateTimeField(auto_now_add=True)
+     updatedAt = models.DateTimeField(auto_now=True)
+
+     class Meta:
+          ordering = ['-updatedAt']
 
 class Tag(models.Model):
      question      = models.ForeignKey(verbose_name='QuestionID',  name='question_id', to=Question, related_name='tags', on_delete=models.CASCADE, blank=False, null=False)
@@ -23,6 +28,8 @@ class Answer(models.Model):
      body        = models.TextField(verbose_name='Body',          name='body',        blank=False, null=False)
      user        = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)
      is_accepted = models.BooleanField(verbose_name='IsAccepted', name='is_accepted', default=False, blank=False, null=False)
+     createdAt = models.DateTimeField(auto_now_add=True)
+     updatedAt = models.DateTimeField(auto_now=True)
 
 class Like(models.Model):
      user     = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)

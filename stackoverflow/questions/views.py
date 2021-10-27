@@ -4,6 +4,7 @@ from django.views.decorators.csrf import csrf_exempt
 from questions.models import Question, Tag, Answer, Like, Upvote, Image
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.db.models import Count
 
 import io, time
 from django.core.files.storage import default_storage
@@ -35,7 +36,11 @@ def read(request,uuid):
      # print(data.user_id)
      # data.delete()
      # print(data.title)
-     return render(request, 'questionRead.html', { 'question' : data })
+     answers = data.answers.all()\
+               .annotate(num_likes=Count('upvotes'))\
+               .order_by('-num_likes')
+     print(answers)
+     return render(request, 'questionRead.html', { 'question' : data, 'answers': answers })
 
 @csrf_exempt
 def upload_img(request):
