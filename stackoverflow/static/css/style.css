@@ -20,6 +20,10 @@ a:hover {
     padding: 5rem 0;
 }
 
+.bg-question {
+    background-color: #87e9fd30;
+}
+
 .bg-answer {
     background-color: #fff;
 }
@@ -259,11 +263,13 @@ h2 {
     font-size: 10px;
 }
 
+.btn-primary,
 .card.card-style .btn-primary {
     background: #38d39f;
     color: #fff;
 }
 
+.btn-primary:hover,
 .card.card-style .btn-primary:hover,
 .content .contents .btn-change-profile:hover {
     background: #29bb8a;

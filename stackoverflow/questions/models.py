@@ -11,7 +11,7 @@ class Question(models.Model):
      body      = models.TextField(verbose_name='Body',      name='body',    blank=False, null=False)
 
 class Tag(models.Model):
-     question_id    = models.ForeignKey(verbose_name='QuestionID',  name='question_id', to=Question, on_delete=models.CASCADE, blank=False, null=False)
+     question      = models.ForeignKey(verbose_name='QuestionID',  name='question_id', to=Question, related_name='tags', on_delete=models.CASCADE, blank=False, null=False)
      tag           = models.CharField(verbose_name='TagName',       name='tag', max_length=30, blank=False, null=False)
 
      class Meta:

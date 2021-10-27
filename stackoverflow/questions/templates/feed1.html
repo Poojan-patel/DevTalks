@@ -6,6 +6,11 @@
                <li>UserID: {{q.user_id}}</li>
                <li>Body: {{q.body}}</li>
                <li>Likes: {{q.likes.all | length}}</li>
+               <ol>
+               {% for tag in q.tags.all %}
+                    <li>Tags: {{ tag.tag }}</li>
+               {% endfor %}
+               </ol>
                <ol id="hey">
                     {% for a in q.answers.all %}
                     <li>

@@ -42,8 +42,7 @@ def signin(request):
             messages.error(request,'Invalid username or password')
             return redirect('signin')
 
-        questions = Question.objects.filter().all()
-        return render(request, 'feed.html', { 'user': request.user, 'questions':questions })
+        return redirect('feed')
 
     return render(request, 'signin.html')
 

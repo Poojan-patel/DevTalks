@@ -1,7 +1,7 @@
 from django.http.response import HttpResponse, JsonResponse, FileResponse
 from django.shortcuts import redirect, render
 from django.views.decorators.csrf import csrf_exempt
-from questions.models import Question, Answer, Like, Upvote, Image
+from questions.models import Question, Tag, Answer, Like, Upvote, Image
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 
@@ -81,29 +81,66 @@ def add_question(request):
      if user_id is not None:
           title = request.POST['questionTitle']
           body = request.POST['jsonData']
+          tags = request.POST['questionTag'].split(",")
           question = Question(user_id=user_id, title=title, body=body)
           question.save()
+          
+          for tag in tags:
+               obj = Tag(question_id=question, tag=tag)
+               obj.save()
+
           messages.success(request,'Question added successfully')
 
      return redirect('feed')
+
+@login_required(login_url='signin')
+def edit_question(request, uuid):
+     data = Question.objects.filter(id=uuid).first()
      
+     if request.method == "POST":
+          myuser = request.user
+          username = myuser.username
+
+          if username == data.user.username:
+               data.title = request.POST['questionTitle']
+               # if user_id data.user.id:
+               data.body = request.POST['jsonData']
+               tags = request.POST['questionTag'].split(",")
+               Tag.objects.filter(question_id=data).delete()
+               for tag in tags:
+                    obj = Tag(question_id=data, tag=tag)
+                    obj.save()
+               data.save()
+               messages.success(request,'Question Updated successfully')
+
+               return redirect('read', uuid=uuid)
+          
+          messages.error(request,'Please Update your Question Only')
+          return redirect('read', uuid=uuid)
+               
+     return render(request, 'questionEdit.html', { 'question': data })
+
+
 @login_required(login_url='signin')
 def add_answer(request, question_id):
      if request.method == "POST":
+          question = Question.objects.filter(id=question_id).first()
           myuser = request.user
-          user_id = myuser.user_id
-          body = request.POST['body'].strip()
+          # print(myuser.username)
+          body = request.POST['jsonData'].strip()
+          print(body)
 
-          answer = Answer(user_id=user_id, body=body, question_id=question_id)
+          answer = Answer(user=myuser, body=body, question_id=question)
           answer.save()
           messages.success(request, 'Answer added successfully')
           
-          return redirect('home')
+          return redirect('read', uuid=question.id)
 
-     return redirect('home')
+     return redirect('feed')
 
 def get_feed(request):
      questions = Question.objects.all()
+     # print(questions[0].tags)
      return render(request, 'feed.html', { 'questions' : questions })
 
 @login_required(login_url='signin')

@@ -1,21 +1,47 @@
 {% extends 'navbar.html' %}
 
 {% block title %}
-Question | Editor | StackOverflow
+Question | Read | StackOverflow
 {% endblock title %}
 
 {% block css %}
 <link href="https://fonts.googleapis.com/css?family=PT+Mono" rel="stylesheet">
 
 {% load static %}
-<link rel="stylesheet" href="{% static '/css/navbar.css' %}">
-<link rel="stylesheet" href="{% static '/css/style.css' %}">
 <link rel="stylesheet" href="{% static '/css/editor.css' %}">
 <link rel="stylesheet" href="{% static '/bootstrap-tagsinput/dist/bootstrap-tagsinput.css' %}">
+<link rel="stylesheet" href="{% static '/css/navbar.css' %}">
+<link rel="stylesheet" href="{% static '/css/style.css' %}">
 {% endblock css %}
 
 {% block content %}
-<div class="content p-5">
+{% for message in messages %}
+    <div class="container">
+        <div class="row">
+            <div class="col-12 my-3">
+                <div class="alert alert-{{ message.tags }}">
+                    <div class="container">
+                        <div class="d-flex align-items-center">
+                            <span class="alert-icon d-flex w-75">
+                                <i class="bi bi-info-square-fill alert-error-icon"></i>
+                                <p class="mb-0 ml-2 alert-message"><b>Message: </b>{{ message }}</p>
+                            </span>
+                            <span class="ml-auto text-right w-25">
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">
+                                        <i class="bi bi-x alert-close-icon"></i>
+                                    </span>
+                                </button>
+                            </span>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endfor %}
+<div class="content bg-question p-5">
     <div class="container-fluid contents w-100">
         <div class="row">
             <div class="col-12">
@@ -25,22 +51,17 @@ Question | Editor | StackOverflow
                 </div>
             </div>
             <div class="col-12 field--not-empty text-right">
-                <span class="badge-secondary py-1 px-2 rounded">MVC</span>
-                <span class="badge-secondary py-1 px-2 rounded">MVT</span>
-                <span class="badge-secondary py-1 px-2 rounded">Django</span>
-                <span class="badge-secondary py-1 px-2 rounded">Node.js</span>
-                <span class="badge-secondary py-1 px-2 rounded">React</span>
-                <span class="badge-secondary py-1 px-2 rounded">MVC</span>
-                <span class="badge-secondary py-1 px-2 rounded">MVT</span>
-                <span class="badge-secondary py-1 px-2 rounded">Django</span>
-                <span class="badge-secondary py-1 px-2 rounded">Node.js</span>
-                <span class="badge-secondary py-1 px-2 rounded">React</span>
+                {% for tag in question.tags.all %}
+                    {% if tag.tag|length %}
+                        <span class="badge-secondary py-1 px-2 rounded">{{ tag.tag }}</span>
+                    {% endif %}
+                {% endfor %}
             </div>
         </div>
-        <div class="container-fluid p-0 m-0 ce-example">
+        <div class="container-fluid p-0 ce-example">
             <div class="ce-example__content _ce-example__content--small">
                 <div class="row">
-                    <div class="col-12" id="editorjs"></div>
+                    <div class="col-12" id="editorjs-que"></div>
                 </div>
                 {% comment %} <div class="row">
                     <div class="col-sm-6 col-12 justify-content-right">
@@ -84,7 +105,7 @@ Question | Editor | StackOverflow
                     </div>
                 </div>
             </div>
-            <div class="container-fluid p-0 m-0 ce-example">
+            <div class="container-fluid p-0 ce-example">
                 <div class="ce-example__content _ce-example__content--small">
                     <div class="row">
                         <div class="col-12" id="editorjs-x{{ans.id}}"></div>
@@ -120,53 +141,79 @@ Question | Editor | StackOverflow
     </div>
 {% endfor %}
 </div>
-<div class="content bg-answer p-5">
-    <div class="container-fluid contents w-100">
-        <form method="POST" action="{% url 'add_answer' %}" onsubmit="post()">
-        {% csrf_token %}
-            <div class="row">
-                <div class="col-12">
-                    <div class="form-group question-title field--not-empty">
-                        <label style="font-size: 15px;">Give your Answer</label>
-                        <span class="form-control pt-2" style="font-size: 25px;">{{ user.username }}</span>
+{% if user.is_authenticated %}
+    <div class="content bg-answer p-5">
+        <div class="container-fluid contents w-100">
+            <form method="POST" action="{% url 'add_answer' question.id %}" onsubmit="return post()">
+            {% csrf_token %}
+                <div class="row">
+                    <div class="col-12">
+                        <div class="form-group question-title field--not-empty">
+                            <label style="font-size: 15px;">Give your Answer</label>
+                            <span class="form-control pt-2" style="font-size: 25px;">{{ user.username }}</span>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="container-fluid p-0 m-0 ce-example">
-                <div class="ce-example__content _ce-example__content--small">
-                    <div class="row">
-                        <div class="col-12" id="editorjs-ans"></div>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-6 col-12 justify-content-right">
-                            <div class="ce-example__button" id="saveButton">
-                                Save
+                <div class="container-fluid p-0 ce-example">
+                    <div class="ce-example__content _ce-example__content--small">
+                        <div class="row justify-content-center">
+                            <div class="col-lg-8 col-12 h5 font-weight-bold">
+                                Type your answer here
                             </div>
                         </div>
-                        <div class="col-sm-6 col-12 text-left">
-                            <div class="ce-example2__button">
-                                <input type="submit" value="Post"
-                                    style="background: transparent; border: 0; color: #fff; font-family: 'PT Mono', Menlo, Monaco, Consolas, Courier New, monospace;">
+                        <div class="row">
+                            <div class="col-12" id="editorjs"></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 sr-only">
+                                <textarea name="jsonData" class="w-100" id="jsonData" readonly></textarea>
+                            </div>
+                            <div class="col-12 error-message text-center">
+                                <p class="font-weight-bold text-danger h4 mb-5" id="contentEmpty"></p>
+                            </div>
+                            {% comment %} <div class="col-sm-6 col-12 justify-content-right">
+                                <div class="ce-example__button" id="saveButton">
+                                    Save
+                                </div>
+                            </div> {% endcomment %}
+                            <div class="col-sm-12 col-12 text-left">
+                                <div class="ce-example2__button">
+                                    <input type="submit" value="Post"
+                                        style="background: transparent; border: 0; color: #fff; font-family: 'PT Mono', Menlo, Monaco, Consolas, Courier New, monospace;">
+                                </div>
                             </div>
                         </div>
+                        {% comment %} <div class="ce-example__statusbar">
+                            Readonly:
+                            <strong id="readonly-state">
+                                Off
+                            </strong>
+                            <div class="ce-example__statusbar-button" id="toggleReadOnlyButton">
+                                toggle
+                            </div>
+                        </div> {% endcomment %}
                     </div>
-                    {% comment %} <div class="ce-example__statusbar">
-                        Readonly:
-                        <strong id="readonly-state">
-                            Off
-                        </strong>
-                        <div class="ce-example__statusbar-button" id="toggleReadOnlyButton">
-                            toggle
-                        </div>
-                    </div> {% endcomment %}
                 </div>
-            </div>
-            {% comment %} <div class="ce-example__output">
-                <pre class="ce-example__output-content" id="output"></pre>
-            </div> {% endcomment %}
-        </form>
+                {% comment %} <div class="ce-example__output">
+                    <pre class="ce-example__output-content" id="output"></pre>
+                </div> {% endcomment %}
+            </form>
+        </div>
     </div>
-</div>
+{% else %}
+    <div class="bg-answer p-5">
+        <div class="row">
+            <div class="col-12 h4 text-center">
+                To give your Answer first Sign In by click on the below button
+            </div>
+            <div class="col-12 text-center mt-4">
+                <a href="{% url 'signin' %}">
+                    <span class="btn btn-primary">Sign In</span>
+                </a>
+            </div>
+        </div>
+    </div>
+{% endif %}
 {% endblock content %}
 
 {% block js %}
@@ -208,6 +255,13 @@ Question | Editor | StackOverflow
                 textarea.innerHTML = blocksData;
             }
         );
+        data = document.getElementById("jsonData").value;
+        // console.log(data.length);
+        if(data.length <= 53) {
+            document.getElementById("contentEmpty").innerHTML = "Answer body is Empty";
+            return false;
+        }
+        return true;
     }
     answerr = document.querySelector('.all-rendered-answer').children
     for(var i = 0; i < answerr.length; i++){
@@ -296,9 +350,9 @@ Question | Editor | StackOverflow
     });
     }
 
-    var editorans = new EditorJS({
+    var editor = new EditorJS({
         readOnly: false,
-        holder: 'editorjs-ans',
+        holder: 'editorjs',
         tools: {
             header: {
                 class: Header,
@@ -369,7 +423,8 @@ Question | Editor | StackOverflow
             },
 
         },
-        data : {"time":1635174034630,"blocks":[{"id":"jsRrqu9rdl","type":"header","data":{"text":"Type Here your Answer","level":4}}]},
+        data : {
+        },
         onReady: function () {
             saveButton.click();
         },
@@ -384,9 +439,9 @@ Question | Editor | StackOverflow
      * To initialize the Editor, create a new instance with configuration object
      * @see docs/installation.md for mode details
      */
-    var editor = new EditorJS({
+    var editorque = new EditorJS({
         readOnly: false,
-        holder: 'editorjs',
+        holder: 'editorjs-que',
         tools: {
            
             header: {
@@ -559,5 +614,18 @@ Question | Editor | StackOverflow
 
         return module;
     })({});
+</script>
+<script>
+    var extraSpace = document.querySelectorAll('.codex-editor__redactor');
+    var i = 0
+    for(i;i<extraSpace.length;i++) {
+        // Both Method will Work
+        // // Method 1
+        // extraSpace[i].style.cssText = "padding-bottom: 100px";
+        // // Method 2
+        extraSpace[i].style.paddingBottom = "0px";
+    }
+    if(extraSpace.length > 1)
+        extraSpace[extraSpace.length-1].style.paddingBottom = "200px";
 </script>
 {% endblock js %}

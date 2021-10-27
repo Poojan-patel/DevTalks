@@ -38,7 +38,6 @@
                                     </button>
                                 </span>
                             </div>
-                            
                         </div>
                     </div>
                 </div>
@@ -67,27 +66,41 @@
                                 iste nostrum nisi! Pariatur, suscipit at. Ad, beatae deleniti animi laboriosam vitae unde
                             </p> {% endcomment %}
                             <div class="row">
-                                <div class="col-md-4 text-md-left text-center">
-                                    <a href="{% url 'read' uuid=que.id %}" class="btn btn-primary">Read More</a>
-                                </div>
-                                <div class="col-md-8 text-md-right mt-md-0 mt-3">
-                                    <span class="badge-secondary py-1 px-2 rounded">MVC</span>
-                                    <span class="badge-secondary py-1 px-2 rounded">MVT</span>
-                                    <span class="badge-secondary py-1 px-2 rounded">Django</span>
-                                    <span class="badge-secondary py-1 px-2 rounded">Node.js</span>
-                                    <span class="badge-secondary py-1 px-2 rounded">React</span>
-                                    <span class="badge-secondary py-1 px-2 rounded">MVC</span>
-                                    <span class="badge-secondary py-1 px-2 rounded">MVT</span>
-                                    <span class="badge-secondary py-1 px-2 rounded">Django</span>
-                                    <span class="badge-secondary py-1 px-2 rounded">Node.js</span>
-                                    <span class="badge-secondary py-1 px-2 rounded">React</span>
+                                <div class="col-md-12">
+                                    {% for tag in que.tags.all %}
+                                        {% if tag.tag|length %}
+                                            <span class="badge-secondary py-1 px-2 rounded">{{ tag.tag }}</span>
+                                        {% endif %}
+                                    {% endfor %}
                                 </div>
                             </div>
+                            {% if user.is_authenticated and que.user.username == user.username %}
+                                <div class="row justify-content-center mt-4">
+                                    <div class="col-sm-6 col-12 text-center">
+                                        <a href="{% url 'read' uuid=que.id %}" class="btn btn-primary">Read More</a>
+                                    </div>
+                                    <div class="col-sm-6 col-12 mt-sm-0 mt-3 text-center">
+                                        <a href="{% url 'question_edit' uuid=que.id %}" class="btn btn-warning text-white">Edit Question</a>
+                                    </div>
+                                    {% comment %} <div class="col-6 text-left">
+                                        <a href="" class="btn btn-danger">Delete</a>
+                                    </div> {% endcomment %}
+                                </div>
+                            {% else %}
+                                <div class="row justify-content-center mt-4">
+                                    <div class="col-12 text-center">
+                                        <a href="{% url 'read' uuid=que.id %}" class="btn btn-primary">Read More</a>
+                                    </div>
+                                    {% comment %} <div class="col-6 text-left">
+                                        <a href="" class="btn btn-danger">Delete</a>
+                                    </div> {% endcomment %}
+                                </div>
+                            {% endif %}
                         </div>
                         <div class="card-footer d-flex align-items-center">
                             <span class="w-50">
                                 <button type="button" class="btn px-1 py-0">
-                                    <i class="bi bi-star-fill likes"></i>
+                                    <i class="bi bi-star-fill likes text-warning"></i>
                                     <span class="mx-1">{{ que.likes.all|length }}</span>
                                 </button>
                                 {% comment %} <button type="button" class="btn px-1 py-0">
@@ -104,7 +117,7 @@
                                 </button> {% endcomment %}
                             </span>
                             <span class="text-right text-muted w-50">
-                                Oct 10, 2021
+                                {{ que.post_on }}
                             </span>
                         </div>
                     </div>

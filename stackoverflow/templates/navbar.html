@@ -34,7 +34,7 @@
                                 </li>
                                 {% if user.is_authenticated %}
                                     <li class="nav-item d-flex {% block QuestionActive %}{% endblock QuestionActive %}">
-                                        <a class="nav-link d-flex align-items-center" href="{% url 'question' %}">
+                                        <a class="nav-link d-flex align-items-center" href="{% url 'question_read' %}">
                                             Ask Question
                                             {% block QuestionCurrent %}{% endblock QuestionCurrent %}
                                         </a>

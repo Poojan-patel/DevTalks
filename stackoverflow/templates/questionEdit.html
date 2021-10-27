@@ -1,38 +1,68 @@
 {% extends 'navbar.html' %}
 
 {% block title %}
-Question | Editor | StackOverflow
+Question | Edit | StackOverflow
 {% endblock title %}
 
 {% block css %}
 <link href="https://fonts.googleapis.com/css?family=PT+Mono" rel="stylesheet">
 
 {% load static %}
-<link rel="stylesheet" href="{% static '/bootstrap-tagsinput/dist/bootstrap-tagsinput.css' %}">
 <link rel="stylesheet" href="{% static '/css/editor.css' %}">
+<link rel="stylesheet" href="{% static '/bootstrap-tagsinput/dist/bootstrap-tagsinput.css' %}">
 <link rel="stylesheet" href="{% static '/css/navbar.css' %}">
 <link rel="stylesheet" href="{% static '/css/style.css' %}">
 {% endblock css %}
 
 {% block content %}
-<div class="content p-5">
+{% for message in messages %}
+    <div class="container">
+        <div class="row">
+            <div class="col-12 my-3">
+                <div class="alert alert-{{ message.tags }}">
+                    <div class="container">
+                        <div class="d-flex align-items-center">
+                            <span class="alert-icon d-flex w-75">
+                                <i class="bi bi-info-square-fill alert-error-icon"></i>
+                                <p class="mb-0 ml-2 alert-message"><b>Message: </b>{{ message }}</p>
+                            </span>
+                            <span class="ml-auto text-right w-25">
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">
+                                        <i class="bi bi-x alert-close-icon"></i>
+                                    </span>
+                                </button>
+                            </span>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endfor %}
+<div class="content bg-question p-5">
     <div class="container-fluid contents w-100">
-        <form method="POST" action="{% url 'add_question' %}" onsubmit="post()">
-        {% csrf_token %}
+        <form method="POST" action="{% url 'question_edit' uuid=question.id %}" onsubmit="post()">
+            {% csrf_token %}
             <div class="row">
                 <div class="col-12">
-                    <div class="form-group question-title">
+                    <div class="form-group question-title field--not-empty">
                         <label style="font-size: 15px;">Question Title</label>
-                        <input type="text" name="questionTitle" class="form-control" style="font-size: 30px;" required>
+                        <input type="text" value="{{ question.title }}" name="questionTitle" class="form-control" style="font-size: 30px;">
                     </div>
                 </div>
                 <div class="col-12">
                     <div class="form-group">
-                        <input type="text" name="questionTag" class="form-control" placeholder="Tags" data-role="tagsinput" size="10" style="font-size:15px;">
+                        <input type="text" value="
+                            {% for tag in question.tags.all %}
+                                {{ tag.tag }},
+                            {% endfor %}
+                        " name="questionTag" class="form-control" placeholder="Tags" data-role="tagsinput" size="10" style="font-size:15px;">
                     </div>
                 </div>
             </div>
-            <div class="container-fluid p-0 m-0 ce-example">
+            <div class="container-fluid p-0 ce-example">
                 <div class="ce-example__content _ce-example__content--small">
                     <div class="row">
                         <div class="col-12" id="editorjs"></div>
@@ -41,32 +71,32 @@ Question | Editor | StackOverflow
                         <div class="col-12 sr-only">
                             <textarea name="jsonData" class="w-100" id="jsonData" readonly></textarea>
                         </div>
-                        <div class="col-sm-6 col-12 justify-content-right">
+                        {% comment %} <div class="col-sm-6 col-12 justify-content-right">
                             <div class="ce-example__button" id="saveButton">
                                 Save
                             </div>
-                        </div>
-                        <div class="col-sm-6 col-12 text-left">
+                        </div> {% endcomment %}
+                        <div class="col-sm-12 col-12 text-left">
                             <div class="ce-example2__button">
-                                <input type="submit" value="Post"
+                                <input type="submit" value="Update"
                                     style="background: transparent; border: 0; color: #fff; font-family: 'PT Mono', Menlo, Monaco, Consolas, Courier New, monospace;">
                             </div>
                         </div>
                     </div>
-                {% comment %} <div class="ce-example__statusbar">
-                    Readonly:
-                    <strong id="readonly-state">
-                        Off
-                    </strong>
-                    <div class="ce-example__statusbar-button" id="toggleReadOnlyButton">
-                        toggle
-                    </div>
-                </div> {% endcomment %}
+                    {% comment %} <div class="ce-example__statusbar">
+                        Readonly:
+                        <strong id="readonly-state">
+                            Off
+                        </strong>
+                        <div class="ce-example__statusbar-button" id="toggleReadOnlyButton">
+                            toggle
+                        </div>
+                    </div> {% endcomment %}
                 </div>
             </div>
-            {% comment %} <div class="ce-example__output">
-                <pre class="ce-example__output-content" id="output"></pre>
-            </div> {% endcomment %}
+        {% comment %} <div class="ce-example__output">
+            <pre class="ce-example__output-content" id="output"></pre>
+        </div> {% endcomment %}
         </form>
     </div>
 </div>
@@ -97,6 +127,11 @@ Question | Editor | StackOverflow
 
 <!-- Initialization -->
 <script>
+    const getEditorJS = (idd, data)=>{
+        
+    }
+</script>
+<script>
     function post() {
         textarea = document.getElementById("jsonData");
         editor.save().then(
@@ -107,38 +142,18 @@ Question | Editor | StackOverflow
             }
         );
     }
-</script>
+</script> 
 <script>
+    
     /**
      * To initialize the Editor, create a new instance with configuration object
      * @see docs/installation.md for mode details
      */
     var editor = new EditorJS({
-        /**
-         * Enable/Disable the read only mode
-         */
         readOnly: false,
-
-        /**
-         * Wrapper of Editor
-         */
         holder: 'editorjs',
-
-        /**
-         * Common Inline Toolbar settings
-         * - if true (or not specified), the order from 'tool' property will be used
-         * - if an array of tool names, this order will be used
-         */
-        // inlineToolbar: ['link', 'marker', 'bold', 'italic'],
-        // inlineToolbar: true,
-
-        /**
-         * Tools list
-         */
         tools: {
-            /**
-             * Each Tool is a Plugin. Pass them via 'class' option with necessary settings {@link docs/tools.md}
-             */
+           
             header: {
                 class: Header,
                 inlineToolbar: ['marker', 'link'],
@@ -148,9 +163,7 @@ Question | Editor | StackOverflow
                 shortcut: 'CMD+SHIFT+H'
             },
 
-            /**
-             * Or pass class directly without any configuration
-             */
+            
             image: {
                 class: ImageTool,
                 config: {
@@ -221,58 +234,7 @@ Question | Editor | StackOverflow
         /**
          * Initial Editor data
          */
-        data: {
-            "time": 1634802120656,
-            "blocks": [{
-                    "id": "jsRrqu9rdl",
-                    "type": "header",
-                    "data": {
-                        "text": "Type Here to Create a Question Content",
-                        "level": 4
-                    }
-                },
-                {
-                    "id": "1LWIXxfk2z",
-                    "type": "image",
-                    "data": {
-                        "file": {},
-                        "caption": "",
-                        "withBorder": false,
-                        "stretched": false,
-                        "withBackground": false
-                    }
-                },
-                {
-                    "id": "f7RBW0rGQh",
-                    "type": "paragraph",
-                    "data": {
-                        "text": "Question Body with Details"
-                    }
-                },
-    
-                {
-                    "id": "kMEFIdYwQT",
-                    "type": "list",
-                    "data": {
-                        "style": "unordered",
-                        "items": [
-                            "List 1",
-                            "List 2"
-                        ]
-                    }
-                },
-                
-                {
-                    "id": "5-3AyQRf1n",
-                    "type": "code",
-                    "data": {
-                        "code": "#include<stdio.h>\nint main()\n{\n  return 0;\n}"
-                    }
-                },
-                
-            ],
-            "version": "2.22.2"
-        },
+        data: JSON.parse("{{question.body|escapejs}}"),
         onReady: function () {
             saveButton.click();
         },
@@ -295,24 +257,24 @@ Question | Editor | StackOverflow
     /**
      * Saving example
      */
-    saveButton.addEventListener('click', function () {
-        editor.save()
-            .then((savedData) => {
-                cPreview.show(savedData, document.getElementById("output"));
-            })
-            .catch((error) => {
-                console.error('Saving error', error);
-            });
-    });
+    // saveButton.addEventListener('click', function () {
+    //     editor.save()
+    //         .then((savedData) => {
+    //             cPreview.show(savedData, document.getElementById("output"));
+    //         })
+    //         .catch((error) => {
+    //             console.error('Saving error', error);
+    //         });
+    // });
 
     /**
      * Toggle read-only example
      */
-    toggleReadOnlyButton.addEventListener('click', async () => {
-        const readOnlyState = await editor.readOnly.toggle();
+    // toggleReadOnlyButton.addEventListener('click', async () => {
+    //     const readOnlyState = await editor.readOnly.toggle();
 
-        readOnlyIndicator.textContent = readOnlyState ? 'On' : 'Off';
-    });
+    //     readOnlyIndicator.textContent = readOnlyState ? 'On' : 'Off';
+    // });
 </script>
 <script>
     /**
@@ -362,5 +324,9 @@ Question | Editor | StackOverflow
 
         return module;
     })({});
+</script>
+<script>
+    var extraSpace = document.querySelectorAll('.codex-editor__redactor');
+    extraSpace[0].style.paddingBottom = "100px";
 </script>
 {% endblock js %}
