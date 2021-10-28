@@ -11,8 +11,8 @@ urlpatterns = [
     path('profile/', views.profile, name='profile'),
     url(r'^activate/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,40})/$',
         views.activate, name='activate'),
-    url(r'^users/check_username/(?P<username>.*)/$',views.check_username, name='check_username'),
-    url(r'^users/check_email/(?P<email>.*)/$',views.check_email, name='check_email'),
+    path('check_username/<username>/',views.check_username, name='check_username'),
+    path('check_email/<email>/',views.check_email, name='check_email'),
     path('', views.signin),
 ]
 

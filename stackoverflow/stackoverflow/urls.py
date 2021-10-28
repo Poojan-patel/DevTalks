@@ -25,7 +25,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('feed/', views.get_feed, name='feed'),
     path('question/', include("questions.urls")),
-    path('user/', include("users.urls")),
+    url(r'^user.?/', include("users.urls")),
+    #path('user/', include("users.urls")),
     url(r'^.*$', errorView, name='catch-all'),
 ]
 
