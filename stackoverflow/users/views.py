@@ -19,6 +19,9 @@ import datetime
 
 
 def signin(request):
+    if(request.user.username != ""):
+        messages.info(request,"Signout First inorder to Signin")
+        return redirect('feed')
     if request.method == 'POST':
         username = request.POST['username'].strip()
         password = request.POST['password'].strip()
