@@ -100,7 +100,10 @@
                         <div class="card-footer d-flex align-items-center">
                             <span class="w-50">
                                 <button type="button" class="btn px-1 py-0">
-                                    <i class="bi bi-star-fill likes text-warning"></i>
+                                    {% comment %} {% if que.id in que.likes.user.all %} {% endcomment %}
+                                        <i class="bi bi-star-fill likes text-warning"></i>
+                                    {% comment %} {% else %}{% endif %} {% endcomment %}
+                                        {% comment %} <i class="bi bi-star-fill likes text-secondary"></i> {% endcomment %}
                                     <span class="mx-1">{{ que.likes.all|length }}</span>
                                 </button>
                                 {% comment %} <button type="button" class="btn px-1 py-0">
@@ -117,7 +120,7 @@
                                 </button> {% endcomment %}
                             </span>
                             <span class="text-right text-muted w-50">
-                                {{ que.post_on }}
+                                {{ que.createdAt|date:"d M Y H:i " }}
                             </span>
                         </div>
                     </div>
