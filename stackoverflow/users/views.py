@@ -154,7 +154,10 @@ def profile(request):
         username = request.POST['username'].strip()
         email = request.POST['email'].strip()
         birthdate = request.POST['birthdate'].strip()
-        age = int(request.POST['age'].strip().split()[0])
+        try :
+            age = int(request.POST['age'].strip().split()[0])
+        except:
+            age = 0
         bio = request.POST['bio'].strip()
         profession = request.POST['profession'].strip()
         organization = request.POST['organization'].strip()
@@ -183,6 +186,10 @@ def profile(request):
                 if birthdate:
                     date_format = '%d/%m/%Y'
                     user.birth_date = datetime.datetime.strptime(birthdate, date_format).date()
+                    if( user.birth_date > datetime.date.today()):
+                        print('here')
+                        user.birth_date = None
+                        age = 0
                 else:
                     user.birth_date = None
                 if age:
