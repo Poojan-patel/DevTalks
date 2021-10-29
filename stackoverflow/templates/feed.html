@@ -19,6 +19,7 @@
 {% endblock FeedCurrent %}
 
 {% block content %}
+    {% load custom_filter %}
     {% for message in messages %}
         <div class="container">
             <div class="row">
@@ -99,11 +100,15 @@
                         </div>
                         <div class="card-footer d-flex align-items-center">
                             <span class="w-50">
-                                <button type="button" class="btn px-1 py-0">
-                                    {% comment %} {% if que.id in que.likes.user.all %} {% endcomment %}
-                                        <i class="bi bi-star-fill likes text-warning"></i>
-                                    {% comment %} {% else %}{% endif %} {% endcomment %}
-                                        {% comment %} <i class="bi bi-star-fill likes text-secondary"></i> {% endcomment %}
+                                {% if que.likes.all|find_user:user.id %}
+                                <button type="button" class="btn px-1 py-0" onmouseover="displayDislikeBadge('{{que.id}}')" onmouseleave="removeDislikeBadge('{{que.id}}')">
+                                    <i class="bi bi-star-fill like" id="like-{{que.id}}"></i>
+                                    <span class="badge-dislike py-1 px-2 font-weight-bold rounded sr-only" id="{{que.id}}">Dislike</span>
+                                {% else %}
+                                <button type="button" class="btn px-1 py-0" onmouseover="displayLikeBadge('{{que.id}}')" onmouseleave="removeLikeBadge('{{que.id}}')">
+                                    <i class="bi bi-star-fill dislike" id="dislike-{{que.id}}"></i>
+                                    <span class="badge-like py-1 px-2 font-weight-bold rounded sr-only" id="{{que.id}}">Like</span>
+                                {% endif %}
                                     <span class="mx-1">{{ que.likes.all|length }}</span>
                                 </button>
                                 {% comment %} <button type="button" class="btn px-1 py-0">
@@ -129,3 +134,47 @@
         </div>
     </div>
 {% endblock content %}
+
+{% block js %}
+<script>
+    function displayLikeBadge(id) {
+        // console.log(id);
+        var badge = document.getElementById(id);
+        var dislike = document.getElementById('dislike-'+id);
+        badge.classList.add('hover-animation');
+        dislike.classList.remove('fill-color-dislike');
+        dislike.classList.add('fill-color-like');
+        badge.classList.remove('sr-only');
+    }
+
+    function removeLikeBadge(id) {
+        // console.log(id);
+        var badge = document.getElementById(id);
+        var dislike = document.getElementById('dislike-'+id);
+        badge.classList.remove('hover-animation');
+        dislike.classList.remove('fill-color-like');
+        dislike.classList.add('fill-color-dislike');
+        badge.classList.add('sr-only')
+    }
+
+    function displayDislikeBadge(id) {
+        // console.log(id);
+        var badge = document.getElementById(id);
+        var like = document.getElementById('like-'+id);
+        badge.classList.add('hover-animation');
+        like.classList.remove('fill-color-like');
+        like.classList.add('fill-color-dislike');
+        badge.classList.remove('sr-only');
+    }
+
+    function removeDislikeBadge(id) {
+        // console.log(id);
+        var badge = document.getElementById(id);
+        var like = document.getElementById('like-'+id);
+        like.classList.remove('fill-color-dislike');
+        like.classList.add('fill-color-like');
+        badge.classList.remove('hover-animation');
+        badge.classList.add('sr-only')
+    }
+</script>
+{% endblock js %}

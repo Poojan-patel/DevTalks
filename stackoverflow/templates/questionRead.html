@@ -15,6 +15,7 @@ Question | Read | StackOverflow
 {% endblock css %}
 
 {% block content %}
+{% load custom_filter %}
 {% for message in messages %}
     <div class="container">
         <div class="row">
@@ -91,8 +92,15 @@ Question | Read | StackOverflow
             <div class="col-12">
                 <div class="d-flex align-items-center">
                     <span class="w-50">
-                        <button type="button" class="btn px-1 py-0">
-                            <i class="bi bi-star-fill likes text-warning"></i>
+                        {% if question.likes.all|find_user:user.id %}
+                        <button type="button" class="btn px-1 py-0" onmouseover="displayDislikeBadge('{{question.id}}')" onmouseleave="removeDislikeBadge('{{question.id}}')">
+                            <i class="bi bi-star-fill like" id="like-{{question.id}}"></i>
+                            <span class="badge-dislike py-1 px-2 font-weight-bold rounded sr-only" id="{{question.id}}">Dislike</span>
+                        {% else %}
+                        <button type="button" class="btn px-1 py-0" onmouseover="displayLikeBadge('{{question.id}}')" onmouseleave="removeLikeBadge('{{question.id}}')">
+                            <i class="bi bi-star-fill dislike" id="dislike-{{question.id}}"></i>
+                            <span class="badge-like py-1 px-2 font-weight-bold rounded sr-only" id="{{question.id}}">Like</span>
+                        {% endif %}
                             <span class="mx-1">{{ question.likes.all|length }}</span>
                         </button>
                         {% comment %} <button type="button" class="btn px-1 py-0">
@@ -167,9 +175,16 @@ Question | Read | StackOverflow
                         <i class="bi bi-star-fill likes text-warning"></i>
                         <span class="mx-1">{{ que.likes.all|length }}</span>
                     </button> {% endcomment %}
-                    <button type="button" class="btn px-1 py-0">
-                        <em class="bi bi-caret-up-square-fill upvote"></em>
-                        <span class="mx-1">{{ ans.upvote.all|length }}</span>
+                    {% if ans.upvotes.all|find_user:user.id %}
+                    <button type="button" class="btn px-1 py-0" onmouseover="displayNoUpvoteBadge('{{ans.id}}')" onmouseleave="removeNoUpvoteBadge('{{ans.id}}')">
+                        <em class="bi bi-caret-up-square-fill upvote" id="upvote-{{ans.id}}"></em>
+                        <span class="badge-no-upvote py-1 px-2 font-weight-bold rounded sr-only" id="{{ans.id}}">Downvote</span>
+                    {% else %}
+                    <button type="button" class="btn px-1 py-0" onmouseover="displayUpvoteBadge('{{ans.id}}')" onmouseleave="removeUpvoteBadge('{{ans.id}}')">
+                        <em class="bi bi-caret-up-square-fill no-upvote" id="no-upvote-{{ans.id}}"></em>
+                        <span class="badge-upvote py-1 px-2 font-weight-bold rounded sr-only" id="{{ans.id}}">Upvote</span>
+                    {% endif %}
+                        <span class="mx-1">{{ ans.upvotes.all|length }}</span>
                     </button>
                     {% comment %} <button type="button" class="btn px-1 py-0">
                         <em class="bi bi-caret-down-square-fill downvote"></em>
@@ -267,6 +282,88 @@ Question | Read | StackOverflow
 {% endblock content %}
 
 {% block js %}
+<script>
+    function displayLikeBadge(id) {
+        // console.log(id);
+        var badge = document.getElementById(id);
+        var dislike = document.getElementById('dislike-'+id);
+        badge.classList.add('hover-animation');
+        dislike.classList.remove('fill-color-dislike');
+        dislike.classList.add('fill-color-like');
+        badge.classList.remove('sr-only');
+    }
+
+    function removeLikeBadge(id) {
+        // console.log(id);
+        var badge = document.getElementById(id);
+        var dislike = document.getElementById('dislike-'+id);
+        badge.classList.remove('hover-animation');
+        dislike.classList.remove('fill-color-like');
+        dislike.classList.add('fill-color-dislike');
+        badge.classList.add('sr-only')
+    }
+
+    function displayDislikeBadge(id) {
+        // console.log(id);
+        var badge = document.getElementById(id);
+        var like = document.getElementById('like-'+id);
+        badge.classList.add('hover-animation');
+        like.classList.remove('fill-color-like');
+        like.classList.add('fill-color-dislike');
+        badge.classList.remove('sr-only');
+    }
+
+    function removeDislikeBadge(id) {
+        // console.log(id);
+        var badge = document.getElementById(id);
+        var like = document.getElementById('like-'+id);
+        badge.classList.remove('hover-animation');
+        like.classList.remove('fill-color-dislike');
+        like.classList.add('fill-color-like');
+        badge.classList.add('sr-only')
+    }
+</script>
+<script>
+    function displayUpvoteBadge(id) {
+        // console.log(id);
+        var badge = document.getElementById(id);
+        var noUpvote = document.getElementById('no-upvote-'+id);
+        badge.classList.add('hover-animation');
+        noUpvote.classList.remove('fill-color-no-upvote');
+        noUpvote.classList.add('fill-color-upvote');
+        badge.classList.remove('sr-only');
+    }
+
+    function removeUpvoteBadge(id) {
+        // console.log(id);
+        var badge = document.getElementById(id);
+        var noUpvote = document.getElementById('no-upvote-'+id);
+        badge.classList.remove('hover-animation');
+        noUpvote.classList.remove('fill-color-upvote');
+        noUpvote.classList.add('fill-color-no-upvote');
+        badge.classList.add('sr-only')
+    }
+
+    function displayNoUpvoteBadge(id) {
+        // console.log(id);
+        var badge = document.getElementById(id);
+        var upvote = document.getElementById('upvote-'+id);
+        badge.classList.add('hover-animation');
+        upvote.classList.remove('fill-color-upvote');
+        upvote.classList.add('fill-color-no-upvote');
+        badge.classList.remove('sr-only');
+    }
+
+    function removeNoUpvoteBadge(id) {
+        // console.log(id);
+        var badge = document.getElementById(id);
+        var upvote = document.getElementById('upvote-'+id);
+        badge.classList.remove('hover-animation');
+        upvote.classList.remove('fill-color-no-upvote');
+        upvote.classList.add('fill-color-upvote');
+        badge.classList.add('sr-only')
+    }
+</script>
 <script src="{% static '/bootstrap-tagsinput/dist/bootstrap-tagsinput.js' %}"></script>
 <script src="{% static '/js/signin.js' %}"></script>
 <script src="https://cdn.jsdelivr.net/npm/@editorjs/header@latest"></script><!-- Header -->

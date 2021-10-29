@@ -14,7 +14,7 @@ $(function () {
         e.preventDefault();
         let value = $("#username").val().trim();
         $.ajax({
-            url: "/users/check_username/" + value + "/",
+            url: "/user/check_username/" + value + "/",
             method: "POST",
             success: function (json) {
                 var regEx = /^[0-9a-zA-Z]+$/;
@@ -38,7 +38,7 @@ $(function () {
         e.preventDefault();
         let value = $("#email").val().trim();
         $.ajax({
-            url: "/users/check_email/" + value + "/",
+            url: "/user/check_email/" + value + "/",
             method: "POST",
             success: function (json) {
                 if(json["exists"]) {

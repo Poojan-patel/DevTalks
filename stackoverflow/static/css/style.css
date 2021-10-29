@@ -281,17 +281,133 @@ h2 {
     background-color: #bbbbbb;
 }
 
+.badge-like {
+    font-size: 12px;
+    color: #fff;
+    background-color: #ffc107;
+}
+
+.badge-upvote {
+    font-size: 12px;
+    color: #fff;
+    background-color: #38d39f;
+}
+
+.badge-dislike,
+.badge-no-upvote {
+    font-size: 12px;
+    color: #fff;
+    background-color: #bbbbbb;
+}
+
+.hover-animation {
+    animation: blur-load 0.5s;
+}
+
+@keyframes blur-load {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
 .card.card-style .card-footer {
     border-top: 1px solid rgba(0, 0, 0, 0.04);
     background: #fff;
 }
 
-.likes {
-    color: #b4b103;
+.like {
+    color: #ffc107;
+}
+
+/* .like:hover {
+    animation: fill-color-like 0.4s;
+    color: #6c757d;
+} */
+
+.fill-color-dislike {
+    animation: fill-color-dislike 0.4s;
+    color: #bbbbbb;
+}
+
+@keyframes fill-color-dislike {
+    from {
+        color: #ffc107;
+    }
+    to {
+        color: #bbbbbb;
+    }
+}
+
+.dislike {
+    color: #bbbbbb;
+}
+
+/* .dislike:hover {
+    animation: fill-color-dislike 0.4s;
+    color: #ffc107;
+} */
+
+.fill-color-like {
+    animation: fill-color-like 0.4s;
+    color: #ffc107;
+}
+
+@keyframes fill-color-like {
+    from {
+        color: #bbbbbb;
+    }
+    to {
+        color: #ffc107;
+    }
 }
 
 .upvote {
     color: #38d39f;
+}
+
+/* .upvote:hover {
+    animation: fill-color-upvote 0.4s;
+    color: #6c757d;
+} */
+
+.fill-color-no-upvote {
+    animation: fill-color-no-upvote 0.4s;
+    color: #bbbbbb;
+}
+
+@keyframes fill-color-no-upvote {
+    from {
+        color: #38d39f;
+    }
+    to {
+        color: #bbbbbb;
+    }
+}
+
+.no-upvote {
+    color: #bbbbbb;
+}
+
+/* .no-upvote:hover {
+    animation: fill-color-no-upvote 0.4s;
+    color: #38d39f;
+} */
+
+.fill-color-upvote {
+    animation: fill-color-upvote 0.4s;
+    color: #38d39f;
+}
+
+@keyframes fill-color-upvote {
+    from {
+        color: #bbbbbb;
+    }
+    to {
+        color: #38d39f;
+    }
 }
 
 .downvote {
