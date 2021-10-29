@@ -141,7 +141,7 @@ def add_answer(request, question_id):
 
 def get_feed(request):
      questions = Question.objects.all()
-     print(questions)
+     # print(questions)
      tags = request.GET.get('tags',None)
      if tags is not None:
           tags = tags.split(',')
