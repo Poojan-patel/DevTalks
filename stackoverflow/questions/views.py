@@ -4,7 +4,8 @@ from django.views.decorators.csrf import csrf_exempt
 from questions.models import Question, Tag, Answer, Like, Upvote, Image
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from django.db.models import Count
+from django.db.models import Q,Count
+
 
 import io, time
 from django.core.files.storage import default_storage
@@ -91,7 +92,7 @@ def add_question(request):
           question.save()
           
           for tag in tags:
-               obj = Tag(question_id=question, tag=tag)
+               obj = Tag(question_id=question, tag=tag.strip())
                obj.save()
 
           messages.success(request,'Question added successfully')
@@ -112,7 +113,7 @@ def edit_question(request, uuid):
           tags = request.POST['questionTag'].split(",")
           Tag.objects.filter(question_id=data).delete()
           for tag in tags:
-               obj = Tag(question_id=data, tag=tag)
+               obj = Tag(question_id=data, tag=tag.strip())
                obj.save()
           data.save()
           messages.success(request,'Question Updated successfully')
@@ -140,6 +141,29 @@ def add_answer(request, question_id):
 
 def get_feed(request):
      questions = Question.objects.all()
+     print(questions)
+     tags = request.GET.get('tags',None)
+     if tags is not None:
+          tags = tags.split(',')
+          #print(tags)
+          #q = Q(tag='tag1') & Q(tag='tag2')
+          #print(q)
+          #Tag.objects.complex_filter()
+
+          # 1. Fetch Questions based on the given tag list, 2. select only necessary fields
+          # 3. add another field called annotate, which will group by based on the available fields in the QuerySet, here only Question
+          # 4. Filter only those which are Exact match
+          # 5. Select only question_id field
+          # 6. Fetch the questions which were filtered based on the tags
+          filtered_questions = Tag.objects.filter(tag__in=tags)\
+                              .values('question_id')\
+                              .annotate(cnt=Count('tag'))\
+                              .filter(cnt=len(tags))\
+                              .values('question_id')
+          questions = Question.objects.filter(id__in=filtered_questions)
+          #print(questions)
+     
+     
      # print(questions[0].tags)
      return render(request, 'feed.html', { 'questions' : questions })
 
