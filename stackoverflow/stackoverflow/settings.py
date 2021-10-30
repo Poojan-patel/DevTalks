@@ -145,4 +145,4 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media/'
 
-PROFILE_PICTURE_STORAGE = BASE_DIR / 'media/profile_pics'
+PROFILE_PICTURE_STORAGE = BASE_DIR / 'media/profile_pics/'

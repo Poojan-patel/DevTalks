@@ -28,8 +28,8 @@ urlpatterns = [
     path('question/', include("questions.urls")),
     # url(r'^user.?/', include("users.urls")),
     path('user/', include("users.urls")),
-    url(r'^.*$', errorView, name='catch-all'),
 ]
 
-
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+urlpatterns += [url(r'^.*$', errorView, name='catch-all')]
