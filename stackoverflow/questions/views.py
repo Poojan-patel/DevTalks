@@ -174,7 +174,7 @@ def toggle_like(request,question_id):
           # print(request.user.id)
           user = request.user
           like_status = Like.objects.filter(question_id=question_id, user=user).first()
-          # print(like_status)
+          print(like_status)
           try:
                if like_status is None:
                     add_like = Like(question_id_id=question_id, user=user)
@@ -192,15 +192,17 @@ def toggle_like(request,question_id):
 @csrf_exempt
 @login_required(login_url='signin')
 def toggle_upvote(request,answer_id):
-     myuser_id = request.user.user_id
-     upvote_status = Upvote.objects.filter(answer_id=answer_id, user_id=myuser_id).first()
+     # print(request.user.id)
+     user = request.user
+     upvote_status = Upvote.objects.filter(answer_id=answer_id, user=user).first()
+     # print(upvote_status)
      try:
           if upvote_status is None:
-               add_upvote = Upvote(user_id=myuser_id, answer_id=answer_id)
+               add_upvote = Upvote(answer_id=answer_id, user=user)
                add_upvote.save()
+               return JsonResponse({'Success':1})
           else:
                upvote_status.delete()
+               return JsonResponse({'Success':2})
      except:
           return JsonResponse({'Success':0})
-     
-     return JsonResponse({'Success':1})

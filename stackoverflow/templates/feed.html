@@ -104,11 +104,11 @@
                                 {% if que.likes.all|find_user:user.id %}
                                 <button type="button" class="btn btn-like btn-toggle-like px-1 py-0" id="btn-toggle-like-{{que.id}}" onmouseover="displayDislikeBadge('{{que.id}}')" onmouseleave="removeDislikeBadge('{{que.id}}')">
                                     <i class="bi bi-star-fill like" id="like-{{que.id}}"></i>
-                                    <span class="badge-dislike py-1 px-2 font-weight-bold rounded sr-only" id="{{que.id}}">Dislike</span>
+                                    <span class="badge-dislike py-1 px-2 font-weight-bold rounded sr-only" id="badge-que-{{que.id}}">Dislike</span>
                                 {% else %}
                                 <button type="button" class="btn btn-dislike btn-toggle-like px-1 py-0" id="btn-toggle-like-{{que.id}}" onmouseover="displayLikeBadge('{{que.id}}')" onmouseleave="removeLikeBadge('{{que.id}}')">
                                     <i class="bi bi-star-fill dislike" id="dislike-{{que.id}}"></i>
-                                    <span class="badge-like py-1 px-2 font-weight-bold rounded sr-only" id="{{que.id}}">Like</span>
+                                    <span class="badge-like py-1 px-2 font-weight-bold rounded sr-only" id="badge-que-{{que.id}}">Like</span>
                                 {% endif %}
                                     <span class="mx-1" id="like-count-{{que.id}}">{{ que.likes.all|length }}</span>
                                 </button>

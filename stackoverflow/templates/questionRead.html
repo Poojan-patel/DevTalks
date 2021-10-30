@@ -95,11 +95,11 @@ Question | Read | StackOverflow
                         {% if question.likes.all|find_user:user.id %}
                         <button type="button" class="btn btn-like btn-toggle-like px-1 py-0" id="btn-toggle-like-{{question.id}}" onmouseover="displayDislikeBadge('{{question.id}}')" onmouseleave="removeDislikeBadge('{{question.id}}')">
                             <i class="bi bi-star-fill like" id="like-{{question.id}}"></i>
-                            <span class="badge-dislike py-1 px-2 font-weight-bold rounded sr-only" id="{{question.id}}">Dislike</span>
+                            <span class="badge-dislike py-1 px-2 font-weight-bold rounded sr-only" id="badge-que-{{question.id}}">Dislike</span>
                         {% else %}
                         <button type="button" class="btn btn-dislike btn-toggle-like px-1 py-0" id="btn-toggle-like-{{question.id}}" onmouseover="displayLikeBadge('{{question.id}}')" onmouseleave="removeLikeBadge('{{question.id}}')">
                             <i class="bi bi-star-fill dislike" id="dislike-{{question.id}}"></i>
-                            <span class="badge-like py-1 px-2 font-weight-bold rounded sr-only" id="{{question.id}}">Like</span>
+                            <span class="badge-like py-1 px-2 font-weight-bold rounded sr-only" id="badge-que-{{question.id}}">Like</span>
                         {% endif %}
                             <span class="mx-1" id="like-count-{{question.id}}">{{ question.likes.all|length }}</span>
                         </button>
@@ -171,20 +171,16 @@ Question | Read | StackOverflow
             </div>
             <div class="d-flex align-items-center">
                 <span class="w-50">
-                    {% comment %} <button type="button" class="btn px-1 py-0">
-                        <i class="bi bi-star-fill likes text-warning"></i>
-                        <span class="mx-1">{{ question.likes.all|length }}</span>
-                    </button> {% endcomment %}
                     {% if ans.upvotes.all|find_user:user.id %}
-                    <button type="button" class="btn px-1 py-0" onmouseover="displayNoUpvoteBadge('{{ans.id}}')" onmouseleave="removeNoUpvoteBadge('{{ans.id}}')">
-                        <em class="bi bi-caret-up-square-fill upvote" id="upvote-{{ans.id}}"></em>
-                        <span class="badge-no-upvote py-1 px-2 font-weight-bold rounded sr-only" id="{{ans.id}}">Downvote</span>
+                    <button type="button" class="btn btn-upvote btn-toggle-upvote px-1 py-0" id="btn-toggle-upvote-{{ans.id}}" onmouseover="displayNoUpvoteBadge('{{ans.id}}')" onmouseleave="removeNoUpvoteBadge('{{ans.id}}')">
+                        <i class="bi bi-caret-up-square-fill upvote" id="upvote-{{ans.id}}"></i>
+                        <span class="badge-no-upvote py-1 px-2 font-weight-bold rounded sr-only" id="badge-ans-{{ans.id}}">Downvote</span>
                     {% else %}
-                    <button type="button" class="btn px-1 py-0" onmouseover="displayUpvoteBadge('{{ans.id}}')" onmouseleave="removeUpvoteBadge('{{ans.id}}')">
-                        <em class="bi bi-caret-up-square-fill no-upvote" id="no-upvote-{{ans.id}}"></em>
-                        <span class="badge-upvote py-1 px-2 font-weight-bold rounded sr-only" id="{{ans.id}}">Upvote</span>
+                    <button type="button" class="btn btn-no-upvote btn-toggle-upvote px-1 py-0" id="btn-toggle-upvote-{{ans.id}}" onmouseover="displayUpvoteBadge('{{ans.id}}')" onmouseleave="removeUpvoteBadge('{{ans.id}}')">
+                        <i class="bi bi-caret-up-square-fill no-upvote" id="no-upvote-{{ans.id}}"></i>
+                        <span class="badge-upvote py-1 px-2 font-weight-bold rounded sr-only" id="badge-ans-{{ans.id}}">Upvote</span>
                     {% endif %}
-                        <span class="mx-1">{{ ans.upvotes.all|length }}</span>
+                        <span class="mx-1" id="upvote-count-{{ans.id}}">{{ ans.upvotes.all|length }}</span>
                     </button>
                     {% comment %} <button type="button" class="btn px-1 py-0">
                         <em class="bi bi-caret-down-square-fill downvote"></em>
@@ -283,45 +279,7 @@ Question | Read | StackOverflow
 
 {% block js %}
 <script>
-    function displayUpvoteBadge(id) {
-        // console.log(id);
-        var badge = document.getElementById(id);
-        var noUpvote = document.getElementById('no-upvote-'+id);
-        badge.classList.add('hover-animation');
-        noUpvote.classList.remove('fill-color-no-upvote');
-        noUpvote.classList.add('fill-color-upvote');
-        badge.classList.remove('sr-only');
-    }
-
-    function removeUpvoteBadge(id) {
-        // console.log(id);
-        var badge = document.getElementById(id);
-        var noUpvote = document.getElementById('no-upvote-'+id);
-        badge.classList.remove('hover-animation');
-        noUpvote.classList.remove('fill-color-upvote');
-        noUpvote.classList.add('fill-color-no-upvote');
-        badge.classList.add('sr-only')
-    }
-
-    function displayNoUpvoteBadge(id) {
-        // console.log(id);
-        var badge = document.getElementById(id);
-        var upvote = document.getElementById('upvote-'+id);
-        badge.classList.add('hover-animation');
-        upvote.classList.remove('fill-color-upvote');
-        upvote.classList.add('fill-color-no-upvote');
-        badge.classList.remove('sr-only');
-    }
-
-    function removeNoUpvoteBadge(id) {
-        // console.log(id);
-        var badge = document.getElementById(id);
-        var upvote = document.getElementById('upvote-'+id);
-        badge.classList.remove('hover-animation');
-        upvote.classList.remove('fill-color-no-upvote');
-        upvote.classList.add('fill-color-upvote');
-        badge.classList.add('sr-only')
-    }
+    
 </script>
 <script src="{% static '/bootstrap-tagsinput/dist/bootstrap-tagsinput.js' %}"></script>
 <script src="{% static '/js/script.js' %}"></script>
