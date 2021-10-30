@@ -12,6 +12,8 @@ urlpatterns = [
      path('feed1/',views.get_feed,name='feed1'),
      path('question-read/',TemplateView.as_view(template_name='questionRead.html')),
 
+     path('like/<question_id>/', views.toggle_like, name='like'),
+
      # Paths for EditorJS
      path('uploadImg/',views.upload_img, name='imageupload'),
      path('fileresp/<id>',views.fileresp),

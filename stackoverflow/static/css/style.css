@@ -318,6 +318,7 @@ h2 {
     background: #fff;
 }
 
+
 .like {
     color: #ffc107;
 }
@@ -412,6 +413,11 @@ h2 {
 
 .downvote {
     color: #d33838;
+}
+
+.toggle-badge-text {
+    background-color: #17a2b8;
+    color: #fff;
 }
 
 .views {

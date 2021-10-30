@@ -170,19 +170,25 @@ def get_feed(request):
 @csrf_exempt
 @login_required(login_url='signin')
 def toggle_like(request,question_id):
-     myuser_id = request.user.user_id
-     like_status = Like.objects.filter(question_id=question_id, user_id=myuser_id).first()
-     try:
-          if like_status is None:
-               add_like = Like(user_id=myuser_id, question_id=question_id)
-               add_like.save()
-          else:
-               like_status.delete()
-     except:
-          return JsonResponse({'Success':0})
-     
-     return JsonResponse({'Success':1})
-
+     if request.method == "POST":
+          # print(request.user.id)
+          user = request.user
+          like_status = Like.objects.filter(question_id=question_id, user=user).first()
+          # print(like_status)
+          try:
+               if like_status is None:
+                    add_like = Like(question_id_id=question_id, user=user)
+                    add_like.save()
+                    # return redirect('feed')
+                    return JsonResponse({'Success':1})
+               else:
+                    like_status.delete()
+                    # return redirect('feed')
+                    return JsonResponse({'Success':2})
+          except:
+               # return redirect('feed')
+               return JsonResponse({'Success':0})
+          
 @csrf_exempt
 @login_required(login_url='signin')
 def toggle_upvote(request,answer_id):

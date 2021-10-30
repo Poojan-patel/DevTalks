@@ -93,15 +93,15 @@ Question | Read | StackOverflow
                 <div class="d-flex align-items-center">
                     <span class="w-50">
                         {% if question.likes.all|find_user:user.id %}
-                        <button type="button" class="btn px-1 py-0" onmouseover="displayDislikeBadge('{{question.id}}')" onmouseleave="removeDislikeBadge('{{question.id}}')">
+                        <button type="button" class="btn btn-like btn-toggle-like px-1 py-0" id="btn-toggle-like-{{question.id}}" onmouseover="displayDislikeBadge('{{question.id}}')" onmouseleave="removeDislikeBadge('{{question.id}}')">
                             <i class="bi bi-star-fill like" id="like-{{question.id}}"></i>
                             <span class="badge-dislike py-1 px-2 font-weight-bold rounded sr-only" id="{{question.id}}">Dislike</span>
                         {% else %}
-                        <button type="button" class="btn px-1 py-0" onmouseover="displayLikeBadge('{{question.id}}')" onmouseleave="removeLikeBadge('{{question.id}}')">
+                        <button type="button" class="btn btn-dislike btn-toggle-like px-1 py-0" id="btn-toggle-like-{{question.id}}" onmouseover="displayLikeBadge('{{question.id}}')" onmouseleave="removeLikeBadge('{{question.id}}')">
                             <i class="bi bi-star-fill dislike" id="dislike-{{question.id}}"></i>
                             <span class="badge-like py-1 px-2 font-weight-bold rounded sr-only" id="{{question.id}}">Like</span>
                         {% endif %}
-                            <span class="mx-1">{{ question.likes.all|length }}</span>
+                            <span class="mx-1" id="like-count-{{question.id}}">{{ question.likes.all|length }}</span>
                         </button>
                         {% comment %} <button type="button" class="btn px-1 py-0">
                             <em class="bi bi-caret-up-square-fill upvote"></em>
@@ -173,7 +173,7 @@ Question | Read | StackOverflow
                 <span class="w-50">
                     {% comment %} <button type="button" class="btn px-1 py-0">
                         <i class="bi bi-star-fill likes text-warning"></i>
-                        <span class="mx-1">{{ que.likes.all|length }}</span>
+                        <span class="mx-1">{{ question.likes.all|length }}</span>
                     </button> {% endcomment %}
                     {% if ans.upvotes.all|find_user:user.id %}
                     <button type="button" class="btn px-1 py-0" onmouseover="displayNoUpvoteBadge('{{ans.id}}')" onmouseleave="removeNoUpvoteBadge('{{ans.id}}')">
@@ -283,47 +283,6 @@ Question | Read | StackOverflow
 
 {% block js %}
 <script>
-    function displayLikeBadge(id) {
-        // console.log(id);
-        var badge = document.getElementById(id);
-        var dislike = document.getElementById('dislike-'+id);
-        badge.classList.add('hover-animation');
-        dislike.classList.remove('fill-color-dislike');
-        dislike.classList.add('fill-color-like');
-        badge.classList.remove('sr-only');
-    }
-
-    function removeLikeBadge(id) {
-        // console.log(id);
-        var badge = document.getElementById(id);
-        var dislike = document.getElementById('dislike-'+id);
-        badge.classList.remove('hover-animation');
-        dislike.classList.remove('fill-color-like');
-        dislike.classList.add('fill-color-dislike');
-        badge.classList.add('sr-only')
-    }
-
-    function displayDislikeBadge(id) {
-        // console.log(id);
-        var badge = document.getElementById(id);
-        var like = document.getElementById('like-'+id);
-        badge.classList.add('hover-animation');
-        like.classList.remove('fill-color-like');
-        like.classList.add('fill-color-dislike');
-        badge.classList.remove('sr-only');
-    }
-
-    function removeDislikeBadge(id) {
-        // console.log(id);
-        var badge = document.getElementById(id);
-        var like = document.getElementById('like-'+id);
-        badge.classList.remove('hover-animation');
-        like.classList.remove('fill-color-dislike');
-        like.classList.add('fill-color-like');
-        badge.classList.add('sr-only')
-    }
-</script>
-<script>
     function displayUpvoteBadge(id) {
         // console.log(id);
         var badge = document.getElementById(id);
@@ -365,6 +324,7 @@ Question | Read | StackOverflow
     }
 </script>
 <script src="{% static '/bootstrap-tagsinput/dist/bootstrap-tagsinput.js' %}"></script>
+<script src="{% static '/js/script.js' %}"></script>
 <script src="{% static '/js/signin.js' %}"></script>
 <script src="https://cdn.jsdelivr.net/npm/@editorjs/header@latest"></script><!-- Header -->
 <script src="https://cdn.jsdelivr.net/npm/@editorjs/image@2.3.0"></script>
