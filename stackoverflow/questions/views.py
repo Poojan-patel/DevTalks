@@ -145,6 +145,8 @@ def get_feed(request):
      tags = request.GET.get('tags',None)
      if tags is not None:
           tags = tags.split(',')
+          for idx in range(len(tags)):
+               tags[idx] = tags[idx].strip()
           #print(tags)
           #q = Q(tag='tag1') & Q(tag='tag2')
           #print(q)
@@ -174,7 +176,7 @@ def toggle_like(request,question_id):
           # print(request.user.id)
           user = request.user
           like_status = Like.objects.filter(question_id=question_id, user=user).first()
-          print(like_status)
+          # print(like_status)
           try:
                if like_status is None:
                     add_like = Like(question_id_id=question_id, user=user)
