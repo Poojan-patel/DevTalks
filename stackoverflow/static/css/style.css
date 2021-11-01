@@ -74,6 +74,16 @@ h2 {
     border-bottom: 1px solid #ccc;
 }
 
+.content .contents .form-group textarea {
+    font-family: 'Courgette', 'Times New Roman', Times, serif, cursive;
+}
+
+@media (min-width: 768px) {
+    .content .contents .form-group textarea {
+        font-size: 14px;
+    }
+}
+
 .content .contents .form-group.first,
 .content .bg .form-group.first {
     border-top-left-radius: 7px;
