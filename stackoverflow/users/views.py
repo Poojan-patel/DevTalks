@@ -243,6 +243,45 @@ def profile(request):
         badge = 'Gold' if rank <= 10 else 'Silver' if rank <= 25 else 'Bronze' if rank <= 50 else None
 
     # print(rank, badge)
-
     return render(request, 'profile.html', { 'user': current_user, 'badge': badge })
 
+def forgot_password(request):
+    if request.method == 'POST':
+        email = request.POST['email'].strip()
+
+        try:
+            user = User.objects.get(email=email)
+        except(TypeError, ValueError, OverflowError, User.DoesNotExist):
+            user = None
+
+        if user is not None:
+            password = User.objects.make_random_password(length=8)
+
+            email_subject = "DevTalks - Password Reset"
+            ctx = dict({
+                'username': user.username,
+                'password': password,
+            })
+            message = get_template('forgotPasswordEmail.html').render(ctx)
+            email = EmailMultiAlternatives(
+                email_subject,
+                message,
+                settings.EMAIL_HOST_USER,
+                [user.email],
+            )
+            email.content_subtype = 'html'
+            email.fail_silently = True
+            email.send()
+
+            # Save User if Verification Mail Successfully Sent
+            user.set_password(password)
+            user.save()
+
+            messages.success(request,'New Password sent successfully on your Email.')
+
+            return redirect('signin')
+
+        messages.error(request,'No account found with given Email ID.')
+
+    # print(request.method)
+    return render(request, 'forgotPassword.html')
