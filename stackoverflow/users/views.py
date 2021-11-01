@@ -156,6 +156,7 @@ def profile(request):
         lastname = request.POST['lastname'].strip()
         username = request.POST['username'].strip()
         email = request.POST['email'].strip()
+        password = request.POST['password'].strip()
         birthdate = request.POST['birthdate'].strip()
         try :
             age = int(request.POST['age'].strip().split()[0])
@@ -186,6 +187,7 @@ def profile(request):
                 user.last_name = lastname
                 user.username = username
                 user.email = email
+                user.password = password
                 if birthdate:
                     date_format = '%d/%m/%Y'
                     user.birth_date = datetime.datetime.strptime(birthdate, date_format).date()
@@ -226,7 +228,7 @@ def profile(request):
 
                 messages.success(request,'Profile Updated Successfully')
                 return redirect('profile')
-    
+
         messages.error(request,'Failed to update Profile... Try Again')
 
     current_user = request.user
@@ -246,3 +248,44 @@ def profile(request):
 
     return render(request, 'profile.html', { 'user': current_user, 'badge': badge })
 
+def forgot_password(request):
+    if request.method == 'POST':
+        email = request.POST['email'].strip()
+                
+        try:
+            user = User.objects.get(email=email)
+        except(TypeError, ValueError, OverflowError, User.DoesNotExist):
+            user = None
+
+        if user is not None:
+            password = User.objects.make_random_password(length=8)
+
+            current_site = get_current_site(request)
+            email_subject = "DevTalks - Password Reset"
+            ctx = dict({
+                'username': user.username,
+                'domain': current_site.domain,
+                'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+                'password': password
+            })
+            message = get_template('forgot_password_email.html').render(ctx)
+            email = EmailMultiAlternatives(
+                email_subject,
+                message,
+                settings.EMAIL_HOST_USER,
+                [user.email],
+            )
+            email.content_subtype = 'html'
+            email.fail_silently = True
+            email.send()
+            
+            # Save User if Verification Mail Successfully Sent
+            user.set_password(password)
+            user.save()
+
+            redirect('signin')
+
+        messages.error(request,'No account found with given Email ID.')
+    
+    return render(request, 'forgot_password.html')
+        
