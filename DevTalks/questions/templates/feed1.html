@@ -1,0 +1,34 @@
+<ol>
+{% for q in questions %}
+     <li> Title: {{q.title}}
+          <ul>
+               <li>QuestionID: {{q.id}}</li>
+               <li>UserID: {{q.user_id}}</li>
+               <li>Body: {{q.body}}</li>
+               <li>Likes: {{q.likes.all | length}}</li>
+               <ol>
+               {% for tag in q.tags.all %}
+                    <li>Tags: {{ tag.tag }}</li>
+               {% endfor %}
+               </ol>
+               <ol id="hey">
+                    {% for a in q.answers.all %}
+                    <li>
+                         <ul>
+                              <li>AnswerID: {{a.id}}</li>
+                              <li>QuestionID: {{a.question_id}}</li>
+                              <li>Body: {{a.body}}</li>
+                              <li>Upvotes: {{a.upvotes.all | length}}</li>
+                         </ul>
+                    </li>
+                    {% endfor %}
+               </ol>
+          </ul>
+     </li>
+{% endfor %}
+</ol>
+<script type="text/javascript">
+     ol = document.querySelector('#hey')
+     
+     
+</script>

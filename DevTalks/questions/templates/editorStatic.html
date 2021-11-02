@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+{%csrf_token%}
+<head>
+  <meta charset="UTF-8">
+  <title>Editor.js 🤩🧦🤨 example</title>
+  <link href="https://fonts.googleapis.com/css?family=PT+Mono" rel="stylesheet">
+  <style>
+       /**
+ * Styles for the example page
+ */
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+  font-size: 14px;
+  line-height: 1.5em;
+  margin: 0;
+}
+
+.ce-example {
+  font-size: 16.2px;
+}
+
+.ce-example__header {
+  border-bottom: 1px solid #E8E8EB;
+  height: 50px;
+  line-height: 50px;
+  display: flex;
+  padding: 0 30px;
+  margin-bottom: 30px;
+  flex-wrap: wrap;
+}
+
+.ce-example__header a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.ce-example__header-logo {
+  font-weight: bold;
+}
+
+.ce-example__header-menu {
+  margin-left: auto;
+}
+
+@media all and (max-width: 730px){
+  .ce-example__header-menu {
+    margin-left: 0;
+    margin-top: 10px;
+    flex-basis: 100%;
+    font-size: 14px;
+  }
+}
+
+.ce-example__header-menu a {
+  margin-left: 20px;
+}
+
+@media all and (max-width: 730px){
+  .ce-example__header-menu a {
+    margin-left: 0;
+    margin-right: 15px;
+  }
+}
+
+.ce-example__content {
+  max-width: 1100px;
+  margin: 0 auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.ce-example__content--small {
+  max-width: 500px;
+  border-left: 1px solid #eee;
+  border-right: 1px solid #eee;
+  padding: 0 15px;
+}
+
+.ce-example__content--with-bg {
+  background: #f4f4f4;
+  max-width: none;
+  margin-top: -30px;
+}
+
+.ce-example__output {
+  background: #1B202B;
+  overflow-x: auto;
+  padding: 0 30px;
+}
+
+.ce-example__output-content {
+  max-width: 650px;
+  margin: 30px auto;
+  color: #ABADC3;
+  font-family: 'PT Mono', Menlo, Monaco, Consolas, Courier New, monospace;
+  font-size: 13.3px;
+}
+
+.ce-example__output-content:empty {
+  display: none;
+}
+
+.ce-example__button {
+  display: block;
+  margin: 50px auto;
+  max-width: 180px;
+  background: #4A9DF8;
+  padding: 17px 30px;
+  box-shadow: 0 22px 18px -4px rgba(137, 207, 255, 0.77);
+  transition: all 150ms ease;
+  cursor: pointer;
+  border-radius: 31px;
+  color: #fff;
+  font-family: 'PT Mono', Menlo, Monaco, Consolas, Courier New, monospace;
+  text-align: center;
+}
+
+.ce-example__button:hover {
+  background: #3D8DE5;
+  transform: translateY(2px);
+  box-shadow: 0 20px 15px -4px rgba(137, 207, 255, 0.77);
+}
+
+.ce-example__output-footer {
+  padding: 30px 0;
+  font-size: 14.2px;
+  letter-spacing: 0.3px;
+  text-align: center;
+}
+
+.ce-example__output-footer a {
+  color: #fff;
+  text-decoration: none;
+}
+
+.ce-example__statusbar {
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.18);
+  font-size: 12px;
+  padding: 8px 15px;
+  z-index: 1;
+}
+
+.ce-example__statusbar-button {
+  display: inline-flex;
+  margin-left: 10px;
+  background: #4A9DF8;
+  padding: 6px 12px;
+  box-shadow: 0 7px 8px -4px rgba(137, 207, 255, 0.77);
+  transition: all 150ms ease;
+  cursor: pointer;
+  border-radius: 31px;
+  color: #fff;
+  font-family: 'PT Mono', Menlo, Monaco, Consolas, Courier New, monospace;
+  text-align: center;
+}
+
+@media all and (max-width: 730px){
+  .ce-example__header,
+  .ce-example__content{
+    padding: 0 20px;
+  }
+}
+
+/**
+ * JSON highlighter
+ */
+.sc_attr {
+  color: rgb(148, 162, 192);
+}
+.sc_key {
+  color: rgb(190, 213, 255);
+}
+.sc_toolname {
+  color: rgb(15, 205, 251);
+}
+.sc_tag {
+  color: rgb(4, 131, 216);
+}
+.sc_bool {
+  color: rgb(247, 60, 173);
+}
+
+.ce-example .ce-block:first-of-type h2.ce-header{
+  font-size: 50px;
+}
+
+.ce-example h2.ce-header{
+  font-size: 30px;
+}
+
+.ce-example h3.ce-header {
+  font-size: 24px;
+}
+
+.ce-example h4.ce-header {
+  font-size: 18px;
+}
+
+.ce-example-multiple {
+  display: grid;
+  grid-template-columns: calc(50% - 15px) calc(50% - 15px);
+  gap: 30px;
+  padding: 30px;
+}
+
+.ce-example-multiple > div {
+  background: #fff;
+  border-radius: 7px;
+  padding: 30px;
+}
+     </style>
+  <script src="assets/json-preview.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+</head>
+<body>
+  <div class="ce-example">
+    <div class="ce-example__header">
+      <a class="ce-example__header-logo" href="https://codex.so/editor">Editor.js 🤩🧦🤨</a>
+
+      <div class="ce-example__header-menu">
+        <a href="https://github.com/editor-js" target="_blank">Plugins</a>
+        <a href="https://editorjs.io/usage" target="_blank">Usage</a>
+        <a href="https://editorjs.io/configuration" target="_blank">Configuration</a>
+        <a href="https://editorjs.io/creating-a-block-tool" target="_blank">API</a>
+      </div>
+    </div>
+    <div class="ce-example__content _ce-example__content--small">
+      <div id="editorjs"></div>
+
+      <div class="ce-example__button" id="saveButton">
+        editor.save()
+      </div>
+
+      <div class="ce-example__statusbar">
+        Readonly:
+        <b id="readonly-state">
+          Off
+        </b>
+        <div class="ce-example__statusbar-button" id="toggleReadOnlyButton">
+          toggle
+        </div>
+      </div>
+    </div>
+    <div class="ce-example__output">
+      <pre class="ce-example__output-content" id="output"></pre>
+
+      <div class="ce-example__output-footer">
+        <a href="https://codex.so" style="font-weight: bold;">Made by CodeX</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Load Tools -->
+  <!--
+   You can upload Tools to your project's directory and connect them by relative links.
+
+   Also you can load each Tool from CDN or use NPM/Yarn packages.
+
+   Read more at Tools Connection doc:
+   https://editorjs.io/getting-started#tools-connection
+   -->
+  <script src="https://cdn.jsdelivr.net/npm/@editorjs/header@latest"></script><!-- Header -->
+  <script src="https://cdn.jsdelivr.net/npm/@editorjs/image@2.3.0"></script>
+  <!-- Base Image Tool<script src="https://cdn.jsdelivr.net/npm/@editorjs/simple-image@latest"></script>Image -->
+  <script src="https://cdn.jsdelivr.net/npm/@editorjs/delimiter@latest"></script><!-- Delimiter -->
+  <script src="https://cdn.jsdelivr.net/npm/@editorjs/list@latest"></script><!-- List -->
+  <script src="https://cdn.jsdelivr.net/npm/@editorjs/checklist@latest"></script><!-- Checklist -->
+  <script src="https://cdn.jsdelivr.net/npm/@editorjs/quote@latest"></script><!-- Quote -->
+  <script src="https://cdn.jsdelivr.net/npm/@editorjs/code@latest"></script><!-- Code -->
+  <script src="https://cdn.jsdelivr.net/npm/@editorjs/embed@latest"></script><!-- Embed -->
+  <script src="https://cdn.jsdelivr.net/npm/@editorjs/table@latest"></script><!-- Table -->
+  <script src="https://cdn.jsdelivr.net/npm/@editorjs/link@latest"></script><!-- Link -->
+  <script src="https://cdn.jsdelivr.net/npm/@editorjs/warning@latest"></script><!-- Warning -->
+
+  <script src="https://cdn.jsdelivr.net/npm/@editorjs/marker@latest"></script><!-- Marker -->
+  <script src="https://cdn.jsdelivr.net/npm/@editorjs/inline-code@latest"></script><!-- Inline Code -->
+
+  <!-- Load Editor.js's Core -->
+  <script src="https://cdn.jsdelivr.net/npm/@editorjs/editorjs@latest"></script>
+
+  <!-- Initialization -->
+  <script>
+    /**
+     * To initialize the Editor, create a new instance with configuration object
+     * @see docs/installation.md for mode details
+     */
+    var editor = new EditorJS({
+      /**
+       * Enable/Disable the read only mode
+       */
+      readOnly: false,
+
+      /**
+       * Wrapper of Editor
+       */
+      holder: 'editorjs',
+
+      /**
+       * Common Inline Toolbar settings
+       * - if true (or not specified), the order from 'tool' property will be used
+       * - if an array of tool names, this order will be used
+       */
+      // inlineToolbar: ['link', 'marker', 'bold', 'italic'],
+      // inlineToolbar: true,
+
+      /**
+       * Tools list
+       */
+      tools: {
+        /**
+         * Each Tool is a Plugin. Pass them via 'class' option with necessary settings {@link docs/tools.md}
+         */
+        header: {
+          class: Header,
+          inlineToolbar: ['marker', 'link'],
+          config: {
+            placeholder: 'Header'
+          },
+          shortcut: 'CMD+SHIFT+H'
+        },
+
+        /**
+         * Or pass class directly without any configuration
+         */
+        image: {
+             class: ImageTool,
+             config: {
+               endpoints:{
+                 byFile: '/question/uploadImg'
+               }
+             },
+             inlineToolbar: true
+        },
+
+        list: {
+          class: List,
+          inlineToolbar: true,
+          shortcut: 'CMD+SHIFT+L'
+        },
+
+        checklist: {
+          class: Checklist,
+          inlineToolbar: true,
+        },
+
+        quote: {
+          class: Quote,
+          inlineToolbar: true,
+          config: {
+            quotePlaceholder: 'Enter a quote',
+            captionPlaceholder: 'Quote\'s author',
+          },
+          shortcut: 'CMD+SHIFT+O'
+        },
+
+        warning: Warning,
+
+        marker: {
+          class:  Marker,
+          shortcut: 'CMD+SHIFT+M'
+        },
+
+        code: {
+          class:  CodeTool,
+          shortcut: 'CMD+SHIFT+C'
+        },
+
+        delimiter: Delimiter,
+
+        inlineCode: {
+          class: InlineCode,
+          shortcut: 'CMD+SHIFT+C'
+        },
+
+        linkTool: LinkTool,
+
+        embed: Embed,
+
+        table: {
+          class: Table,
+          inlineToolbar: true,
+          shortcut: 'CMD+ALT+T'
+        },
+
+      },
+
+      /**
+       * This Tool will be used as default
+       */
+      // defaultBlock: 'paragraph',
+
+      /**
+       * Initial Editor data
+       */
+      //data:JSON.parse(document.querySelector('#editorjs').innerText)
+      data: JSON.parse("{{jdata|escapejs}}")
+,
+      onReady: function(){
+        saveButton.click();
+      },
+      onChange: function(api, event) {
+        console.log('something changed', event);
+      }
+    });
+    // Send Stringified Data from Backend to template
+    // editor.render([
+    //       {
+    //         type: "header",
+    //         data: {
+    //           text: "Editor.js",
+    //           level: 2
+    //         }
+    //       },
+
+    //     ])
+
+    /**
+     * Saving button
+     */
+    const saveButton = document.getElementById('saveButton');
+
+    /**
+     * Toggle read-only button
+     */
+    const toggleReadOnlyButton = document.getElementById('toggleReadOnlyButton');
+    const readOnlyIndicator = document.getElementById('readonly-state');
+
+    /**
+     * Saving example
+     */
+    saveButton.addEventListener('click', function () {
+      editor.save()
+        .then((savedData) => {
+          cPreview.show(savedData, document.getElementById("output"));
+        })
+        .catch((error) => {
+          console.error('Saving error', error);
+        });
+    });
+
+    /**
+     * Toggle read-only example
+     */
+    toggleReadOnlyButton.addEventListener('click', async () => {
+      const readOnlyState = await editor.readOnly.toggle();
+
+      readOnlyIndicator.textContent = readOnlyState ? 'On' : 'Off';
+    });
+  </script>
+  <script>
+       /**
+ * Module to compose output JSON preview
+ */
+const cPreview = (function (module) {
+  /**
+   * Shows JSON in pretty preview
+   * @param {object} output - what to show
+   * @param {Element} holder - where to show
+   */
+  module.show = function(output, holder) {
+    /** Make JSON pretty */
+    output = JSON.stringify( output, null, 4 );
+    /** Encode HTML entities */
+    output = encodeHTMLEntities( output );
+    /** Stylize! */
+    output = stylize( output );
+    holder.innerHTML = output;
+  };
+
+  /**
+   * Converts '>', '<', '&' symbols to entities
+   */
+  function encodeHTMLEntities(string) {
+    return string.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  }
+
+  /**
+   * Some styling magic
+   */
+  function stylize(string) {
+    /** Stylize JSON keys */
+    string = string.replace( /"(\w+)"\s?:/g, '"<span class=sc_key>$1</span>" :');
+    /** Stylize tool names */
+    string = string.replace( /"(paragraph|quote|list|header|link|code|image|delimiter|raw|checklist|table|embed|warning)"/g, '"<span class=sc_toolname>$1</span>"');
+    /** Stylize HTML tags */
+    string = string.replace( /(&lt;[\/a-z]+(&gt;)?)/gi, '<span class=sc_tag>$1</span>' );
+    /** Stylize strings */
+    string = string.replace( /"([^"]+)"/gi, '"<span class=sc_attr>$1</span>"' );
+    /** Boolean/Null */
+    string = string.replace( /\b(true|false|null)\b/gi, '<span class=sc_bool>$1</span>' );
+    return string;
+  }
+
+  return module;
+})({});
+  </script>
+</body>
+</html>

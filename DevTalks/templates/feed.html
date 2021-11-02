@@ -1,0 +1,141 @@
+{% extends 'navbar.html' %}
+
+{% block title %}
+    Feed | DevTalks
+{% endblock title %}
+
+{% block css %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static '/css/navbar.css' %}">
+    <link rel="stylesheet" href="{% static '/css/style.css' %}">
+{% endblock css %}
+
+{% block FeedActive %}
+    active
+{% endblock FeedActive %}
+
+{% block FeedCurrent %}
+    <span class="sr-only">(current)</span>
+{% endblock FeedCurrent %}
+
+{% block content %}
+    {% load custom_filter %}
+    {% for message in messages %}
+        <div class="container">
+            <div class="row">
+                <div class="col-12 mt-3">
+                    <div class="alert alert-{{ message.tags }}">
+                        <div class="container">
+                            <div class="d-flex align-items-center">
+                                <span class="alert-icon d-flex w-75">
+                                    <em class="bi bi-info-square-fill alert-error-icon"></em>
+                                    <p class="mb-0 ml-2 alert-message"><strong>Message: </strong>{{ message }}</p>
+                                </span>
+                                <span class="ml-auto text-right w-25">
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">
+                                            <em class="bi bi-x alert-close-icon"></em>
+                                        </span>
+                                    </button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+    <div class="container-fluid py-xl-5 py-4 px-xl-5 px-lg-4 px-3">
+        <div class="row justify-content-center">
+            {% for que in questions %}
+                <div class="col-lg-6 col-sm-10 col-12 mb-4">
+                    <div class="card card-style">
+                        <h6 class="d-flex align-items-center card-header py-3">
+                            <span class="text-left w-75">
+                                {{ que.title }}
+                            </span>
+                            <span class="ml-auto text-right">
+                                <span class="created-by">Asked by,</span><br>
+                                <span class="author">{{ que.user.username }}</span>
+                            </span>
+                        </h6>
+                        <div class="card-body">
+                            {% comment %} <h6 class="card-title">Answer Title</h6> {% endcomment %}
+                            {% comment %} <p class="card-text">
+                                Lorem ipsum dolor sit amet consectetur, adipisicing elit. Laudantium adipisci, molestias officia
+                                recusandae iusto numquam modi debitis nulla nesciunt alias, doloremque tempora dolorem veniam
+                                iste nostrum nisi! Pariatur, suscipit at. Ad, beatae deleniti animi laboriosam vitae unde
+                            </p> {% endcomment %}
+                            <div class="row">
+                                <div class="col-md-12">
+                                    {% for tag in que.tags.all %}
+                                        {% if tag.tag|length %}
+                                            <span class="badge-secondary py-1 px-2 rounded">{{ tag.tag }}</span>
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            {% if user.is_authenticated and que.user.username == user.username %}
+                                <div class="row justify-content-center mt-4">
+                                    <div class="col-sm-6 col-12 text-center">
+                                        <a href="{% url 'read' uuid=que.id %}" class="btn btn-primary">Read More</a>
+                                    </div>
+                                    <div class="col-sm-6 col-12 mt-sm-0 mt-3 text-center">
+                                        <a href="{% url 'question_edit' uuid=que.id %}" class="btn btn-warning text-white">Edit Question</a>
+                                    </div>
+                                    {% comment %} <div class="col-6 text-left">
+                                        <a href="" class="btn btn-danger">Delete</a>
+                                    </div> {% endcomment %}
+                                </div>
+                            {% else %}
+                                <div class="row justify-content-center mt-4">
+                                    <div class="col-12 text-center">
+                                        <a href="{% url 'read' uuid=que.id %}" class="btn btn-primary">Read More</a>
+                                    </div>
+                                    {% comment %} <div class="col-6 text-left">
+                                        <a href="" class="btn btn-danger">Delete</a>
+                                    </div> {% endcomment %}
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div class="card-footer d-flex align-items-center">
+                            <span class="w-50">
+                                {% csrf_token %}
+                                {% if que.likes.all|find_user:user.id %}
+                                <button type="button" class="btn btn-like btn-toggle-like px-1 py-0" id="btn-toggle-like-{{que.id}}" onmouseover="displayDislikeBadge('{{que.id}}')" onmouseleave="removeDislikeBadge('{{que.id}}')">
+                                    <i class="bi bi-star-fill like" id="like-{{que.id}}"></i>
+                                    <span class="badge-dislike py-1 px-2 font-weight-bold rounded sr-only" id="badge-que-{{que.id}}">Dislike</span>
+                                {% else %}
+                                <button type="button" class="btn btn-dislike btn-toggle-like px-1 py-0" id="btn-toggle-like-{{que.id}}" onmouseover="displayLikeBadge('{{que.id}}')" onmouseleave="removeLikeBadge('{{que.id}}')">
+                                    <i class="bi bi-star-fill dislike" id="dislike-{{que.id}}"></i>
+                                    <span class="badge-like py-1 px-2 font-weight-bold rounded sr-only" id="badge-que-{{que.id}}">Like</span>
+                                {% endif %}
+                                    <span class="mx-1" id="like-count-{{que.id}}">{{ que.likes.all|length }}</span>
+                                </button>
+                                {% comment %} <button type="button" class="btn px-1 py-0">
+                                    <em class="bi bi-caret-up-square-fill upvote"></em>
+                                    <span class="mx-1">10</span>
+                                </button> {% endcomment %}
+                                {% comment %} <button type="button" class="btn px-1 py-0">
+                                    <em class="bi bi-caret-down-square-fill downvote"></em>
+                                    <span class="mx-1">5</span>
+                                </button> {% endcomment %}
+                                {% comment %} <button type="button" class="btn px-1 py-0">
+                                    <em class="bi bi-eye-fill views"></em>
+                                    <span class="mx-1">71</span>
+                                </button> {% endcomment %}
+                            </span>
+                            <span class="text-right text-muted w-50">
+                                {{ que.createdAt|date:"d M Y H:i " }}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock content %}
+
+{% block js %}
+<script src="{% static '/js/script.js' %}"></script>
+{% endblock js %}
