@@ -243,20 +243,20 @@ active
                     </div>
                 </div>
             </form>
-            <form action="" method="POST" class="mt-5">
+            <form action="{% url 'change_password' %}" method="POST" class="mt-5">
                 {% csrf_token %}
                 <div class="form-row shadow p-3 justify-content-between rounded">
                     <div class="col-md-3 col-12 form-group mt-md-3 mt-3">
                         <label for="pincode">Current Password</label>
-                        <input class="form-control text-muted w-100" name="current-password">
+                        <input type="password" class="form-control text-muted w-100" name="current-password" required>
                     </div>
                     <div class="col-md-3 col-12 form-group mt-md-3 mt-3">
                         <label for="pincode">New Password</label>
-                        <input class="form-control text-muted w-100" name="new-password">
+                        <input type="password" class="form-control text-muted w-100" name="new-password" required>
                     </div>
                     <div class="col-md-3 col-12 form-group mt-md-3 mt-3">
                         <label for="pincode">Retype New Password</label>
-                        <input class="form-control text-muted w-100" name="new-retypepassword">
+                        <input type="password" class="form-control text-muted w-100" name="new-retypepassword" required>
                     </div>
                     <div class="col-md-2 col-12 mt-md-2 mt-4">
                         <input type="submit" value="Change Now" class="btn text-white btn-block btn-primary">

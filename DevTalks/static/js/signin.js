@@ -56,8 +56,8 @@ $(function () {
         e.preventDefault();
         let password = $("#password").val().trim();
         let retypepassword = $("#retypepassword").val().trim();
-        console.log(password)
-        console.log(retypepassword)
+        //console.log(password)
+        //console.log(retypepassword)
         if(password != retypepassword)  {
             $("#errorPassword").html("Password not match");
         }

@@ -9,6 +9,7 @@ urlpatterns = [
     path('signin/', views.signin, name='signin'),
     path('signout/', views.signout, name='signout'),
     path('profile/', views.profile, name='profile'),
+    path('change-password/',views.change_password, name='change_password'),
     path('forgot-password/',views.forgot_password, name='forgot_password'),
     url(r'^activate/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,40})/$',
         views.activate, name='activate'),

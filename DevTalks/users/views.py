@@ -1,3 +1,4 @@
+from typing import overload
 from django.http.response import JsonResponse
 from django.shortcuts import redirect, render
 from django.contrib.auth import login, logout, authenticate
@@ -8,6 +9,7 @@ from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.template.loader import get_template
 from django.core.mail import EmailMultiAlternatives
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.hashers import check_password
 from django.views.decorators.csrf import csrf_exempt
 from django.conf import settings
 from .tokens import account_activation_token
@@ -247,6 +249,45 @@ def profile(request):
     # print(rank, badge)
     return render(request, 'profile.html', { 'user': current_user, 'badge': badge })
 
+@login_required(login_url='signin')
+def change_password(request):
+    if request.method == 'POST':
+        currentpassword = request.POST['current-password'].strip()
+        newpassword = request.POST['new-password'].strip()
+        newretypepassword = request.POST['new-retypepassword'].strip()
+
+        if newpassword != newretypepassword:
+            messages.error(request, "New Password didn't matched!!")
+            return redirect('profile')
+
+        current_user = request.user
+
+        if current_user.id is not None:
+            try:
+                user = User.objects.get(pk=current_user.id)
+            except(TypeError, ValueError, OverflowError, User.DoesNotExist):
+                user = None
+
+            # print(user.password)
+            if user is not None:
+                # print(check_password(currentpassword, user.password))
+                if check_password(currentpassword, user.password):
+                    if currentpassword == newpassword:
+                        messages.error(request, "New Password and Current Password must be different!!")
+                        return redirect('profile')
+                    user.set_password(newpassword)
+                    user.save()
+                    messages.success(request, "Password Updated Successfully...")
+                    return redirect('profile')
+                else:
+                    messages.error(request, "Current Password not Matched!! Try Again...")
+                    return redirect('profile')
+    
+        messages.error(request, "User not found!!")
+
+    return redirect('profile')
+
+
 def forgot_password(request):
     if request.method == 'POST':
         email = request.POST['email'].strip()
@@ -275,7 +316,7 @@ def forgot_password(request):
             email.fail_silently = True
             email.send()
 
-            # Save User if Verification Mail Successfully Sent
+            # Set New Password if Verification Mail Successfully Sent
             user.set_password(password)
             user.save()
 
