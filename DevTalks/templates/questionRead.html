@@ -129,7 +129,7 @@ Question | Read | DevTalks
 </div>
 <div class="all-rendered-answer">
 {% for ans in answers %}
-    <div class="content bg-answer p-5" id="x{{ans.id}}">
+    <div class="content bg-answer {% if ans.is_accepted %}bg-verified{% endif %} p-5" id="x{{ans.id}}">
         <div style="display:none">{{ans.body}}</div>
         <div class="container-fluid contents w-100">
             <div class="row">
@@ -190,6 +190,21 @@ Question | Read | DevTalks
                         <em class="bi bi-eye-fill views"></em>
                         <span class="mx-1">71</span>
                     </button> {% endcomment %}
+                    {% if user.is_authenticated and question.user.username == user.username and ans.is_accepted %}
+                        <button type="button" class="btn btn-no-verify btn-toggle-verify px-1 py-0" id="btn-toggle-verify-{{ans.id}}" onmouseover="displayNoVerifyBadge('{{ans.id}}')" onmouseleave="removeNoVerifyBadge('{{ans.id}}')">
+                            <i class="bi bi-patch-check-fill verify" id="verify-{{ans.id}}"></i>
+                            <span class="badge-no-verify py-1 px-2 font-weight-bold rounded sr-only" id="badge-verify-{{ans.id}}">Cancel</span>
+                        </button>
+                    {% elif user.is_authenticated and question.user.username == user.username %}
+                        <button type="button" class="btn btn-verify btn-toggle-verify px-1 py-0" id="btn-toggle-verify-{{ans.id}}" onmouseover="displayVerifyBadge('{{ans.id}}')" onmouseleave="removeVerifyBadge('{{ans.id}}')">
+                            <i class="bi bi-patch-check no-verify" id="no-verify-{{ans.id}}"></i>
+                            <span class="badge-verify py-1 px-2 font-weight-bold rounded sr-only" id="badge-verify-{{ans.id}}">Verify</span>
+                        </button>
+                    {% else %}
+                        {% if ans.is_accepted %}
+                            <i class="bi bi-patch-check-fill verify"></i>
+                        {% endif %}
+                    {% endif %}
                 </span>
                 <span class="text-right text-muted w-50">
                     Updated @ {{ ans.updatedAt|date:"d M Y H:i " }}

@@ -13,7 +13,8 @@ urlpatterns = [
      path('question-read/',TemplateView.as_view(template_name='questionRead.html')),
 
      path('like/<question_id>/', views.toggle_like, name='like'),
-     path('upvote/<answer_id>/', views.toggle_upvote, name='upvote'),
+     path('answer/upvote/<answer_id>/', views.toggle_upvote, name='upvote'),
+     path('answer/verify/<answer_id>/', views.toggle_verify, name='verify'),
 
      # Paths for EditorJS
      path('uploadImg/',views.upload_img, name='imageupload'),

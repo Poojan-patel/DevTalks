@@ -21,11 +21,15 @@ a:hover {
 }
 
 .bg-question {
-    background-color: #87e9fd30;
+    background-color: #caf6ff;
 }
 
 .bg-answer {
     background-color: #fff;
+}
+
+.bg-verified {
+    background-color: #d1fff0;
 }
 
 h2 {
@@ -241,7 +245,7 @@ h2 {
 }
 
 .control--checkbox input:disabled:checked~.control__indicator {
-    background-color: #38d39f;
+    background-color: #6f7573;
     opacity: 0.2;
 }
 
@@ -303,11 +307,23 @@ h2 {
     background-color: #38d39f;
 }
 
+.badge-verify {
+    font-size: 12px;
+    color: #fff;
+    background-color: darkgreen;
+}
+
 .badge-dislike,
 .badge-no-upvote {
     font-size: 12px;
     color: #fff;
     background-color: #bbbbbb;
+}
+
+.badge-no-verify {
+    font-size: 12px;
+    color: #fff;
+    background-color: #d33838;
 }
 
 .hover-animation {
@@ -419,6 +435,11 @@ h2 {
     to {
         color: #38d39f;
     }
+}
+
+.verify,
+.no-verify {
+    color: darkgreen;
 }
 
 .downvote {

@@ -40,7 +40,7 @@ def read(request,uuid):
      answers = data.answers.all()\
                .annotate(num_likes=Count('upvotes'))\
                .order_by('-num_likes')
-     print(answers)
+     # print(answers)
      return render(request, 'questionRead.html', { 'question' : data, 'answers': answers })
 
 @csrf_exempt
@@ -207,4 +207,21 @@ def toggle_upvote(request,answer_id):
                upvote_status.delete()
                return JsonResponse({'Success':2})
      except:
+          return JsonResponse({'Success':0})
+
+@csrf_exempt
+@login_required(login_url='signin')
+def toggle_verify(request,answer_id):
+     if request.method == "POST":
+          # print(request.user.id)
+          user = request.user
+          answer = Answer.objects.filter(id=answer_id).first()
+          if answer.question_id.user.username == user.username:
+               answer.is_accepted = not answer.is_accepted
+               answer.save()
+               if answer.is_accepted:
+                    return JsonResponse({'Success':1})
+               else:
+                    return JsonResponse({'Success':2})
+                    
           return JsonResponse({'Success':0})
