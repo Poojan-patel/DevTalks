@@ -31,7 +31,7 @@
 ![THis is Image](readme_images/tag_based_filtering.png)
 
 ## Question Asking
-![THis is Image](readme_images/question.png)
+![THis is Image](readme_images/questionaire.png)
 
 ## Answer Giving
 ![THis is Image](readme_images/answer.png)
